@@ -39,6 +39,8 @@ gem 'ruby-vips', '~> 2.1', '>= 2.1.4'
 # Active Storage validations [https://github.com/igorkasyanchuk/active_storage_validations]
 gem 'active_storage_validations'
 
+gem 'geocoder', '~> 1.8'
+
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem "rack-cors"
 
