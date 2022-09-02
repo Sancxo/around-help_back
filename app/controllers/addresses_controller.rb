@@ -15,7 +15,7 @@ class AddressesController < ApplicationController
 
   # POST /addresses
   def create
-    @address = Address.new(address_params)
+    @address = Address.new(params.permit(:number, :street, :city, :state, :postal_code, :country, :long_lat))
 
     if @address.save
       render json: @address, status: :created, location: @address
