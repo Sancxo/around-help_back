@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 
 const Home = lazy((): Promise<any> => import('./pages/Home'));
+const SignIn = lazy((): Promise<any> => import('./pages/SignIn'));
 
 function App(): ReactElement {
   return (
@@ -14,7 +15,8 @@ function App(): ReactElement {
         <main>
           <Suspense fallback="Loading app ...">
             <Routes>
-              <Route path='/' element={<Home />}></Route>
+              <Route path='/' element={<Home />} />
+              <Route path='/sign-in' element={<SignIn />} />
             </Routes>
           </Suspense>
         </main>
