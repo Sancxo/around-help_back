@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist 
 
-  belongs_to :address
+  belongs_to :address, optional: true
   has_many :user_need
 
   has_one_attached :id_card
