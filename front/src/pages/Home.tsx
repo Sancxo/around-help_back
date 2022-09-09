@@ -1,4 +1,4 @@
-import { ReactElement, SetStateAction, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import axios from "axios";
 
 interface Address {
@@ -15,7 +15,7 @@ interface Address {
 const addressesUrl = `${process.env.REACT_APP_BACKEND_URL}/addresses`;
 
 export default function Home(): ReactElement {
-    const [addresses, setAddresses]: [Address[], SetStateAction<any>] = useState([]);
+    const [addresses, setAddresses] = useState<Address[]>([]);
 
     useEffect(() => {
         axios.get<Address[]>(addressesUrl).then(resp => setAddresses(resp.data))
