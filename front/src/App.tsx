@@ -27,7 +27,7 @@ function App(): ReactElement {
           <Suspense fallback="Loading app ...">
             <Routes>
               <Route path='/' element={<Home />} />
-              <Route path='/sign-in' element={<SignIn user={user} setUser={setUser} />} />
+              <Route path='/sign-in' element={<SignIn setUser={setUser} />} />
               <Route path="/user/:id" element={<UserProfile user={user} />} />
             </Routes>
           </Suspense>

@@ -7,7 +7,7 @@ import '../styles/Forms.css';
 import User, { RegistrationValues } from "../shared/interfaces/user.interface";
 
 
-export default function SignIn({ user, setUser }: { user: User, setUser: React.Dispatch<React.SetStateAction<User>> }): ReactElement {
+export default function SignIn({ setUser }: { setUser: React.Dispatch<React.SetStateAction<User>> }): ReactElement {
 
     const [registrationValues, setRegistrationValues] = useState<RegistrationValues>({
         first_name: "",
@@ -31,7 +31,8 @@ export default function SignIn({ user, setUser }: { user: User, setUser: React.D
             .then(resp => {
                 if (resp.status === 200) {
                     console.log(resp.data.user);
-                    setUser(resp.data.user)
+                    setUser(resp.data.user);
+                    // put resp.data.user inside Local storage (or cookie)
                     navigate(`/user/${resp.data.user.id}`)
                 }
             })
