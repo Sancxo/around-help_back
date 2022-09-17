@@ -1,26 +1,20 @@
-import axios from "axios";
-import { ReactElement, useState } from "react";
+import axios, { AxiosResponse } from "axios";
+import React, { ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import '../styles/Forms.css';
 
-interface User {
-    first_name: string,
-    last_name: string,
-    password: string,
-    password_confirmation: string,
-    birthdate?: Date,
-    about?: string,
-    address_id?: number,
-    id_card?: string,
-    avatar?: string
-}
+import User, { RegistrationValues } from "../shared/interfaces/user.interface";
 
-export default function SignIn(): ReactElement {
-    const [user, setUser] = useState<User>({
+
+export default function SignIn({ user, setUser }: { user: User, setUser: React.Dispatch<React.SetStateAction<User>> }): ReactElement {
+
+    const [registrationValues, setRegistrationValues] = useState<RegistrationValues>({
         first_name: "",
         last_name: "",
         password: "",
-        password_confirmation: ""
+        password_confirmation: "",
+        email: ""
     });
     const navigate = useNavigate();
 
@@ -28,16 +22,17 @@ export default function SignIn(): ReactElement {
         const name = e.target.name;
         const value = e.target.value;
 
-        setUser(values => ({ ...values, [name]: value }));
+        setRegistrationValues(registrationValues => ({ ...registrationValues, [name]: value }));
     }
 
     function handleSubmit() {
         axios
-            .post<User>(`${process.env.REACT_APP_BACKEND_URL}/users`, { user })
+            .post<RegistrationValues, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, { "user": registrationValues })
             .then(resp => {
                 if (resp.status === 200) {
-                    console.info("Success!");
-                    navigate("/");
+                    console.log(resp.data.user);
+                    setUser(resp.data.user)
+                    navigate(`/user/${resp.data.user.id}`)
                 }
             })
             .catch(err => console.error(err));
