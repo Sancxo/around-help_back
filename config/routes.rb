@@ -5,7 +5,7 @@ Rails.application.routes.draw do
       registrations: 'users/registrations'
     }
 
-  get 'user', to: 'users#show'
+  get 'user/:id', to: 'users#show'
 
   resources :needs
   resources :addresses
