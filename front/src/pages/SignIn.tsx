@@ -7,7 +7,7 @@ import '../styles/Forms.css';
 import User, { RegistrationValues } from "../shared/interfaces/user.interface";
 
 
-export default function SignIn({ setUser }: { setUser: React.Dispatch<React.SetStateAction<User>> }): ReactElement {
+export default function SignIn({ setUser, setToken }: { setUser: React.Dispatch<React.SetStateAction<User>>, setToken: React.Dispatch<React.SetStateAction<String>> }): ReactElement {
 
     const [registrationValues, setRegistrationValues] = useState<RegistrationValues>({
         first_name: "",
@@ -30,10 +30,12 @@ export default function SignIn({ setUser }: { setUser: React.Dispatch<React.SetS
             .post<RegistrationValues, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, { "user": registrationValues })
             .then(resp => {
                 if (resp.status === 200) {
-                    console.log(resp.data.user);
+                    console.log(resp.headers.authorization);
                     setUser(resp.data.user);
-                    // put resp.data.user inside Local storage (or cookie)
-                    navigate(`/user/${resp.data.user.id}`)
+                    setToken(resp.headers.authorization);
+                    localStorage.setItem("auth_token", resp.headers.authorization);
+                    axios.defaults.headers.common["Authorization"] = resp.headers.authorization;
+                    navigate(`/user/${resp.data.user.id}`);
                 }
             })
             .catch(err => console.error(err));

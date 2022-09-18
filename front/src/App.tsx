@@ -16,6 +16,10 @@ function App(): ReactElement {
     last_name: "",
     email: ""
   });
+  const [token, setToken] = useState("");
+
+  let localAuthToken = localStorage.auth_token;
+  let cookieExists = localAuthToken !== 'undefined' && localAuthToken !== null;
 
   return (
     <div className="App">
@@ -27,7 +31,7 @@ function App(): ReactElement {
           <Suspense fallback="Loading app ...">
             <Routes>
               <Route path='/' element={<Home />} />
-              <Route path='/sign-in' element={<SignIn setUser={setUser} />} />
+              <Route path='/sign-in' element={<SignIn setUser={setUser} setToken={setToken} />} />
               <Route path="/user/:id" element={<UserProfile user={user} />} />
             </Routes>
           </Suspense>
