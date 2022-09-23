@@ -1,4 +1,4 @@
-import { lazy, ReactElement, Suspense, useState } from 'react';
+import { lazy, ReactElement, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import './App.css';
@@ -6,7 +6,8 @@ import './App.css';
 import User from "./shared/interfaces/user.interface";
 
 const Home = lazy((): Promise<any> => import('./pages/Home'));
-const SignIn = lazy((): Promise<any> => import('./pages/SignIn'));
+const Register = lazy((): Promise<any> => import('./pages/Register'));
+const Login = lazy((): Promise<any> => import('./pages/Login'));
 const UserProfile = lazy((): Promise<any> => import('./pages/UserProfile'));
 
 function App(): ReactElement {
@@ -18,8 +19,14 @@ function App(): ReactElement {
   });
   const [token, setToken] = useState("");
 
-  let localAuthToken = localStorage.auth_token;
-  let cookieExists = localAuthToken !== 'undefined' && localAuthToken !== null;
+  if (!token) {
+    // Login page redirect
+  }
+
+  useEffect(() => {
+    token ? console.log(true) : console.log(false);
+    console.log(token);
+  }, [token])
 
   return (
     <div className="App">
@@ -31,7 +38,8 @@ function App(): ReactElement {
           <Suspense fallback="Loading app ...">
             <Routes>
               <Route path='/' element={<Home />} />
-              <Route path='/sign-in' element={<SignIn setUser={setUser} setToken={setToken} />} />
+              <Route path='/register' element={<Register setUser={setUser} setToken={setToken} />} />
+              <Route path='/login' element={<Login setUser={setUser} setToken={setToken} />} />
               <Route path="/user/:id" element={<UserProfile user={user} />} />
             </Routes>
           </Suspense>
