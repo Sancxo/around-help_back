@@ -3,7 +3,7 @@ import { ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import User from "../shared/interfaces/user.interface";
 
-export default function Login({ setUser, setToken }: { setUser: React.Dispatch<React.SetStateAction<User>>, setToken: React.Dispatch<React.SetStateAction<String>> }): ReactElement {
+export default function Login({ setUser, setToken }: { setUser: React.Dispatch<React.SetStateAction<User>>, setToken: React.Dispatch<React.SetStateAction<string>> }): ReactElement {
     const [email, setEmail] = useState<String>();
     const [password, setPassword] = useState<String>();
 

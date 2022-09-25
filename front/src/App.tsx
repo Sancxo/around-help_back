@@ -5,6 +5,8 @@ import './App.css';
 
 import User from "./shared/interfaces/user.interface";
 
+import Menu from "./components/Menu";
+
 const Home = lazy((): Promise<any> => import('./pages/Home'));
 const Register = lazy((): Promise<any> => import('./pages/Register'));
 const Login = lazy((): Promise<any> => import('./pages/Login'));
@@ -12,7 +14,7 @@ const UserProfile = lazy((): Promise<any> => import('./pages/UserProfile'));
 
 function App(): ReactElement {
   const [user, setUser] = useState<User>({
-    id: -1,
+    id: 0,
     first_name: "",
     last_name: "",
     email: ""
@@ -26,12 +28,16 @@ function App(): ReactElement {
   useEffect(() => {
     token ? console.log(true) : console.log(false);
     console.log(token);
-  }, [token])
+    console.log(user);
+  }, [token, user])
 
   return (
     <div className="App">
       <Router>
         <header className="App-header">
+          <nav>
+            <Menu user={user} token={token} setUser={setUser} setToken={setToken} />
+          </nav>
         </header>
 
         <main>

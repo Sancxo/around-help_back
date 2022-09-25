@@ -7,7 +7,7 @@ import '../styles/Forms.css';
 import User, { RegistrationValues } from "../shared/interfaces/user.interface";
 
 
-export default function Register({ setUser, setToken }: { setUser: React.Dispatch<React.SetStateAction<User>>, setToken: React.Dispatch<React.SetStateAction<String>> }): ReactElement {
+export default function Register({ setUser, setToken }: { setUser: React.Dispatch<React.SetStateAction<User>>, setToken: React.Dispatch<React.SetStateAction<string>> }): ReactElement {
 
     const [registrationValues, setRegistrationValues] = useState<RegistrationValues>({
         first_name: "",
