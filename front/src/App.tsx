@@ -1,11 +1,12 @@
-import { lazy, ReactElement, Suspense, useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { lazy, ReactElement, Suspense, useEffect, useMemo, useState } from 'react';
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 
 import './App.css';
 
 import User from "./shared/interfaces/user.interface";
 
 import Menu from "./components/Menu";
+import axios from 'axios';
 
 const Home = lazy((): Promise<any> => import('./pages/Home'));
 const Register = lazy((): Promise<any> => import('./pages/Register'));
@@ -13,23 +14,27 @@ const Login = lazy((): Promise<any> => import('./pages/Login'));
 const UserProfile = lazy((): Promise<any> => import('./pages/UserProfile'));
 
 function App(): ReactElement {
-  const [user, setUser] = useState<User>({
-    id: 0,
-    first_name: "",
-    last_name: "",
-    email: ""
-  });
+  const defaultUser: User = useMemo(() => {
+    return {
+      id: 0,
+      first_name: "",
+      last_name: "",
+      email: ""
+    }
+  }, []);
+
+  const [user, setUser] = useState<User>(defaultUser);
   const [token, setToken] = useState("");
 
-  if (!token) {
-    // Login page redirect
-  }
-
   useEffect(() => {
-    token ? console.log(true) : console.log(false);
-    console.log(token);
-    console.log(user);
-  }, [token, user])
+    console.info(token);
+    if (token === "") {
+      console.info("Disconnected!")
+      setToken("");
+      setUser(defaultUser);
+      axios.defaults.headers.common["Authorization"] = "";
+    } else console.info("Connected!");
+  }, [token, defaultUser])
 
   return (
     <div className="App">
@@ -43,10 +48,10 @@ function App(): ReactElement {
         <main>
           <Suspense fallback="Loading app ...">
             <Routes>
-              <Route path='/' element={<Home />} />
+              <Route element={<Home />} path='/' />
               <Route path='/register' element={<Register setUser={setUser} setToken={setToken} />} />
               <Route path='/login' element={<Login setUser={setUser} setToken={setToken} />} />
-              <Route path="/user/:id" element={<UserProfile user={user} />} />
+              <Route path="/user/:id" element={token === "" ? <Navigate to="/" /> : <UserProfile user={user} />} />
             </Routes>
           </Suspense>
         </main>

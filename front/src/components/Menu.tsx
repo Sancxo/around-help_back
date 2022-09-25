@@ -26,6 +26,7 @@ export default function Menu({ user, token, setUser, setToken }: { user: User, t
         <div>
             {user.id ?
                 <ul>
+                    <li><Link to="/" title="Home">AroundHelp</Link></li>
                     <li><Link to={`/user/${user.id}`} title="Your profile">My profile</Link></li>
                     <li><Link to="">Needs</Link></li>
                     <li><Link to="">Messages</Link></li>
