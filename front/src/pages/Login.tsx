@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { setUserInfos } from "../shared/helpers/user.helper";
 import User from "../shared/interfaces/user.interface";
 
 export default function Login({ setUser, setToken }: { setUser: React.Dispatch<React.SetStateAction<User>>, setToken: React.Dispatch<React.SetStateAction<string>> }): ReactElement {
@@ -13,9 +14,7 @@ export default function Login({ setUser, setToken }: { setUser: React.Dispatch<R
         axios
             .post(`${process.env.REACT_APP_BACKEND_URL}/users/sign_in`, { "user": { "email": email, "password": password } })
             .then(resp => {
-                setUser(resp.data.user);
-                setToken(resp.headers.authorization);
-                axios.defaults.headers.common["Authorization"] = resp.headers.authorization;
+                setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
                 navigate(`/user/${resp.data.user.id}`);
             })
             .catch(err => console.error(err))

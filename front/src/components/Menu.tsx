@@ -1,27 +1,8 @@
-import axios from "axios";
-import { ReactElement } from "react";
+import { MouseEventHandler, ReactElement } from "react";
 import { Link } from "react-router-dom";
 import User from "../shared/interfaces/user.interface";
 
-export default function Menu({ user, token, setUser, setToken }: { user: User, token: String, setUser: React.Dispatch<React.SetStateAction<User>>, setToken: React.Dispatch<React.SetStateAction<string>> }): ReactElement {
-    function logOut() {
-        const config: any = { headers: { authorization: token } };
-        axios
-            .delete(`${process.env.REACT_APP_BACKEND_URL}/users/sign_out`, config)
-            .then(resp => {
-                if (resp.status === 200) {
-                    setUser({
-                        id: 0,
-                        first_name: "",
-                        last_name: "",
-                        email: ""
-                    });
-                    setToken("");
-                    axios.defaults.headers.common["Authorization"] = "";
-                };
-            })
-            .catch(err => console.error(err));
-    }
+export default function Menu({ user, logOut }: { user: User, logOut: MouseEventHandler<HTMLAnchorElement> }): ReactElement {
     return (
         <div>
             {user.id ?
