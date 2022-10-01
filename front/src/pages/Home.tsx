@@ -24,7 +24,7 @@ export default function Home(): ReactElement {
     return (
         <div>
             <h1>Hello, World!</h1>
-            {addresses.map(address => {
+            {/* {addresses.map(address => {
                 return <div key={address.id}>
                     <p>
                         {address.number} {address.street} <br />
@@ -32,7 +32,7 @@ export default function Home(): ReactElement {
                         {address.state} - {address.country} <br />
                     </p>
                 </div>
-            })}
+            })} */}
         </div>
     );
 }
