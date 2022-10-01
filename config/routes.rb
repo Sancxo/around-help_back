@@ -5,10 +5,13 @@ Rails.application.routes.draw do
       registrations: 'users/registrations'
     }
 
-  get 'user/:id', to: 'users#show'
+  authenticate :user do
+    get 'user/:id', to: 'users#show'
 
-  resources :needs
-  resources :addresses
+    resources :needs
+    resources :addresses
+  end
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
