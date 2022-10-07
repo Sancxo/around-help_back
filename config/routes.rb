@@ -6,7 +6,8 @@ Rails.application.routes.draw do
     }
 
   authenticate :user do
-    get 'user/:id', to: 'users#show'
+    get 'user', to: 'users#this'
+    get 'users/:id', to: 'users#show'
 
     resources :needs
     resources :addresses

@@ -1,10 +1,19 @@
 class UsersController < ApplicationController
     before_action :authenticate_user!
 
-    def show
+    def this
       user = get_user_from_token
       render json: {
-        message: "You're logged in!",
+        message: "You're logged in because of the token!",
+        user: user
+      }
+    end
+
+    def show
+      user = User.find(params[:id])
+      puts "User #{user.inspect()} !!!!!!!!!!"
+      render json: {
+        message: "User found!",
         user: user
       }
     end
