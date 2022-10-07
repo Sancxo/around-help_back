@@ -7,7 +7,7 @@ import User from "./shared/interfaces/user.interface";
 
 import Menu from "./components/Menu";
 import axios from 'axios';
-import { getLocalInfos, resetUserInfos, setUserInfos } from './shared/helpers/user.helper';
+import { resetUserInfos, signInWtihToken, signOut } from './shared/helpers/user.helper';
 
 const Home = lazy((): Promise<any> => import('./pages/Home'));
 const Register = lazy((): Promise<any> => import('./pages/Register'));
@@ -24,35 +24,19 @@ function App(): ReactElement {
     }
   }, []);
 
-  const [user, setUser] = useState<User>(defaultUser);
   const [token, setToken] = useState("");
+  const [user, setUser] = useState<User>(defaultUser);
 
-
-  const [localToken, localUser] = getLocalInfos();
-  console.log("Local Token: ", localToken);
-  console.log("Local User: ", localUser);
+  const localToken = localStorage.getItem("auth_token");
 
   useEffect(() => {
-
-    if (localToken === "" || localToken === undefined) {
+    !localToken &&
       resetUserInfos(defaultUser, setUser, setToken, axios.defaults.headers);
-      console.info("Disonnected!");
-    } else {
-      setUserInfos(localUser, setUser, localToken, setToken, axios.defaults.headers)
-      console.info("Connected!");
-    }
-  }, [defaultUser, localToken, localUser])
+    localToken && signInWtihToken(localToken, setUser, setToken);
+  }, [localToken, defaultUser, user.id])
 
   function logOut() {
-    const config: any = { headers: { authorization: token } };
-    axios
-      .delete(`${process.env.REACT_APP_BACKEND_URL}/users/sign_out`, config)
-      .then(resp => {
-        if (resp.status === 200) {
-          resetUserInfos(defaultUser, setUser, setToken, axios.defaults.headers);
-        };
-      })
-      .catch(err => console.error(err));
+    signOut(token, defaultUser, setUser, setToken)
   }
 
   return (
@@ -60,7 +44,7 @@ function App(): ReactElement {
       <Router>
         <header className="App-header">
           <nav>
-            <Menu user={user} logOut={logOut} />
+            <Menu token={token} user_id={user.id} logOut={logOut} />
           </nav>
         </header>
 
@@ -70,7 +54,7 @@ function App(): ReactElement {
               <Route element={<Home />} path='/' />
               <Route path='/register' element={<Register setUser={setUser} setToken={setToken} />} />
               <Route path='/login' element={<Login setUser={setUser} setToken={setToken} />} />
-              <Route path="/user/:id" element={token === "" ? <Navigate to="/" /> : <UserProfile user={user} />} />
+              <Route path="/user/:id" element={!localToken ? <Navigate to="/" /> : <UserProfile defaultUser={defaultUser} />} />
             </Routes>
           </Suspense>
         </main>

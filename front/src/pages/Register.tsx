@@ -1,11 +1,10 @@
-import axios, { AxiosResponse } from "axios";
 import React, { ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import '../styles/Forms.css';
 
 import User, { RegistrationValues } from "../shared/interfaces/user.interface";
-import { setUserInfos } from "../shared/helpers/user.helper";
+import { register } from "../shared/helpers/user.helper";
 
 
 export default function Register({ setUser, setToken }: { setUser: React.Dispatch<React.SetStateAction<User>>, setToken: React.Dispatch<React.SetStateAction<string>> }): ReactElement {
@@ -27,15 +26,7 @@ export default function Register({ setUser, setToken }: { setUser: React.Dispatc
     }
 
     function handleSubmit() {
-        axios
-            .post<RegistrationValues, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, { "user": registrationValues })
-            .then(resp => {
-                if (resp.status === 200) {
-                    setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
-                    navigate(`/user/${resp.data.user.id}`);
-                }
-            })
-            .catch(err => console.error(err));
+        register(registrationValues, setUser, setToken, navigate);
     }
 
     return (

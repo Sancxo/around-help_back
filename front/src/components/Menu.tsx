@@ -1,14 +1,13 @@
 import { MouseEventHandler, ReactElement } from "react";
 import { Link } from "react-router-dom";
-import User from "../shared/interfaces/user.interface";
 
-export default function Menu({ user, logOut }: { user: User, logOut: MouseEventHandler<HTMLAnchorElement> }): ReactElement {
+export default function Menu({ user_id, token, logOut }: { user_id: Number, token: string, logOut: MouseEventHandler<HTMLAnchorElement> }): ReactElement {
     return (
         <div>
-            {user.id ?
+            {token ?
                 <ul>
                     <li><Link to="/" title="Home">AroundHelp</Link></li>
-                    <li><Link to={`/user/${user.id}`} title="Your profile">My profile</Link></li>
+                    <li><Link to={`/user/${user_id}`} title="Your profile">My profile</Link></li>
                     <li><Link to="">Needs</Link></li>
                     <li><Link to="">Messages</Link></li>
                     <li><Link to="/" onClick={logOut}>Log out</Link></li>
