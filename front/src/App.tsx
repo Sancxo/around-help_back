@@ -54,7 +54,7 @@ function App(): ReactElement {
               <Route element={<Home />} path='/' />
               <Route path='/register' element={<Register setUser={setUser} setToken={setToken} />} />
               <Route path='/login' element={<Login setUser={setUser} setToken={setToken} />} />
-              <Route path="/user/:id" element={!localToken ? <Navigate to="/" /> : <UserProfile defaultUser={defaultUser} />} />
+              <Route path="/user/:id" element={!localToken ? <Navigate to="/" /> : <UserProfile defaultUser={defaultUser} token={token} />} />
             </Routes>
           </Suspense>
         </main>

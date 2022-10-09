@@ -4,28 +4,28 @@ import { useParams } from "react-router-dom";
 
 import User from "../shared/interfaces/user.interface";
 
-export default function UserProfile({ defaultUser }: { defaultUser: User }): ReactElement {
+export default function UserProfile({ defaultUser, token }: { defaultUser: User, token: string }): ReactElement {
     const urlParams = useParams();
-    console.log(urlParams.id);
 
     const [userProfile, setUserProfile] = useState<User>(defaultUser)
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        axios
-            .get(`${process.env.REACT_APP_BACKEND_URL}/users/${urlParams.id}`)
-            .then(resp => {
-                console.log("We get User: ", resp.data.user);
-                setUserProfile(resp.data.user);
-                setIsLoaded(true);
-            })
-            .catch(err => {
-                console.log(err);
-                setIsLoaded(true);
-                setError(true)
-            })
-    }, [urlParams.id])
+        if (token) {
+            axios
+                .get(`${process.env.REACT_APP_BACKEND_URL}/user/${urlParams.id}`, { headers: { authorization: token } })
+                .then(resp => {
+                    setUserProfile(resp.data.user);
+                    setIsLoaded(true);
+                })
+                .catch(err => {
+                    console.log(err);
+                    setIsLoaded(true);
+                    setError(true)
+                })
+        }
+    }, [urlParams.id, token])
 
     if (!isLoaded) return <div><p>Please, wait ...</p></div>
 

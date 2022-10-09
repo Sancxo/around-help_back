@@ -28,7 +28,7 @@ function signInWtihToken(
     axios
         .get(`${process.env.REACT_APP_BACKEND_URL}/user`, { headers: { authorization: token } })
         .then(resp => {
-            setUserInfosFromToken(resp.data.user, setUser, setToken)
+            setUserInfosFromToken(resp.data.user, setUser, setToken);
         })
         .catch(err => console.error(err));
 }
