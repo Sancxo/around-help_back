@@ -43,9 +43,7 @@ function App(): ReactElement {
     <div className="App">
       <Router>
         <header className="App-header">
-          <nav>
-            <Menu token={token} user_id={user.id} logOut={logOut} />
-          </nav>
+          <Menu token={token} user_id={user.id} logOut={logOut} />
         </header>
 
         <main>
