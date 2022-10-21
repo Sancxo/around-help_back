@@ -24,8 +24,16 @@ function App(): ReactElement {
     }
   }, []);
 
+  // media queries sizes based on Milligram library 
+  const mediaQueryTablet: MediaQueryList = window.matchMedia("(min-width: 400px)");
+  const mediaQueryDesktop: MediaQueryList = window.matchMedia("(min-width: 800px)");
+
   const [token, setToken] = useState("");
   const [user, setUser] = useState<User>(defaultUser);
+
+  const [isDesktop, setIsDesktop] = useState(mediaQueryDesktop.matches ? true : false)
+
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const localToken = localStorage.getItem("auth_token");
 
@@ -35,6 +43,17 @@ function App(): ReactElement {
     localToken && signInWtihToken(localToken, setUser, setToken);
   }, [localToken, defaultUser, user.id])
 
+  useEffect(() => {
+    mediaQueryDesktop.addEventListener('change', _ => {
+      setIsDesktop(!isDesktop);
+      isDesktop && setIsMobileMenuOpen(false);
+    })
+    return mediaQueryDesktop.removeEventListener('change', _ => {
+      setIsDesktop(!isDesktop);
+      isDesktop && setIsMobileMenuOpen(false);
+    });
+  })
+
   function logOut() {
     signOut(token, defaultUser, setUser, setToken)
   }
@@ -43,10 +62,10 @@ function App(): ReactElement {
     <div className="App">
       <Router>
         <header className="App-header">
-          <Menu token={token} user_id={user.id} logOut={logOut} />
+          <Menu token={token} user_id={user.id} logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
         </header>
 
-        <main>
+        <main className={`${isMobileMenuOpen && mediaQueryTablet.matches && "pt-4"}`} >
           <Suspense fallback="Loading app ...">
             <Routes>
               <Route element={<Home />} path='/' />

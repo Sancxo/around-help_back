@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import '../styles/Forms.css';
+import '../shared/styles/Forms.css';
 
 import User, { RegistrationValues } from "../shared/interfaces/user.interface";
 import { register } from "../shared/helpers/user.helper";

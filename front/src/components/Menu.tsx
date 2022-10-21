@@ -1,29 +1,31 @@
 import { MouseEventHandler, ReactElement } from "react";
 import { Link } from "react-router-dom";
+import MobileMenu from "./MobileMenu";
+import DesktopMenu from "./DesktopMenu";
 
-export default function Menu({ user_id, token, logOut }: { user_id: Number, token: string, logOut: MouseEventHandler<HTMLAnchorElement> }): ReactElement {
+export default function Menu(
+    { user_id, token, logOut, isDesktop, isMobileMenuOpen, setIsMobileMenuOpen }: {
+        user_id: Number,
+        token: string,
+        logOut: MouseEventHandler<HTMLAnchorElement>,
+        isDesktop: boolean,
+        isMobileMenuOpen: boolean,
+        setIsMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
+    }): ReactElement {
+
     return (
-        <nav className="mb-3">
+        <nav className="mb-1">
             <div className="container">
-                {token ?
-                    <div className="row">
-                        <div className="column logo"><Link to="/" title="Home">AroundHelp</Link></div>
-                        <div className="column">
-                            <Link to={`/user/${user_id}`} title="Your profile">My profile</Link>
-                            <Link to="">Needs</Link>
-                            <Link to="">Messages</Link>
-                            <Link to="/" onClick={logOut}>Log out</Link>
-                        </div>
+                <div className="row">
+                    <div className="column logo">
+                        <Link to="/" title="Home" onClick={() => setIsMobileMenuOpen(false)}>AroundHelp</Link>
                     </div>
-                    :
-                    <div className="row">
-                        <div className="column logo"><Link to="/" title="Home">AroundHelp</Link></div>
-                        <div className="column">
-                            <Link to="/login" title="Sign in form">Log in</Link>
-                            <Link to="/register" title="Sign up form">Register</Link>
-                        </div>
-                    </div>
-                }
+                    {isDesktop ?
+                        <DesktopMenu token={token} user_id={user_id} logOut={logOut} setIsMobileMenuOpen={setIsMobileMenuOpen} />
+                        :
+                        <MobileMenu token={token} user_id={user_id} logOut={logOut} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
+                    }
+                </div>
             </div >
         </nav >
     )

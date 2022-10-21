@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'milligram';
 import './index.css';
-import './styles/Main.css';
+import './shared/styles/Main.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
