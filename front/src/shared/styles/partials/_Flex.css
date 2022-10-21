@@ -1,0 +1,24 @@
+/* flex */
+.flex {
+  display: flex !important;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.nowrap {
+  flex-wrap: nowrap;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: end;
+}
+
+.align-center {
+  align-items: center;
+}

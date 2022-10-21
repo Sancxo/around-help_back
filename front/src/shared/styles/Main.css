@@ -1,64 +1,17 @@
+@import './partials/_Flex.css';
+@import './partials/_Spacing.css';
+@import './partials/_Sizing.css';
+@import './partials/_Forms.css';
+
 /* variables */
 :root {
   --primary-color: #00D1FF;
   --header-height: 10rem;
 }
 
-/* margins */
-.mb-0 {
-  margin-bottom: 0;
-}
-
-.mb-1 {
-  margin-bottom: 1rem;
-}
-
-.mb-3 {
-  margin-bottom: 3rem;
-}
-
-.pt-4 {
-  padding-top: 4rem;
-}
-
-/* widths */
-.w-3 {
-  width: 3rem;
-}
-
-/* heights */
-.h-3 {
-  height: 3rem;
-}
-
-/* flex */
-.flex {
-  display: flex !important;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.justify-end {
-  justify-content: end;
-}
-
-.align-center {
-  align-items: center;
-}
-
-.nowrap {
-  flex-wrap: nowrap;
-}
-
-.row {
-  flex-direction: row;
-}
-
-/* gaps */
-.gap-3 {
-  gap: 3rem;
+/* Text */
+.text-center {
+  text-align: center;
 }
 
 /* nav & menus */

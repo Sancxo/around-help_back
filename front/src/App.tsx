@@ -1,8 +1,6 @@
 import { lazy, ReactElement, Suspense, useEffect, useMemo, useState } from 'react';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 
-import './App.css';
-
 import User from "./shared/interfaces/user.interface";
 
 import Menu from "./components/Menu";
@@ -59,7 +57,7 @@ function App(): ReactElement {
   }
 
   return (
-    <div className="App">
+    <div className="text-center">
       <Router>
         <header className="App-header">
           <Menu token={token} user_id={user.id} logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
