@@ -8,7 +8,6 @@ import { register } from "../shared/helpers/user.helper";
 
 
 export default function Register({ setUser, setToken }: { setUser: React.Dispatch<React.SetStateAction<User>>, setToken: React.Dispatch<React.SetStateAction<string>> }): ReactElement {
-
     const [registrationValues, setRegistrationValues] = useState<RegistrationValues>({
         first_name: "",
         last_name: "",

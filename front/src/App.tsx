@@ -23,26 +23,26 @@ function App(): ReactElement {
       email: ""
     }
   }, []);
+  const localToken = localStorage.getItem("auth_token");
 
-  // media queries sizes based on Milligram library 
+  // Media queries sizes based on Milligram library 
   const mediaQueryTablet: MediaQueryList = window.matchMedia("(min-width: 400px)");
   const mediaQueryDesktop: MediaQueryList = window.matchMedia("(min-width: 800px)");
 
+  // State
   const [token, setToken] = useState("");
   const [user, setUser] = useState<User>(defaultUser);
-
   const [isDesktop, setIsDesktop] = useState(mediaQueryDesktop.matches ? true : false)
-
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const localToken = localStorage.getItem("auth_token");
-
+  // Used to automatilcally login or out the user depending on the token presence
   useEffect(() => {
     !localToken &&
       resetUserInfos(defaultUser, setUser, setToken, axios.defaults.headers);
     localToken && signInWtihToken(localToken, setUser, setToken);
   }, [localToken, defaultUser, user.id])
 
+  // Handle the switch between desktop or mobile menu dependeing on the mediaquery
   useEffect(() => {
     mediaQueryDesktop.addEventListener('change', _ => {
       setIsDesktop(!isDesktop);

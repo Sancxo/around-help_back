@@ -1,3 +1,5 @@
+// Handles all the functions needed to manage User login/out and registration
+
 import axios, { AxiosResponse, HeadersDefaults } from "axios";
 import { NavigateFunction } from "react-router-dom";
 import User, { RegistrationValues } from "../interfaces/user.interface";
@@ -20,6 +22,7 @@ function signIn(
         })
         .catch(err => console.error(err))
 }
+
 function signInWtihToken(
     token: string,
     setUser: React.Dispatch<React.SetStateAction<User>>,
@@ -32,6 +35,7 @@ function signInWtihToken(
         })
         .catch(err => console.error(err));
 }
+
 function register(
     registrationValues: RegistrationValues,
     setUser: React.Dispatch<React.SetStateAction<User>>,
@@ -77,6 +81,7 @@ function setUserInfos(
     localStorage.setItem(auth_token, token);
     axiosHeaders.common["Authorization"] = token;
 }
+
 function setUserInfosFromToken(
     user: User,
     setUser: React.Dispatch<React.SetStateAction<User>>,
@@ -98,4 +103,5 @@ function resetUserInfos(
     localStorage.removeItem(auth_token);
     axiosHeaders.common["Authorization"] = "";
 }
+
 export { signIn, signInWtihToken, register, signOut, resetUserInfos }
