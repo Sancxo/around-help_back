@@ -1,17 +1,18 @@
+@import './partials/_Buttons.css';
 @import './partials/_Flex.css';
+@import './partials/_Forms.css';
 @import './partials/_Spacing.css';
 @import './partials/_Sizing.css';
-@import './partials/_Forms.css';
-
-/* variables */
-:root {
-  --primary-color: #00D1FF;
-  --header-height: 10rem;
-}
+@import './partials/_Variables.css';
 
 /* Text */
 .text-center {
   text-align: center;
+}
+
+/* links */
+.active {
+  font-weight: bold;
 }
 
 /* nav & menus */
@@ -46,8 +47,9 @@ button.menu-icon {
   background-color: var(--primary-color);
   position: absolute;
   left: 0;
-  top: calc(var(--header-height) - 2rem);
+  top: calc(var(--header-height) - 3rem);
   padding: 1rem 2rem 1rem 2rem;
+  z-index: 1;
 }
 
 @media(min-width: 40.0rem) {
