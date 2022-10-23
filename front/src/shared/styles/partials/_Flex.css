@@ -7,6 +7,10 @@
   flex-direction: row;
 }
 
+.col {
+  flex-direction: column;
+}
+
 .nowrap {
   flex-wrap: nowrap;
 }
