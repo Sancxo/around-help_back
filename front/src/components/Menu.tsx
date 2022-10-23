@@ -15,11 +15,11 @@ export default function Menu(
 
     return (
         <nav className="mb-1">
-            <div className="container">
+            <div className="container mt-05">
                 <div className="row">
-                    <div className="column logo">
+                    <h1 className="column logo mb-0">
                         <Link to="/" title="Home" onClick={() => setIsMobileMenuOpen(false)}>AroundHelp</Link>
-                    </div>
+                    </h1>
                     {isDesktop ?
                         <DesktopMenu token={token} user_id={user_id} logOut={logOut} setIsMobileMenuOpen={setIsMobileMenuOpen} />
                         :

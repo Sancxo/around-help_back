@@ -27,7 +27,8 @@ export default function Register({ setUser, setToken }: { setUser: React.Dispatc
     }
 
     return (
-        <form name="user" id="user-infos" encType='multipart/form-data'>
+        <form name="user" id="user-infos" encType='multipart/form-data' className="container">
+            <h3>Register: </h3>
             <fieldset>
                 <legend>About you: </legend>
 
@@ -55,7 +56,7 @@ export default function Register({ setUser, setToken }: { setUser: React.Dispatc
                 <label htmlFor="id-card-input">Id card:</label>
                 <input type="file" name="id_card" id="id-card-input" onChange={handleInputs} />
 
-                <input type="button" value="Submit" onClick={handleSubmit} />
+                <input type="button" className="btn-prim" value="Submit" onClick={handleSubmit} />
             </fieldset>
         </form>
     )

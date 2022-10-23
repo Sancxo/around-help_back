@@ -13,14 +13,17 @@ export default function Login({ setUser, setToken }: { setUser: React.Dispatch<R
         signIn(email, password, setUser, setToken, navigate);
     }
     return (
-        <form name="login" id="login-form">
-            <label htmlFor="email-input">Email:</label>
-            <input type="email" name="email" id="email-input" onChange={e => setEmail(e.target.value)} />
+        <form name="login" id="login-form" className="container">
+            <h3>Login:</h3>
+            <fieldset>
+                <label htmlFor="email-input">Email:</label>
+                <input type="email" name="email" id="email-input" onChange={e => setEmail(e.target.value)} />
 
-            <label htmlFor="password-input">Password:</label>
-            <input type="password" name="password" id="password-input" onChange={e => setPassword(e.target.value)} />
+                <label htmlFor="password-input">Password:</label>
+                <input type="password" name="password" id="password-input" onChange={e => setPassword(e.target.value)} />
 
-            <input type="button" value="Login" onClick={handleSubmit} />
+                <input type="button" className="btn-prim" value="Login" onClick={handleSubmit} />
+            </fieldset>
         </form>
     )
 }
