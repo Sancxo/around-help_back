@@ -38,6 +38,9 @@ export default function Register({ setUser, setToken }: { setUser: React.Dispatc
                 <label htmlFor="last-name-input">Last name:</label>
                 <input type="text" name="last_name" id="last-name-input" onChange={handleInputs} />
 
+                <label htmlFor="id-card-input">Profile picture:</label>
+                <input type="file" name="profile_picture" id="profile-picture-input" onChange={handleInputs} />
+
                 <label htmlFor="password-input">Password:</label>
                 <input type="password" name="password" id="password-input" onChange={handleInputs} />
 
