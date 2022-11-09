@@ -24,6 +24,9 @@ module AroundHelp
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    #config.session_store :active_record_store
+    # config.active_record.schema_format = :sql
+
     # Adds session_store middleware
     config.session_store :cookie_store, key: '_around_help_session'
     config.middleware.use ActionDispatch::Cookies
