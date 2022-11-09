@@ -1,10 +1,15 @@
-import axios from "axios";
 import { ReactElement, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { getUserInfos } from "../shared/helpers/user.helper";
 
 import User from "../shared/interfaces/user.interface";
 
-export default function UserProfile({ defaultUser, token }: { defaultUser: User, token: string }): ReactElement {
+export default function UserProfile({ defaultUser, user, token }: {
+    defaultUser: User,
+    user: User,
+    token: string
+}): ReactElement {
     const urlParams = useParams();
 
     const [userProfile, setUserProfile] = useState<User>(defaultUser)
@@ -13,17 +18,7 @@ export default function UserProfile({ defaultUser, token }: { defaultUser: User,
 
     useEffect(() => {
         if (token) {
-            axios
-                .get(`${process.env.REACT_APP_BACKEND_URL}/user/${urlParams.id}`, { headers: { authorization: token } })
-                .then(resp => {
-                    setUserProfile(resp.data.user);
-                    setIsLoaded(true);
-                })
-                .catch(err => {
-                    console.log(err);
-                    setIsLoaded(true);
-                    setError(true)
-                })
+            getUserInfos(urlParams.id!, token, setUserProfile, setIsLoaded, setError);
         }
     }, [urlParams.id, token])
 
@@ -39,10 +34,25 @@ export default function UserProfile({ defaultUser, token }: { defaultUser: User,
 
     return (
         <div>
+            {/* Public infos */}
+            {/* Avatar */}
+            {/* <img src="" alt="" /> */}
             <p>Hello {userProfile.first_name} {userProfile.last_name}!</p>
+            <p>Born: <>{userProfile.birthdate}</></p>
+            {userProfile.about &&
+                <div>
+                    <p>About me: </p>
+                    <p>{userProfile.about}</p>
+                </div>
+            }
+            {/* => calculer l'âge */}
+            {/* <p>Member since: <>{userProfile.created_at}</></p> */}
+
+            {/* Private infos (if urlParams.id === user.id) */}
             <p>{userProfile.email}</p>
-            <p>You are born: <>{userProfile.birthdate}</></p>
-            {userProfile.about && <p>About you: {userProfile.about}</p>}
+            <p>{`${userProfile.address_id}`}</p>
+
+            {userProfile.id === user.id && <Link to="/profile-edit" title="Edit your informations">Edit profile</Link>}
         </div >
     )
 }   
