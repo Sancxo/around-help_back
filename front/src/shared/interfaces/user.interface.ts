@@ -1,29 +1,33 @@
 export default interface User {
-    id: Number,
-    first_name: String,
-    last_name: String,
-    email: String,
+    id: number,
+    first_name: string,
+    last_name: string,
+    email: string,
     birthdate?: Date,
-    about?: String,
-    address_id?: Number,
-    id_card?: String,
-    avatar?: String
+    about?: string,
+    address_id?: number,
+    id_card?: File | undefined,
+    avatar?: File | undefined,
+    created_at?: Date
 }
 
 export interface RegistrationValues {
-    first_name: String,
-    last_name: String,
-    email: String,
-    password: String,
-    password_confirmation: String,
+
+    [index: string]: any,
+    first_name: string,
+    last_name: string,
+    email: string,
+    password: string,
+    password_confirmation: string,
     birthdate?: Date,
-    about?: String,
-    address_id?: Number,
-    id_card?: String,
-    avatar?: String
+    about?: string,
+    address_id?: number,
+    id_card?: File | undefined,
+    avatar?: File | undefined
 }
 
+
 export interface LoginValues {
-    email: String,
-    password: String
+    email: string,
+    password: string
 }
