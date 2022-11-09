@@ -11,6 +11,7 @@ const Home = lazy((): Promise<any> => import('./pages/Home'));
 const Register = lazy((): Promise<any> => import('./pages/Register'));
 const Login = lazy((): Promise<any> => import('./pages/Login'));
 const UserProfile = lazy((): Promise<any> => import('./pages/UserProfile'));
+const EditProfile = lazy((): Promise<any> => import('./pages/EditProfile'));
 
 function App(): ReactElement {
   const defaultUser: User = useMemo(() => {
@@ -35,10 +36,11 @@ function App(): ReactElement {
 
   // Used to automatilcally login or out the user depending on the token presence
   useEffect(() => {
-    !localToken &&
+    (!localToken || localToken === "undefined") &&
       resetUserInfos(defaultUser, setUser, setToken, axios.defaults.headers);
     localToken && signInWtihToken(localToken, setUser, setToken);
-  }, [localToken, defaultUser, user.id])
+    console.log("Token: ", localToken);
+  }, [localToken, defaultUser])
 
   // Handle the switch between desktop or mobile menu dependeing on the mediaquery
   useEffect(() => {
@@ -60,7 +62,7 @@ function App(): ReactElement {
     <div className="text-center">
       <Router>
         <header className="App-header">
-          <Menu token={token} user_id={user.id} logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
+          <Menu token={token} user_id={user ? user.id : defaultUser.id} logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
         </header>
 
         <main className={`${isMobileMenuOpen && mediaQueryTablet.matches && "pt-4"}`} >
@@ -69,7 +71,8 @@ function App(): ReactElement {
               <Route element={<Home />} path='/' />
               <Route path='/register' element={<Register setUser={setUser} setToken={setToken} />} />
               <Route path='/login' element={<Login setUser={setUser} setToken={setToken} />} />
-              <Route path="/user/:id" element={!localToken ? <Navigate to="/" /> : <UserProfile defaultUser={defaultUser} token={token} />} />
+              <Route path="/user/:id" element={!localToken ? <Navigate to="/" /> : <UserProfile defaultUser={defaultUser} user={user} token={token} />} />
+              <Route path="/profile-edit" element={!localToken ? <Navigate to="/" /> : <EditProfile token={token} user={user} setUser={setUser} setToken={setToken} />} />
             </Routes>
           </Suspense>
         </main>

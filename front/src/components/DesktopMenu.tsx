@@ -19,7 +19,7 @@ export default function MobileMenu({ token, user_id, logOut, setIsMobileMenuOpen
   return (
     <div className="column flex align-center justify-end ">
       {
-        token ?
+        (token || token === "undefined") ?
           <div className="flex gap-3 menu">
             <Link to={profile} title="Your profile" onClick={() => setIsMobileMenuOpen(false)} className={`${pathname === profile && "active"}`}>My profile</Link >
             <Link to={needs} onClick={() => setIsMobileMenuOpen(false)} className={`${pathname === needs && "active"}`}>Needs</Link>
