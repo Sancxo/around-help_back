@@ -17,9 +17,11 @@ const addressesUrl = `${process.env.REACT_APP_BACKEND_URL}/addresses`;
 export default function Home(): ReactElement {
     const [addresses, setAddresses] = useState<Address[]>([]);
 
-    useEffect(() => {
-        axios.get<Address[]>(addressesUrl).then(resp => setAddresses(resp.data))
-    }, []);
+    // useEffect(() => {
+    //     console.log("Are we here ?")
+
+    //     axios.get<Address[]>(addressesUrl).then(resp => setAddresses(resp.data))
+    // }, []);
 
     return (
         <div>
