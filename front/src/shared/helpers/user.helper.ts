@@ -37,13 +37,30 @@ function signInWtihToken(
 }
 
 function register(
+    registrationValues: FormData,
+    setUser: React.Dispatch<React.SetStateAction<User>>,
+    setToken: React.Dispatch<React.SetStateAction<string>>,
+    navigate: NavigateFunction
+) {
+    axios
+        .post<FormData, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, registrationValues)
+        .then(resp => {
+            if (resp.status === 200) {
+                setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
+                navigate(`/user/${resp.data.user.id}`);
+            }
+        })
+        .catch(err => console.error(err));
+}
+
+function update(
     registrationValues: RegistrationValues,
     setUser: React.Dispatch<React.SetStateAction<User>>,
     setToken: React.Dispatch<React.SetStateAction<string>>,
     navigate: NavigateFunction
 ) {
     axios
-        .post<RegistrationValues, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, { "user": registrationValues })
+        .patch<RegistrationValues, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, { "user": registrationValues })
         .then(resp => {
             if (resp.status === 200) {
                 setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
@@ -104,4 +121,24 @@ function resetUserInfos(
     axiosHeaders.common["Authorization"] = "";
 }
 
-export { signIn, signInWtihToken, register, signOut, resetUserInfos }
+function getUserInfos(
+    id: string,
+    token: string,
+    setUserProfile: React.Dispatch<React.SetStateAction<User>>,
+    setIsLoaded: React.Dispatch<React.SetStateAction<boolean>>,
+    setError: React.Dispatch<React.SetStateAction<boolean>>
+) {
+    axios
+        .get(`${process.env.REACT_APP_BACKEND_URL}/user/${id}`, { headers: { authorization: token } })
+        .then(resp => {
+            setUserProfile(resp.data.user);
+            setIsLoaded(true);
+        })
+        .catch(err => {
+            console.log(err);
+            setIsLoaded(true);
+            setError(true)
+        })
+}
+
+export { signIn, signInWtihToken, register, update, signOut, resetUserInfos, getUserInfos }
