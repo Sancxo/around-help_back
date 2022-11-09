@@ -21,9 +21,22 @@ export default function Register({ setUser, setToken }: { setUser: React.Dispatc
 
         setRegistrationValues(registrationValues => ({ ...registrationValues, [name]: value }));
     }
+    function handleImages(e: React.ChangeEvent<HTMLInputElement>) {
+        console.log(e.target.files![0]);
+        (e.target.id === "avatar-input") && setRegistrationValues(registrationValues => ({ ...registrationValues, 'avatar': e.target.files![0] }));
+        e.target.id === "id-card-input" && setRegistrationValues(registrationValues => ({ ...registrationValues, 'id_card': e.target.files![0] }));
+    }
 
     function handleSubmit() {
-        register(registrationValues, setUser, setToken, navigate);
+        const user: { [index: string]: any } = { registrationValues };
+        const formData = new FormData();
+
+        for (const field in user.registrationValues) {
+            if (Object.prototype.hasOwnProperty.call(user.registrationValues, field)) {
+                formData.append(`user[${field}]`, user.registrationValues[field]);
+            }
+        }
+        register(formData, setUser, setToken, navigate);
     }
 
     return (
@@ -38,8 +51,8 @@ export default function Register({ setUser, setToken }: { setUser: React.Dispatc
                 <label htmlFor="last-name-input">Last name:</label>
                 <input type="text" name="last_name" id="last-name-input" onChange={handleInputs} />
 
-                <label htmlFor="id-card-input">Profile picture:</label>
-                <input type="file" name="profile_picture" id="profile-picture-input" onChange={handleInputs} />
+                <label htmlFor="avatar-input">Profile picture:</label>
+                <input type="file" name="avatar" id="avatar-input" accept="image/png, image/jpeg, image/gif, image/webp, image/avif" onChange={handleImages} />
 
                 <label htmlFor="password-input">Password:</label>
                 <input type="password" name="password" id="password-input" onChange={handleInputs} />
@@ -57,7 +70,7 @@ export default function Register({ setUser, setToken }: { setUser: React.Dispatc
                 <input type="email" name="email" id="email-input" onChange={handleInputs} />
 
                 <label htmlFor="id-card-input">Id card:</label>
-                <input type="file" name="id_card" id="id-card-input" onChange={handleInputs} />
+                <input type="file" name="id_card" id="id-card-input" accept="application/pdf, image/png, image/jpeg, image/gif, image/webp, image/avif" onChange={handleImages} />
 
                 <input type="button" className="btn-prim" value="Submit" onClick={handleSubmit} />
             </fieldset>
