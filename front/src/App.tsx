@@ -38,8 +38,8 @@ function App(): ReactElement {
   useEffect(() => {
     (!localToken || localToken === "undefined") &&
       resetUserInfos(defaultUser, setUser, setToken, axios.defaults.headers);
+
     localToken && signInWtihToken(localToken, setUser, setToken);
-    console.log("Token: ", localToken);
   }, [localToken, defaultUser])
 
   // Handle the switch between desktop or mobile menu dependeing on the mediaquery

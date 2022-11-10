@@ -22,7 +22,6 @@ export default function Register({ setUser, setToken }: { setUser: React.Dispatc
         setRegistrationValues(registrationValues => ({ ...registrationValues, [name]: value }));
     }
     function handleImages(e: React.ChangeEvent<HTMLInputElement>) {
-        console.log(e.target.files![0]);
         (e.target.id === "avatar-input") && setRegistrationValues(registrationValues => ({ ...registrationValues, 'avatar': e.target.files![0] }));
         e.target.id === "id-card-input" && setRegistrationValues(registrationValues => ({ ...registrationValues, 'id_card': e.target.files![0] }));
     }
