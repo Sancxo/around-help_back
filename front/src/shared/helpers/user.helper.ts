@@ -131,6 +131,8 @@ function getUserInfos(
     axios
         .get(`${process.env.REACT_APP_BACKEND_URL}/user/${id}`, { headers: { authorization: token } })
         .then(resp => {
+            Object.assign(resp.data.user, { avatar: resp.data.avatar });
+
             setUserProfile(resp.data.user);
             setIsLoaded(true);
         })

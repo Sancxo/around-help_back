@@ -11,10 +11,12 @@ class UsersController < ApplicationController
 
     def show
       user = User.find(params[:id])
-      puts "User #{user.inspect()} !!!!!!!!!!"
+      avatar = rails_blob_path(user.avatar)
+      
       render json: {
         message: "User found!",
-        user: user
+        user: user,
+        avatar: avatar
       }
     end
 

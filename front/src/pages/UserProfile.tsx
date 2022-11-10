@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { getUserInfos } from "../shared/helpers/user.helper";
 
+import defaultUserAvatar from "../shared/imgs/default-user.png";
+
 import User from "../shared/interfaces/user.interface";
 
 export default function UserProfile({ defaultUser, user, token }: {
@@ -36,6 +38,7 @@ export default function UserProfile({ defaultUser, user, token }: {
         <div>
             {/* Public infos */}
             {/* Avatar */}
+            <img src={`${process.env.REACT_APP_BACKEND_URL}${userProfile.avatar ? userProfile.avatar : defaultUserAvatar}`} alt="avatar" width={200} height={200} />
             {/* <img src="" alt="" /> */}
             <p>Hello {userProfile.first_name} {userProfile.last_name}!</p>
             <p>Born: <>{userProfile.birthdate}</></p>
