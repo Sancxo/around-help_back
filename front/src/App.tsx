@@ -1,11 +1,11 @@
-import { lazy, ReactElement, Suspense, useEffect, useMemo, useState } from 'react';
+import { lazy, ReactElement, Suspense, useContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 
-import User from "./shared/interfaces/user.interface";
-
 import Menu from "./components/Menu";
+import Flash from './components/Flash';
 import axios from 'axios';
-import { resetUserInfos, signInWtihToken, signOut } from './shared/helpers/user.helper';
+import { defaultUser, resetUserInfos, signInWtihToken, signOut } from './shared/helpers/user.helper';
+import { FlashMessageProvider, UserContext, UserProvider } from './shared/context';
 
 const Home = lazy((): Promise<any> => import('./pages/Home'));
 const Register = lazy((): Promise<any> => import('./pages/Register'));
@@ -14,14 +14,6 @@ const UserProfile = lazy((): Promise<any> => import('./pages/UserProfile'));
 const EditProfile = lazy((): Promise<any> => import('./pages/EditProfile'));
 
 function App(): ReactElement {
-  const defaultUser: User = useMemo(() => {
-    return {
-      id: 0,
-      first_name: "",
-      last_name: "",
-      email: ""
-    }
-  }, []);
   const localToken = localStorage.getItem("auth_token");
 
   // Media queries sizes based on Milligram library 
@@ -29,8 +21,8 @@ function App(): ReactElement {
   const mediaQueryDesktop: MediaQueryList = window.matchMedia("(min-width: 800px)");
 
   // State
+  const { user, setUser } = useContext(UserContext);
   const [token, setToken] = useState("");
-  const [user, setUser] = useState<User>(defaultUser);
   const [isDesktop, setIsDesktop] = useState(mediaQueryDesktop.matches ? true : false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -40,7 +32,7 @@ function App(): ReactElement {
       resetUserInfos(defaultUser, setUser, setToken, axios.defaults.headers);
 
     localToken && signInWtihToken(localToken, setUser, setToken);
-  }, [localToken, defaultUser])
+  }, [localToken, setUser])
 
   // Handle the switch between desktop or mobile menu dependeing on the mediaquery
   useEffect(() => {
@@ -61,23 +53,31 @@ function App(): ReactElement {
   return (
     <div className="text-center">
       <Router>
-        <header className="App-header">
-          <Menu token={token} user_id={user ? user.id : defaultUser.id} logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
-        </header>
+        <UserProvider>
+          <FlashMessageProvider>
+            <header className="App-header">
+              <Menu token={token} user_id={user ? user.id : defaultUser.id} logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
+            </header>
 
-        <main className={`${isMobileMenuOpen && mediaQueryTablet.matches && "pt-4"}`} >
-          <Suspense fallback="Loading app ...">
-            <Routes>
-              <Route element={<Home />} path='/' />
-              <Route path='/register' element={<Register setUser={setUser} setToken={setToken} />} />
-              <Route path='/login' element={<Login setUser={setUser} setToken={setToken} />} />
-              <Route path="/user/:id" element={!localToken ? <Navigate to="/" /> : <UserProfile defaultUser={defaultUser} user={user} token={token} />} />
-              <Route path="/profile-edit" element={!localToken ? <Navigate to="/" /> : <EditProfile token={token} user={user} setUser={setUser} setToken={setToken} />} />
-            </Routes>
-          </Suspense>
-        </main>
 
-        <footer></footer>
+            <main className={`${isMobileMenuOpen && mediaQueryTablet.matches && "pt-4"}`} >
+              <div className='mb-1'>
+                <Flash />
+              </div>
+              <Suspense fallback="Loading app ...">
+                <Routes>
+                  <Route element={<Home />} path='/' />
+                  <Route path='/register' element={<Register setUser={setUser} setToken={setToken} />} />
+                  <Route path='/login' element={<Login setUser={setUser} setToken={setToken} />} />
+                  <Route path="/user/:id" element={!localToken ? <Navigate to="/" /> : <UserProfile defaultUser={defaultUser} user={user} token={token} />} />
+                  <Route path="/profile-edit" element={!localToken ? <Navigate to="/" /> : <EditProfile token={token} user={user} setUser={setUser} setToken={setToken} />} />
+                </Routes>
+              </Suspense>
+            </main>
+
+            <footer></footer>
+          </FlashMessageProvider>
+        </UserProvider>
       </Router>
     </div>
   );

@@ -2,17 +2,26 @@
 
 import axios, { AxiosResponse, HeadersDefaults } from "axios";
 import { NavigateFunction } from "react-router-dom";
-import User, { RegistrationValues } from "../interfaces/user.interface";
+import { Error, SetFlashMessage } from "../interfaces/misc.interfaces";
+import User, { RegistrationValues, SetUser } from "../interfaces/user.interfaces";
 
 const auth_token = "auth_token";
 const infos_user = "infos_user";
 
+export const defaultUser: User = {
+    id: 0,
+    first_name: "",
+    last_name: "",
+    email: ""
+}
+
 function signIn(
     email: String | undefined,
     password: String | undefined,
-    setUser: React.Dispatch<React.SetStateAction<User>>,
+    setUser: SetUser,
     setToken: React.Dispatch<React.SetStateAction<string>>,
-    navigate: NavigateFunction
+    navigate: NavigateFunction,
+    setFlashMessage: SetFlashMessage
 ) {
     axios
         .post(`${process.env.REACT_APP_BACKEND_URL}/users/sign_in`, { "user": { "email": email, "password": password } })
@@ -20,12 +29,14 @@ function signIn(
             setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
             navigate(`/user/${resp.data.user.id}`);
         })
-        .catch(err => console.error(err))
+        .catch(err => {
+            setFlashMessage([Error, err.response.data.message]);
+        })
 }
 
 function signInWtihToken(
     token: string,
-    setUser: React.Dispatch<React.SetStateAction<User>>,
+    setUser: SetUser,
     setToken: React.Dispatch<React.SetStateAction<string>>
 ) {
     axios
@@ -73,7 +84,7 @@ function update(
 function signOut(
     token: string,
     defaultUser: User,
-    setUser: React.Dispatch<React.SetStateAction<User>>,
+    setUser: SetUser,
     setToken: React.Dispatch<React.SetStateAction<string>>
 ) {
     axios
@@ -88,7 +99,7 @@ function signOut(
 
 function setUserInfos(
     user: User,
-    setUser: React.Dispatch<React.SetStateAction<User>>,
+    setUser: SetUser,
     token: string,
     setToken: React.Dispatch<React.SetStateAction<string>>,
     axiosHeaders: HeadersDefaults
@@ -101,7 +112,7 @@ function setUserInfos(
 
 function setUserInfosFromToken(
     user: User,
-    setUser: React.Dispatch<React.SetStateAction<User>>,
+    setUser: SetUser,
     setToken: React.Dispatch<React.SetStateAction<string>>
 ) {
     setUser(user);
@@ -110,7 +121,7 @@ function setUserInfosFromToken(
 
 function resetUserInfos(
     emptyUser: User,
-    setUser: React.Dispatch<React.SetStateAction<User>>,
+    setUser: SetUser,
     setToken: React.Dispatch<React.SetStateAction<string>>,
     axiosHeaders: HeadersDefaults
 ) {
