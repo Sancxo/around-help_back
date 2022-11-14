@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import User, { RegistrationValues } from "../shared/interfaces/user.interface";
+import User, { RegistrationValues } from "../shared/interfaces/user.interfaces";
 import { register } from "../shared/helpers/user.helper";
 
 

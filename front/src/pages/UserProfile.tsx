@@ -5,7 +5,7 @@ import { getUserInfos } from "../shared/helpers/user.helper";
 
 import defaultUserAvatar from "../shared/imgs/default-user.png";
 
-import User from "../shared/interfaces/user.interface";
+import User from "../shared/interfaces/user.interfaces";
 
 export default function UserProfile({ defaultUser, user, token }: {
     defaultUser: User,
