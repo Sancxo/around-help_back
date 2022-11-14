@@ -20,6 +20,11 @@
   margin-top: .5rem;
 }
 
+.mt-1 {
+  margin-top: 1rem;
+  ;
+}
+
 .mx-auto {
   margin: inherit auto;
 }

@@ -14,7 +14,7 @@ export default function Menu(
     }): ReactElement {
 
     return (
-        <nav className="mb-1">
+        <nav>
             <div className="container mt-05">
                 <div className="row">
                     <h1 className="column logo mb-0">
