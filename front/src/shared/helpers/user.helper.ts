@@ -2,7 +2,7 @@
 
 import axios, { AxiosResponse, HeadersDefaults } from "axios";
 import { NavigateFunction } from "react-router-dom";
-import { Error, SetFlashMessage } from "../interfaces/misc.interfaces";
+import { Error, Ok } from "../interfaces/misc.interfaces";
 import User, { RegistrationValues, SetUser } from "../interfaces/user.interfaces";
 
 const auth_token = "auth_token";
@@ -15,53 +15,66 @@ export const defaultUser: User = {
     email: ""
 }
 
-function signIn(
+async function signIn(
     email: String | undefined,
     password: String | undefined,
     setUser: SetUser,
     setToken: React.Dispatch<React.SetStateAction<string>>,
-    navigate: NavigateFunction,
-    setFlashMessage: SetFlashMessage
-) {
-    axios
+    navigate: NavigateFunction
+): Promise<[symbol, string]> {
+    return await axios
         .post(`${process.env.REACT_APP_BACKEND_URL}/users/sign_in`, { "user": { "email": email, "password": password } })
-        .then(resp => {
-            setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
-            navigate(`/user/${resp.data.user.id}`);
+        .then((resp): [symbol, string] => {
+            if (resp.status === 200) {
+                setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
+                navigate(`/user/${resp.data.user.id}`);
+                return [Ok, resp.data.message];
+            } else {
+                console.error(resp);
+                return [Error, resp.data.message];
+            };
         })
-        .catch(err => {
-            setFlashMessage([Error, err.response.data.message]);
-        })
+        .catch((err): [symbol, string] => { return [Error, err.response.data.message] });
 }
 
-function signInWtihToken(
+async function signInWtihToken(
     token: string,
     setUser: SetUser,
     setToken: React.Dispatch<React.SetStateAction<string>>
-) {
-    axios
+): Promise<[symbol, string]> {
+    return await axios
         .get(`${process.env.REACT_APP_BACKEND_URL}/user`, { headers: { authorization: token } })
-        .then(resp => {
-            setUserInfosFromToken(resp.data.user, setUser, setToken);
+        .then((resp): [symbol, string] => {
+            if (resp.status === 200) {
+                setUserInfosFromToken(resp.data.user, setUser, setToken);
+                return [Ok, resp.data.message];
+            } else {
+                console.error(resp);
+                return [Error, resp.data.message];
+            }
         })
-        .catch(err => console.error(err));
+        .catch((err): [symbol, string] => { return [Error, err.response.data.message] });
 }
 
-function register(
+async function register(
     registrationValues: FormData,
     setUser: React.Dispatch<React.SetStateAction<User>>,
     setToken: React.Dispatch<React.SetStateAction<string>>,
     navigate: NavigateFunction
-) {
-    axios
+): Promise<[symbol, string]> {
+    return await axios
         .post<FormData, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, registrationValues)
-        .then(resp => {
+        .then((resp): [symbol, string] => {
             if (resp.status === 200) {
                 setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
                 navigate(`/user/${resp.data.user.id}`);
-            }
+                return [Ok, resp.data.message];
+            } else {
+                console.error(resp);
+                return [Error, resp.data.message];
+            };
         })
-        .catch(err => console.error(err));
+        .catch((err): [symbol, string] => { return [Error, err.data.message] });
 }
 
 function update(
@@ -81,20 +94,24 @@ function update(
         .catch(err => console.error(err));
 }
 
-function signOut(
+async function signOut(
     token: string,
     defaultUser: User,
     setUser: SetUser,
     setToken: React.Dispatch<React.SetStateAction<string>>
-) {
-    axios
+): Promise<[symbol, string]> {
+    return await axios
         .delete(`${process.env.REACT_APP_BACKEND_URL}/users/sign_out`, { headers: { authorization: token } })
-        .then(resp => {
+        .then((resp): [symbol, string] => {
             if (resp.status === 200) {
                 resetUserInfos(defaultUser, setUser, setToken, axios.defaults.headers);
+                return [Ok, resp.data.message];
+            } else {
+                console.error(resp);
+                return [Error, resp.data.message];
             };
         })
-        .catch(err => console.error(err));
+        .catch((err): [symbol, string] => { return [Error, err.data.message] });
 }
 
 function setUserInfos(
@@ -150,7 +167,7 @@ function getUserInfos(
         .catch(err => {
             console.log(err);
             setIsLoaded(true);
-            setError(true)
+            setError(true);
         })
 }
 

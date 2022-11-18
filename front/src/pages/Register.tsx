@@ -1,11 +1,14 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import User, { RegistrationValues } from "../shared/interfaces/user.interfaces";
 import { register } from "../shared/helpers/user.helper";
-
+import { clearFlash, getFlash } from "../shared/helpers/flash.helper";
+import { FlashMessageContext } from "../shared/context";
 
 export default function Register({ setUser, setToken }: { setUser: React.Dispatch<React.SetStateAction<User>>, setToken: React.Dispatch<React.SetStateAction<string>> }): ReactElement {
+    const setFlashMessage = useContext(FlashMessageContext).setFlashMessage;
+
     const [registrationValues, setRegistrationValues] = useState<RegistrationValues>({
         first_name: "",
         last_name: "",
@@ -26,7 +29,9 @@ export default function Register({ setUser, setToken }: { setUser: React.Dispatc
         e.target.id === "id-card-input" && setRegistrationValues(registrationValues => ({ ...registrationValues, 'id_card': e.target.files![0] }));
     }
 
-    function handleSubmit() {
+    async function handleSubmit() {
+        clearFlash(setFlashMessage);
+
         const user: { [index: string]: any } = { registrationValues };
         const formData = new FormData();
 
@@ -35,7 +40,9 @@ export default function Register({ setUser, setToken }: { setUser: React.Dispatc
                 formData.append(`user[${field}]`, user.registrationValues[field]);
             }
         }
-        register(formData, setUser, setToken, navigate);
+        const resp = await register(formData, setUser, setToken, navigate);
+        getFlash(setFlashMessage, resp);
+
     }
 
     return (

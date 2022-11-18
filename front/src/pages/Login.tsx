@@ -1,20 +1,23 @@
 import { ReactElement, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FlashMessageContext, UserContext } from "../shared/context";
+import { clearFlash, getFlash } from "../shared/helpers/flash.helper";
 import { signIn } from "../shared/helpers/user.helper";
 import User from "../shared/interfaces/user.interfaces";
 
-export default function Login({ setUser, setToken }: { setUser: React.Dispatch<React.SetStateAction<User>>, setToken: React.Dispatch<React.SetStateAction<string>> }): ReactElement {
-    const flashMessageContext = useContext(FlashMessageContext);
-    const userContext = useContext(UserContext);
+export default function Login({ setToken }: { setUser: React.Dispatch<React.SetStateAction<User>>, setToken: React.Dispatch<React.SetStateAction<string>> }): ReactElement {
+    const setFlashMessage = useContext(FlashMessageContext).setFlashMessage;
+    const setUser = useContext(UserContext).setUser;
 
     const [email, setEmail] = useState<String>();
     const [password, setPassword] = useState<String>();
 
     const navigate = useNavigate();
 
-    function handleSubmit() {
-        signIn(email, password, userContext.setUser, setToken, navigate, flashMessageContext.setFlashMessage);
+    async function handleSubmit() {
+        clearFlash(setFlashMessage);
+        const resp: [symbol, string] = await signIn(email, password, setUser, setToken, navigate);
+        getFlash(setFlashMessage, resp);
     }
     return (
         <form name="login" id="login-form" className="container">

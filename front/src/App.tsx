@@ -5,7 +5,8 @@ import Menu from "./components/Menu";
 import Flash from './components/Flash';
 import axios from 'axios';
 import { defaultUser, resetUserInfos, signInWtihToken, signOut } from './shared/helpers/user.helper';
-import { FlashMessageProvider, UserContext, UserProvider } from './shared/context';
+import { FlashMessageContext, FlashMessageProvider, UserContext, UserProvider } from './shared/context';
+import { getFlash } from './shared/helpers/flash.helper';
 
 const Home = lazy((): Promise<any> => import('./pages/Home'));
 const Register = lazy((): Promise<any> => import('./pages/Register'));
@@ -22,6 +23,8 @@ function App(): ReactElement {
 
   // State
   const { user, setUser } = useContext(UserContext);
+  const setFlashMessage = useContext(FlashMessageContext).setFlashMessage;
+
   const [token, setToken] = useState("");
   const [isDesktop, setIsDesktop] = useState(mediaQueryDesktop.matches ? true : false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -31,8 +34,10 @@ function App(): ReactElement {
     (!localToken || localToken === "undefined") &&
       resetUserInfos(defaultUser, setUser, setToken, axios.defaults.headers);
 
-    localToken && signInWtihToken(localToken, setUser, setToken);
-  }, [localToken, setUser])
+    localToken &&
+      signInWtihToken(localToken, setUser, setToken)
+        .then(resp => getFlash(setFlashMessage, resp));
+  }, [localToken, setUser, setFlashMessage])
 
   // Handle the switch between desktop or mobile menu dependeing on the mediaquery
   useEffect(() => {
@@ -46,8 +51,9 @@ function App(): ReactElement {
     });
   })
 
-  function logOut() {
-    signOut(token, defaultUser, setUser, setToken)
+  async function logOut() {
+    const resp = await signOut(token, defaultUser, setUser, setToken);
+    getFlash(setFlashMessage, resp);
   }
 
   return (

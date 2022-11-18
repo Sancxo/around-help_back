@@ -1,5 +1,5 @@
-.error {
-  background: tomato;
+.error,
+.success {
   color: white;
   font-weight: 500;
   text-shadow: 0.5px 0 black, 0 0.5px black, -0.5px 0 black, 0 -0.5px black;
@@ -9,20 +9,26 @@
   padding-right: .5rem;
 }
 
+.error {
+  background-color: #ff5233;
+}
+
+.success {
+  background-color: #2db92d;
+}
+
 .error p,
-.succes p {
+.success p {
   margin: 0;
-  align-self: center;
   flex-grow: 1;
+  /* line-height value picked from Milligram button styles to fit with the cross icon  */
+  line-height: 3.8rem;
 }
 
 .error button,
-.succes button {
+.success button {
   margin: 0;
   padding: 0;
   padding-left: .5rem;
   padding-right: .5rem;
-
-  position: relative;
-  top: -1rem;
 }
