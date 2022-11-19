@@ -1,13 +1,15 @@
 import { ReactElement, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FlashMessageContext, UserContext } from "../shared/context";
+import { FlashMessageContext, TokenContext, UserContext } from "../shared/context";
 import { clearFlash, getFlash } from "../shared/helpers/flash.helper";
 import { signIn } from "../shared/helpers/user.helper";
+import { FlashMessage, setContext } from "../shared/interfaces/misc.interfaces";
 import User from "../shared/interfaces/user.interfaces";
 
-export default function Login({ setToken }: { setUser: React.Dispatch<React.SetStateAction<User>>, setToken: React.Dispatch<React.SetStateAction<string>> }): ReactElement {
-    const setFlashMessage = useContext(FlashMessageContext).setFlashMessage;
-    const setUser = useContext(UserContext).setUser;
+export default function Login(): ReactElement {
+    const setFlashMessage: setContext<FlashMessage> = useContext(FlashMessageContext).setFlashMessage;
+    const setUser: setContext<User> = useContext(UserContext).setUser;
+    const setToken: setContext<string> = useContext(TokenContext).setToken;
 
     const [email, setEmail] = useState<String>();
     const [password, setPassword] = useState<String>();

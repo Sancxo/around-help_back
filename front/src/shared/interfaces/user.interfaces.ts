@@ -11,8 +11,6 @@ export default interface User {
     created_at?: Date
 }
 
-export type SetUser = (user: User) => void;
-
 export interface RegistrationValues {
 
     [index: string]: any,

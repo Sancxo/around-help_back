@@ -1,10 +1,10 @@
-import { Nil, SetFlashMessage } from "../interfaces/misc.interfaces";
+import { FlashMessage, Nil, setContext } from "../interfaces/misc.interfaces";
 
-function getFlash(setFlashMessage: SetFlashMessage, [code, message]: [symbol, string]) {
+function getFlash(setFlashMessage: setContext<FlashMessage>, [code, message]: [symbol, string]) {
   setFlashMessage([code, message])
 }
 
-function clearFlash(setFlashMessage: SetFlashMessage) {
+function clearFlash(setFlashMessage: setContext<FlashMessage>) {
   setFlashMessage([Nil, ""]);
 }
 

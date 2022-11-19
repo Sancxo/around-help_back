@@ -1,17 +1,19 @@
-import { MouseEventHandler, ReactElement } from "react";
+import { MouseEventHandler, ReactElement, useContext } from "react";
 import { Link } from "react-router-dom";
 import MobileMenu from "./MobileMenu";
 import DesktopMenu from "./DesktopMenu";
+import { TokenContext } from "../shared/context";
 
 export default function Menu(
-    { user_id, token, logOut, isDesktop, isMobileMenuOpen, setIsMobileMenuOpen }: {
+    { user_id, logOut, isDesktop, isMobileMenuOpen, setIsMobileMenuOpen }: {
         user_id: Number,
-        token: string,
         logOut: MouseEventHandler<HTMLAnchorElement>,
         isDesktop: boolean,
         isMobileMenuOpen: boolean,
         setIsMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
     }): ReactElement {
+
+    const token: string = useContext(TokenContext).token;
 
     return (
         <nav>

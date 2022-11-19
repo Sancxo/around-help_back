@@ -2,8 +2,8 @@
 
 import axios, { AxiosResponse, HeadersDefaults } from "axios";
 import { NavigateFunction } from "react-router-dom";
-import { Error, Ok } from "../interfaces/misc.interfaces";
-import User, { RegistrationValues, SetUser } from "../interfaces/user.interfaces";
+import { Error, Ok, setContext } from "../interfaces/misc.interfaces";
+import User, { RegistrationValues } from "../interfaces/user.interfaces";
 
 const auth_token = "auth_token";
 const infos_user = "infos_user";
@@ -18,8 +18,8 @@ export const defaultUser: User = {
 async function signIn(
     email: String | undefined,
     password: String | undefined,
-    setUser: SetUser,
-    setToken: React.Dispatch<React.SetStateAction<string>>,
+    setUser: setContext<User>,
+    setToken: setContext<string>,
     navigate: NavigateFunction
 ): Promise<[symbol, string]> {
     return await axios
@@ -39,8 +39,8 @@ async function signIn(
 
 async function signInWtihToken(
     token: string,
-    setUser: SetUser,
-    setToken: React.Dispatch<React.SetStateAction<string>>
+    setUser: setContext<User>,
+    setToken: setContext<string>
 ): Promise<[symbol, string]> {
     return await axios
         .get(`${process.env.REACT_APP_BACKEND_URL}/user`, { headers: { authorization: token } })
@@ -58,8 +58,8 @@ async function signInWtihToken(
 
 async function register(
     registrationValues: FormData,
-    setUser: SetUser,
-    setToken: React.Dispatch<React.SetStateAction<string>>,
+    setUser: setContext<User>,
+    setToken: setContext<string>,
     navigate: NavigateFunction
 ): Promise<[symbol, string]> {
     return await axios
@@ -79,8 +79,8 @@ async function register(
 
 function update(
     registrationValues: RegistrationValues,
-    setUser: SetUser,
-    setToken: React.Dispatch<React.SetStateAction<string>>,
+    setUser: setContext<User>,
+    setToken: setContext<string>,
     navigate: NavigateFunction
 ) {
     axios
@@ -97,8 +97,8 @@ function update(
 async function signOut(
     token: string,
     defaultUser: User,
-    setUser: SetUser,
-    setToken: React.Dispatch<React.SetStateAction<string>>
+    setUser: setContext<User>,
+    setToken: setContext<string>
 ): Promise<[symbol, string]> {
     return await axios
         .delete(`${process.env.REACT_APP_BACKEND_URL}/users/sign_out`, { headers: { authorization: token } })
@@ -116,9 +116,9 @@ async function signOut(
 
 function setUserInfos(
     user: User,
-    setUser: SetUser,
+    setUser: setContext<User>,
     token: string,
-    setToken: React.Dispatch<React.SetStateAction<string>>,
+    setToken: setContext<string>,
     axiosHeaders: HeadersDefaults
 ) {
     setUser(user);
@@ -131,8 +131,8 @@ function setUserInfos(
 
 function setUserInfosFromToken(
     user: User,
-    setUser: SetUser,
-    setToken: React.Dispatch<React.SetStateAction<string>>
+    setUser: setContext<User>,
+    setToken: setContext<string>
 ) {
     setUser(user);
     setToken(localStorage.getItem(auth_token) as string);
@@ -142,8 +142,8 @@ function setUserInfosFromToken(
 
 function resetUserInfos(
     emptyUser: User,
-    setUser: SetUser,
-    setToken: React.Dispatch<React.SetStateAction<string>>,
+    setUser: setContext<User>,
+    setToken: setContext<string>,
     axiosHeaders: HeadersDefaults
 ) {
     setUser(emptyUser);

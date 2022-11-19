@@ -5,4 +5,5 @@ const Nil = Symbol('nil');
 export { Ok, Error, Nil }
 
 export type FlashMessage = [symbol, string];
-export type SetFlashMessage = (flashMessage: FlashMessage) => void;
+
+export type setContext<T> = (arg: T) => void;

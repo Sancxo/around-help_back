@@ -5,7 +5,7 @@ import Menu from "./components/Menu";
 import Flash from './components/Flash';
 import axios from 'axios';
 import { defaultUser, resetUserInfos, signInWtihToken, signOut } from './shared/helpers/user.helper';
-import { FlashMessageContext, FlashMessageProvider, UserContext } from './shared/context';
+import { FlashMessageContext, FlashMessageProvider, TokenContext, UserContext } from './shared/context';
 import { getFlash } from './shared/helpers/flash.helper';
 
 const Home = lazy((): Promise<any> => import('./pages/Home'));
@@ -23,10 +23,10 @@ function App(): ReactElement {
 
   // Context
   const { user, setUser } = useContext(UserContext);
+  const { token, setToken } = useContext(TokenContext);
   const setFlashMessage = useContext(FlashMessageContext).setFlashMessage;
 
   // State
-  const [token, setToken] = useState("");
   const [isDesktop, setIsDesktop] = useState(mediaQueryDesktop.matches ? true : false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -38,7 +38,7 @@ function App(): ReactElement {
     localToken &&
       signInWtihToken(localToken, setUser, setToken)
         .then(resp => getFlash(setFlashMessage, resp));
-  }, [localToken, setUser, setFlashMessage])
+  }, [localToken, setToken, setUser, setFlashMessage])
 
   // Handle the switch between desktop or mobile menu dependeing on the mediaquery
   useEffect(() => {
@@ -62,7 +62,7 @@ function App(): ReactElement {
       <Router>
         <FlashMessageProvider>
           <header className="App-header">
-            <Menu token={token} user_id={user ? user.id : defaultUser.id} logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
+            <Menu user_id={user ? user.id : defaultUser.id} logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
           </header>
 
 
@@ -73,10 +73,10 @@ function App(): ReactElement {
             <Suspense fallback="Loading app ...">
               <Routes>
                 <Route element={<Home />} path='/' />
-                <Route path='/register' element={<Register setToken={setToken} />} />
-                <Route path='/login' element={<Login setToken={setToken} />} />
-                <Route path="/user/:id" element={!localToken ? <Navigate to="/" /> : <UserProfile defaultUser={defaultUser} token={token} />} />
-                <Route path="/profile-edit" element={!localToken ? <Navigate to="/" /> : <EditProfile token={token} setToken={setToken} />} />
+                <Route path='/register' element={<Register />} />
+                <Route path='/login' element={<Login />} />
+                <Route path="/user/:id" element={!localToken ? <Navigate to="/" /> : <UserProfile defaultUser={defaultUser} />} />
+                <Route path="/profile-edit" element={!localToken ? <Navigate to="/" /> : <EditProfile />} />
               </Routes>
             </Suspense>
           </main>

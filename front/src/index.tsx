@@ -5,16 +5,18 @@ import './index.css';
 import './shared/styles/Main.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { UserProvider } from './shared/context';
+import { TokenProvider, UserProvider } from './shared/context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <UserProvider>
-      <App />
-    </UserProvider>
+    <TokenProvider>
+      <UserProvider>
+        <App />
+      </UserProvider>
+    </TokenProvider>
   </React.StrictMode>
 );
 

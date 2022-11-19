@@ -1,19 +1,17 @@
 import { ReactElement, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { UserContext } from "../shared/context";
+import { TokenContext, UserContext } from "../shared/context";
 import { getUserInfos } from "../shared/helpers/user.helper";
 
 import defaultUserAvatar from "../shared/imgs/default-user.png";
 
 import User from "../shared/interfaces/user.interfaces";
 
-export default function UserProfile({ defaultUser, token }: {
-    defaultUser: User,
-    token: string
-}): ReactElement {
+export default function UserProfile({ defaultUser }: { defaultUser: User }): ReactElement {
     const urlParams = useParams();
 
+    const token: string = useContext(TokenContext).token;
     const currentUser: User = useContext(UserContext).user;
 
     const [userProfile, setUserProfile] = useState<User>(defaultUser);

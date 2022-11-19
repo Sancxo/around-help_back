@@ -16,6 +16,19 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
 
 export { UserContext, UserProvider };
 
+const TokenContext = createContext({ token: "", setToken: (token: string): void => { } });
+const TokenProvider = ({ children }: { children: ReactNode }) => {
+  const [token, setToken] = useState("");
+
+  return (
+    <TokenContext.Provider value={{ token, setToken }}>
+      {children}
+    </TokenContext.Provider>
+  )
+}
+
+export { TokenContext, TokenProvider }
+
 const emptyFlash: FlashMessage = [Nil, ""];
 
 const FlashMessageContext = createContext({ flashMessage: emptyFlash, setFlashMessage: (flashMessage: FlashMessage) => { } });

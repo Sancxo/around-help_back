@@ -1,16 +1,11 @@
 import { ReactElement, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../shared/context";
+import { TokenContext, UserContext } from "../shared/context";
 import { update } from "../shared/helpers/user.helper";
 
-import User, { RegistrationValues } from "../shared/interfaces/user.interfaces";
+import { RegistrationValues } from "../shared/interfaces/user.interfaces";
 
-export default function EditProfile({ token, setToken }: {
-  token: string,
-  user: User,
-  setUser: React.Dispatch<React.SetStateAction<User>>,
-  setToken: React.Dispatch<React.SetStateAction<string>>
-}): ReactElement {
+export default function EditProfile(): ReactElement {
   const [registrationValues, setRegistrationValues] = useState<RegistrationValues>({
     first_name: "",
     last_name: "",
@@ -21,6 +16,7 @@ export default function EditProfile({ token, setToken }: {
     id_card: undefined
   });
   const { user, setUser } = useContext(UserContext);
+  const { token, setToken } = useContext(TokenContext);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(false);
 
