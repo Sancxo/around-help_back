@@ -5,7 +5,7 @@ import Menu from "./components/Menu";
 import Flash from './components/Flash';
 import axios from 'axios';
 import { defaultUser, resetUserInfos, signInWtihToken, signOut } from './shared/helpers/user.helper';
-import { FlashMessageContext, FlashMessageProvider, UserContext, UserProvider } from './shared/context';
+import { FlashMessageContext, FlashMessageProvider, UserContext } from './shared/context';
 import { getFlash } from './shared/helpers/flash.helper';
 
 const Home = lazy((): Promise<any> => import('./pages/Home'));
@@ -21,10 +21,11 @@ function App(): ReactElement {
   const mediaQueryTablet: MediaQueryList = window.matchMedia("(min-width: 400px)");
   const mediaQueryDesktop: MediaQueryList = window.matchMedia("(min-width: 800px)");
 
-  // State
+  // Context
   const { user, setUser } = useContext(UserContext);
   const setFlashMessage = useContext(FlashMessageContext).setFlashMessage;
 
+  // State
   const [token, setToken] = useState("");
   const [isDesktop, setIsDesktop] = useState(mediaQueryDesktop.matches ? true : false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -59,31 +60,29 @@ function App(): ReactElement {
   return (
     <div className="text-center">
       <Router>
-        <UserProvider>
-          <FlashMessageProvider>
-            <header className="App-header">
-              <Menu token={token} user_id={user ? user.id : defaultUser.id} logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
-            </header>
+        <FlashMessageProvider>
+          <header className="App-header">
+            <Menu token={token} user_id={user ? user.id : defaultUser.id} logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
+          </header>
 
 
-            <main className={`${isMobileMenuOpen && mediaQueryTablet.matches && "pt-4"}`} >
-              <div className='mb-1'>
-                <Flash />
-              </div>
-              <Suspense fallback="Loading app ...">
-                <Routes>
-                  <Route element={<Home />} path='/' />
-                  <Route path='/register' element={<Register setUser={setUser} setToken={setToken} />} />
-                  <Route path='/login' element={<Login setUser={setUser} setToken={setToken} />} />
-                  <Route path="/user/:id" element={!localToken ? <Navigate to="/" /> : <UserProfile defaultUser={defaultUser} user={user} token={token} />} />
-                  <Route path="/profile-edit" element={!localToken ? <Navigate to="/" /> : <EditProfile token={token} user={user} setUser={setUser} setToken={setToken} />} />
-                </Routes>
-              </Suspense>
-            </main>
+          <main className={`${isMobileMenuOpen && mediaQueryTablet.matches && "pt-4"}`} >
+            <div className='mb-1'>
+              <Flash />
+            </div>
+            <Suspense fallback="Loading app ...">
+              <Routes>
+                <Route element={<Home />} path='/' />
+                <Route path='/register' element={<Register setToken={setToken} />} />
+                <Route path='/login' element={<Login setToken={setToken} />} />
+                <Route path="/user/:id" element={!localToken ? <Navigate to="/" /> : <UserProfile defaultUser={defaultUser} token={token} />} />
+                <Route path="/profile-edit" element={!localToken ? <Navigate to="/" /> : <EditProfile token={token} setToken={setToken} />} />
+              </Routes>
+            </Suspense>
+          </main>
 
-            <footer></footer>
-          </FlashMessageProvider>
-        </UserProvider>
+          <footer></footer>
+        </FlashMessageProvider>
       </Router>
     </div>
   );

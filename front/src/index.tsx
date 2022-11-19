@@ -5,13 +5,16 @@ import './index.css';
 import './shared/styles/Main.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { UserProvider } from './shared/context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <UserProvider>
+      <App />
+    </UserProvider>
   </React.StrictMode>
 );
 

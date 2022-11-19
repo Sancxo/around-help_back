@@ -1,20 +1,22 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { UserContext } from "../shared/context";
 import { getUserInfos } from "../shared/helpers/user.helper";
 
 import defaultUserAvatar from "../shared/imgs/default-user.png";
 
 import User from "../shared/interfaces/user.interfaces";
 
-export default function UserProfile({ defaultUser, user, token }: {
+export default function UserProfile({ defaultUser, token }: {
     defaultUser: User,
-    user: User,
     token: string
 }): ReactElement {
     const urlParams = useParams();
 
-    const [userProfile, setUserProfile] = useState<User>(defaultUser)
+    const currentUser: User = useContext(UserContext).user;
+
+    const [userProfile, setUserProfile] = useState<User>(defaultUser);
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(false);
 
@@ -55,7 +57,7 @@ export default function UserProfile({ defaultUser, user, token }: {
             <p>{userProfile.email}</p>
             <p>{`${userProfile.address_id}`}</p>
 
-            {userProfile.id === user.id && <Link to="/profile-edit" title="Edit your informations">Edit profile</Link>}
+            {userProfile.id === currentUser.id && <Link to="/profile-edit" title="Edit your informations">Edit profile</Link>}
         </div >
     )
 }   

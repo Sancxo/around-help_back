@@ -58,7 +58,7 @@ async function signInWtihToken(
 
 async function register(
     registrationValues: FormData,
-    setUser: React.Dispatch<React.SetStateAction<User>>,
+    setUser: SetUser,
     setToken: React.Dispatch<React.SetStateAction<string>>,
     navigate: NavigateFunction
 ): Promise<[symbol, string]> {
@@ -79,7 +79,7 @@ async function register(
 
 function update(
     registrationValues: RegistrationValues,
-    setUser: React.Dispatch<React.SetStateAction<User>>,
+    setUser: SetUser,
     setToken: React.Dispatch<React.SetStateAction<string>>,
     navigate: NavigateFunction
 ) {
@@ -111,7 +111,7 @@ async function signOut(
                 return [Error, resp.data.message];
             };
         })
-        .catch((err): [symbol, string] => { return [Error, err.data.message] });
+        .catch((err): [symbol, string] => { return [Error, err.message] });
 }
 
 function setUserInfos(
@@ -125,6 +125,8 @@ function setUserInfos(
     setToken(token);
     localStorage.setItem(auth_token, token);
     axiosHeaders.common["Authorization"] = token;
+
+    console.info(`User is logged in with id ${user.id}.`);
 }
 
 function setUserInfosFromToken(
@@ -134,6 +136,8 @@ function setUserInfosFromToken(
 ) {
     setUser(user);
     setToken(localStorage.getItem(auth_token) as string);
+
+    console.info("We checked the authentification token with success.");
 }
 
 function resetUserInfos(
@@ -147,6 +151,8 @@ function resetUserInfos(
     localStorage.removeItem(infos_user);
     localStorage.removeItem(auth_token);
     axiosHeaders.common["Authorization"] = "";
+
+    console.info("We reset the user informations on client side.")
 }
 
 function getUserInfos(
