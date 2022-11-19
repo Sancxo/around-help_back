@@ -5,8 +5,10 @@ import Menu from "./components/Menu";
 import Flash from './components/Flash';
 import axios from 'axios';
 import { defaultUser, resetUserInfos, signInWtihToken, signOut } from './shared/helpers/user.helper';
-import { FlashMessageContext, FlashMessageProvider, TokenContext, UserContext } from './shared/context';
+import { FlashMessageContext, TokenContext, UserContext } from './shared/context';
 import { getFlash } from './shared/helpers/flash.helper';
+import { setContext } from './shared/interfaces/misc.interfaces';
+import User from './shared/interfaces/user.interfaces';
 
 const Home = lazy((): Promise<any> => import('./pages/Home'));
 const Register = lazy((): Promise<any> => import('./pages/Register'));
@@ -22,7 +24,7 @@ function App(): ReactElement {
   const mediaQueryDesktop: MediaQueryList = window.matchMedia("(min-width: 800px)");
 
   // Context
-  const { user, setUser } = useContext(UserContext);
+  const setUser: setContext<User> = useContext(UserContext).setUser;
   const { token, setToken } = useContext(TokenContext);
   const setFlashMessage = useContext(FlashMessageContext).setFlashMessage;
 
@@ -36,9 +38,8 @@ function App(): ReactElement {
       resetUserInfos(defaultUser, setUser, setToken, axios.defaults.headers);
 
     localToken &&
-      signInWtihToken(localToken, setUser, setToken)
-        .then(resp => getFlash(setFlashMessage, resp));
-  }, [localToken, setToken, setUser, setFlashMessage])
+      signInWtihToken(localToken, setUser, setToken);
+  }, [localToken, setToken, setUser])
 
   // Handle the switch between desktop or mobile menu dependeing on the mediaquery
   useEffect(() => {
@@ -53,36 +54,33 @@ function App(): ReactElement {
   })
 
   async function logOut() {
-    const resp = await signOut(token, defaultUser, setUser, setToken);
-    getFlash(setFlashMessage, resp);
+    signOut(token, defaultUser, setUser, setToken)
+      .then(resp => getFlash(setFlashMessage, resp));
   }
 
   return (
     <div className="text-center">
       <Router>
-        <FlashMessageProvider>
-          <header className="App-header">
-            <Menu user_id={user ? user.id : defaultUser.id} logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
-          </header>
+        <header className="App-header mb-1">
+          <Menu logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
+        </header>
 
 
-          <main className={`${isMobileMenuOpen && mediaQueryTablet.matches && "pt-4"}`} >
-            <div className='mb-1'>
-              <Flash />
-            </div>
-            <Suspense fallback="Loading app ...">
-              <Routes>
-                <Route element={<Home />} path='/' />
-                <Route path='/register' element={<Register />} />
-                <Route path='/login' element={<Login />} />
-                <Route path="/user/:id" element={!localToken ? <Navigate to="/" /> : <UserProfile defaultUser={defaultUser} />} />
-                <Route path="/profile-edit" element={!localToken ? <Navigate to="/" /> : <EditProfile />} />
-              </Routes>
-            </Suspense>
-          </main>
+        <main className={`${isMobileMenuOpen && mediaQueryTablet.matches && "pt-4"}`} >
+          <Suspense fallback="Loading app ...">
+            <Routes>
+              <Route element={<Home />} path='/' />
+              <Route path='/register' element={<Register />} />
+              <Route path='/login' element={<Login />} />
+              <Route path="/user/:id" element={!localToken ? <Navigate to="/" /> : <UserProfile defaultUser={defaultUser} />} />
+              <Route path="/profile-edit" element={!localToken ? <Navigate to="/" /> : <EditProfile />} />
+            </Routes>
+          </Suspense>
+        </main>
 
-          <footer></footer>
-        </FlashMessageProvider>
+        <Flash />
+
+        <footer></footer>
       </Router>
     </div>
   );

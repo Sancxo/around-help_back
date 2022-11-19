@@ -5,7 +5,7 @@ import './index.css';
 import './shared/styles/Main.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { TokenProvider, UserProvider } from './shared/context';
+import { FlashMessageProvider, TokenProvider, UserProvider } from './shared/context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,7 +14,9 @@ root.render(
   <React.StrictMode>
     <TokenProvider>
       <UserProvider>
-        <App />
+        <FlashMessageProvider>
+          <App />
+        </FlashMessageProvider>
       </UserProvider>
     </TokenProvider>
   </React.StrictMode>

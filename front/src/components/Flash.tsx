@@ -13,7 +13,7 @@ export default function Flash(): ReactElement {
 
   if (code === Ok) {
     return (
-      <div className="success flex justify-end align-center">
+      <div className="alert success flex justify-end align-center">
         <p>{message}</p>
         <button type="button" className="menu-icon" onClick={closeFlash}>
           {/* Cross icon */}
@@ -23,7 +23,7 @@ export default function Flash(): ReactElement {
     )
   } else if (code === Error) {
     return (
-      <div className="error flex justify-end align-center">
+      <div className="alert error flex justify-end align-center">
         <p>{message}</p>
         <button type="button" className="menu-icon" onClick={closeFlash}>
           {/* Cross icon */}
