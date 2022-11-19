@@ -1,13 +1,15 @@
-import React, { MouseEventHandler, ReactComponentElement } from "react";
+import React, { MouseEventHandler, ReactComponentElement, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { TokenContext, UserContext } from "../shared/context";
 
-export default function MobileMenu({ token, user_id, logOut, setIsMobileMenuOpen }: {
-  token: string,
-  user_id: Number,
+export default function MobileMenu({ logOut, setIsMobileMenuOpen }: {
   logOut: MouseEventHandler<HTMLAnchorElement>,
   setIsMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
 }): ReactComponentElement<React.JSXElementConstructor<HTMLDivElement>, Pick<React.ComponentProps<React.JSXElementConstructor<HTMLDivElement>>, keyof HTMLDivElement>> {
   const { pathname } = useLocation();
+
+  const token: string = useContext(TokenContext).token;
+  const user_id: number = useContext(UserContext).user.id;
 
   // Pathnames
   const needs = "/needs";

@@ -1,9 +1,7 @@
 import React, { MouseEventHandler, ReactComponentElement } from "react";
 import DesktopMenu from "./DesktopMenu";
 
-export default function MobileMenu({ token, user_id, logOut, isMobileMenuOpen, setIsMobileMenuOpen }: {
-  token: string,
-  user_id: Number,
+export default function MobileMenu({ logOut, isMobileMenuOpen, setIsMobileMenuOpen }: {
   logOut: MouseEventHandler<HTMLAnchorElement>,
   isMobileMenuOpen: boolean,
   setIsMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -19,7 +17,7 @@ export default function MobileMenu({ token, user_id, logOut, isMobileMenuOpen, s
           <svg className="w-3 h-3" fill="#fff" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg>
         }
       </button>
-      {isMobileMenuOpen && <DesktopMenu token={token} user_id={user_id} logOut={logOut} setIsMobileMenuOpen={setIsMobileMenuOpen} />}
+      {isMobileMenuOpen && <DesktopMenu logOut={logOut} setIsMobileMenuOpen={setIsMobileMenuOpen} />}
     </div >
   )
 }
