@@ -16,6 +16,12 @@
   font-weight: bold;
 }
 
+/* images */
+img {
+  object-fit: contain;
+  border: 1px black solid;
+}
+
 /* nav & menus */
 nav {
   height: var(--header-height);
