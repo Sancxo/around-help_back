@@ -4,6 +4,7 @@ import axios, { AxiosResponse, HeadersDefaults } from "axios";
 import { NavigateFunction } from "react-router-dom";
 import { Error, Ok, setContext } from "../interfaces/misc.interfaces";
 import User, { RegistrationValues } from "../interfaces/user.interfaces";
+import defaultUserAvatar from "../imgs/default-user.png";
 
 const auth_token = "auth_token";
 const infos_user = "infos_user";
@@ -12,7 +13,14 @@ export const defaultUser: User = {
     id: 0,
     first_name: "",
     last_name: "",
-    email: ""
+    email: "",
+    avatar: defaultUserAvatar
+}
+
+function setAvatarToUser(user: User, avatar: string) {
+    const imgSrc = process.env.REACT_APP_BACKEND_URL + avatar;
+    console.log(imgSrc);
+    Object.assign(user, { avatar: imgSrc });
 }
 
 async function signIn(
@@ -26,6 +34,8 @@ async function signIn(
         .post(`${process.env.REACT_APP_BACKEND_URL}/users/sign_in`, { "user": { "email": email, "password": password } })
         .then((resp): [symbol, string] => {
             if (resp.status === 200) {
+                setAvatarToUser(resp.data.user, resp.data.avatar);
+
                 setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
                 navigate(`/user/${resp.data.user.id}`);
                 return [Ok, resp.data.message];
@@ -46,6 +56,8 @@ async function signInWtihToken(
         .get(`${process.env.REACT_APP_BACKEND_URL}/user`, { headers: { authorization: token } })
         .then((resp): [symbol, string] => {
             if (resp.status === 200) {
+                setAvatarToUser(resp.data.user, resp.data.avatar)
+
                 setUserInfosFromToken(resp.data.user, setUser, setToken);
                 return [Ok, resp.data.message];
             } else {
@@ -66,6 +78,8 @@ async function register(
         .post<FormData, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, registrationValues)
         .then((resp): [symbol, string] => {
             if (resp.status === 200) {
+                setAvatarToUser(resp.data.user, resp.data.avatar)
+
                 setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
                 navigate(`/user/${resp.data.user.id}`);
                 return [Ok, resp.data.message];
@@ -165,13 +179,13 @@ function getUserInfos(
     axios
         .get(`${process.env.REACT_APP_BACKEND_URL}/user/${id}`, { headers: { authorization: token } })
         .then(resp => {
-            Object.assign(resp.data.user, { avatar: resp.data.avatar });
+            setAvatarToUser(resp.data.user, resp.data.avatar);
 
             setUserProfile(resp.data.user);
             setIsLoaded(true);
         })
         .catch(err => {
-            console.log(err);
+            console.error(err);
             setIsLoaded(true);
             setError(true);
         })

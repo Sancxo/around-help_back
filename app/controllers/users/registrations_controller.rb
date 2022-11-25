@@ -11,7 +11,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     def register_success
         render json: {
             message: "Signed up successfully!",
-            user: current_user
+            user: current_user,
+            avatar: rails_blob_path(current_user.avatar)
         }, status: :ok
     end
 

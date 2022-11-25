@@ -3,20 +3,21 @@ class UsersController < ApplicationController
 
     def this
       user = get_user_from_token
+      
       render json: {
         message: "You're logged in because of the token!",
-        user: user
+        user: user,
+        avatar: rails_blob_path(user.avatar)
       }
     end
 
     def show
       user = User.find(params[:id])
-      avatar = rails_blob_path(user.avatar)
       
       render json: {
         message: "User found!",
         user: user,
-        avatar: avatar
+        avatar: rails_blob_path(user.avatar)
       }
     end
 

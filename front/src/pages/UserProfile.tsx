@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { TokenContext, UserContext } from "../shared/context";
 import { getUserInfos } from "../shared/helpers/user.helper";
 
-import defaultUserAvatar from "../shared/imgs/default-user.png";
 
 import User from "../shared/interfaces/user.interfaces";
 
@@ -38,7 +37,7 @@ export default function UserProfile({ defaultUser }: { defaultUser: User }): Rea
         <div>
             {/* Public infos */}
             {/* Avatar */}
-            <img src={`${process.env.REACT_APP_BACKEND_URL}${userProfile.avatar ? userProfile.avatar : defaultUserAvatar}`} alt="avatar" width={200} height={200} />
+            <img src={`${userProfile.avatar ? (userProfile.avatar) : defaultUser.avatar}`} alt="avatar" width={200} height={200} />
             {/* <img src="" alt="" /> */}
             <p>Hello {userProfile.first_name} {userProfile.last_name}!</p>
             <p>Born: <>{userProfile.birthdate}</></p>

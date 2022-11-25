@@ -6,8 +6,8 @@ export default interface User {
     birthdate?: Date,
     about?: string,
     address_id?: number,
-    id_card?: File | undefined,
-    avatar?: File | undefined,
+    id_card?: string | undefined,
+    avatar?: string | undefined,
     created_at?: Date
 }
 
