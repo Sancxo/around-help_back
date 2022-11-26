@@ -3,7 +3,7 @@
 import axios, { AxiosResponse, HeadersDefaults } from "axios";
 import { NavigateFunction } from "react-router-dom";
 import { Error, Ok, setContext } from "../interfaces/misc.interfaces";
-import User, { RegistrationValues } from "../interfaces/user.interfaces";
+import User from "../interfaces/user.interfaces";
 import defaultUserAvatar from "../imgs/default-user.png";
 
 const auth_token = "auth_token";
@@ -19,7 +19,6 @@ export const defaultUser: User = {
 
 function setAvatarToUser(user: User, avatar: string) {
     const imgSrc = process.env.REACT_APP_BACKEND_URL + avatar;
-    console.log(imgSrc);
     Object.assign(user, { avatar: imgSrc });
 }
 
@@ -44,7 +43,7 @@ async function signIn(
                 return [Error, resp.data.message];
             };
         })
-        .catch((err): [symbol, string] => { return [Error, err.response.data.message] });
+        .catch((err): [symbol, string] => { return [Error, err.message] });
 }
 
 async function signInWtihToken(
@@ -65,7 +64,7 @@ async function signInWtihToken(
                 return [Error, resp.data.message];
             }
         })
-        .catch((err): [symbol, string] => { return [Error, err.response.data.message] });
+        .catch((err): [symbol, string] => { return [Error, err.message] });
 }
 
 async function register(
@@ -82,30 +81,41 @@ async function register(
 
                 setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
                 navigate(`/user/${resp.data.user.id}`);
+
                 return [Ok, resp.data.message];
             } else {
                 console.error(resp);
                 return [Error, resp.data.message];
             };
         })
-        .catch((err): [symbol, string] => { return [Error, err.data.message] });
+        .catch((err): [symbol, string] => { return [Error, err.message] });
 }
 
-function update(
-    registrationValues: RegistrationValues,
+async function update(
+    registrationValues: FormData,
     setUser: setContext<User>,
     setToken: setContext<string>,
     navigate: NavigateFunction
-) {
-    axios
-        .patch<RegistrationValues, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, { "user": registrationValues })
-        .then(resp => {
+): Promise<[symbol, string]> {
+    return await axios
+        .put<FormData, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, registrationValues)
+        .then((resp): [symbol, string] => {
             if (resp.status === 200) {
+                setAvatarToUser(resp.data.user, resp.data.avatar);
+
                 setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
                 navigate(`/user/${resp.data.user.id}`);
-            }
+
+                return [Ok, resp.data.message];
+            } else {
+                console.error(resp);
+                return [Error, resp.data.message];
+            };
         })
-        .catch(err => console.error(err));
+        .catch((err): [symbol, string] => {
+            console.error(err);
+            return [Error, err.message];
+        });
 }
 
 async function signOut(
