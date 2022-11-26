@@ -10,8 +10,12 @@ input[type='file'] {
     width: 100%;
 }
 
+input:focus {
+    border-color: var(--secondary-color) !important;
+}
+
 label small {
-    color: var(--second-color);
+    color: var(--secondary-color);
 }
 
 /* form fieldset {
