@@ -52,9 +52,9 @@ export default function UserProfile({ defaultUser }: { defaultUser: User }): Rea
 
             {/* Private infos (if urlParams.id === user.id) */}
             <p>{userProfile.email}</p>
-            <p>{`${userProfile.address_id}`}</p>
+            {/* <p>{userProfile.address_id}</p> */}
 
-            {userProfile.id === currentUser.id && <Link to="/profile-edit" title="Edit your informations">Edit profile</Link>}
+            {/* {userProfile.id === currentUser.id && <Link to="/profile-edit" title="Edit your informations">Edit profile</Link>} */}
         </div >
     )
 }   
