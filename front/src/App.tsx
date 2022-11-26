@@ -1,7 +1,7 @@
 import { lazy, ReactElement, Suspense, useContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 
-import Menu from "./components/Menu";
+import SwitchMenu from "./components/SwitchMenu";
 import Flash from './components/Flash';
 import axios from 'axios';
 import { defaultUser, resetUserInfos, signInWtihToken, signOut } from './shared/helpers/user.helper';
@@ -62,7 +62,7 @@ function App(): ReactElement {
     <div className="text-center">
       <Router>
         <header className="App-header mb-1">
-          <Menu logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
+          <SwitchMenu logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
         </header>
 
 
