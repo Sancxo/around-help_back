@@ -1,4 +1,5 @@
 export default interface User {
+    [index: string]: string | number | Date | undefined,
     id: number,
     first_name: string,
     last_name: string,
@@ -12,17 +13,14 @@ export default interface User {
 }
 
 export interface RegistrationValues {
-
-    [index: string]: any,
+    [index: string]: string | number | Date | File | undefined,
     first_name: string,
     last_name: string,
     email: string,
-    password: string,
-    password_confirmation: string,
+    current_password?: string,
     birthdate?: Date,
     about?: string,
     address_id?: number,
-    id_card?: File | undefined,
     avatar?: File | undefined
 }
 
