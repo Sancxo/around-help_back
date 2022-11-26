@@ -1,11 +1,11 @@
 import { ReactElement, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { TokenContext, UserContext } from "../shared/context";
-import { getUserInfos } from "../shared/helpers/user.helper";
+import { TokenContext, UserContext } from "../../shared/context";
+import { getUserInfos } from "../../shared/helpers/user.helper";
 
 
-import User from "../shared/interfaces/user.interfaces";
+import User from "../../shared/interfaces/user.interfaces";
 
 export default function UserProfile({ defaultUser }: { defaultUser: User }): ReactElement {
     const urlParams = useParams();

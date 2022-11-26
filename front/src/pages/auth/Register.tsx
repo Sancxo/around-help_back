@@ -1,11 +1,11 @@
 import React, { ReactElement, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import User, { RegistrationValues } from "../shared/interfaces/user.interfaces";
-import { register } from "../shared/helpers/user.helper";
-import { clearFlash, getFlash } from "../shared/helpers/flash.helper";
-import { FlashMessageContext, TokenContext, UserContext } from "../shared/context";
-import { FlashMessage, setContext } from "../shared/interfaces/misc.interfaces";
+import User, { RegistrationValues } from "../../shared/interfaces/user.interfaces";
+import { register } from "../../shared/helpers/user.helper";
+import { clearFlash, getFlash } from "../../shared/helpers/flash.helper";
+import { FlashMessageContext, TokenContext, UserContext } from "../../shared/context";
+import { FlashMessage, setContext } from "../../shared/interfaces/misc.interfaces";
 
 export default function Register(): ReactElement {
     const setUser: setContext<User> = useContext(UserContext).setUser;

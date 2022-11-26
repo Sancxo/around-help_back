@@ -11,10 +11,10 @@ import { setContext } from './shared/interfaces/misc.interfaces';
 import User from './shared/interfaces/user.interfaces';
 
 const Home = lazy((): Promise<any> => import('./pages/Home'));
-const Register = lazy((): Promise<any> => import('./pages/Register'));
-const Login = lazy((): Promise<any> => import('./pages/Login'));
-const UserProfile = lazy((): Promise<any> => import('./pages/UserProfile'));
-const EditProfile = lazy((): Promise<any> => import('./pages/EditProfile'));
+const Register = lazy((): Promise<any> => import('./pages/auth/Register'));
+const Login = lazy((): Promise<any> => import('./pages/auth/Login'));
+const UserProfile = lazy((): Promise<any> => import('./pages/user/UserProfile'));
+const EditProfile = lazy((): Promise<any> => import('./pages/user/EditProfile'));
 
 function App(): ReactElement {
   const localToken = localStorage.getItem("auth_token");
