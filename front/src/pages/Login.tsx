@@ -27,9 +27,11 @@ export default function Login(): ReactElement {
             <fieldset>
                 <label htmlFor="email-input">Email:</label>
                 <input type="email" name="email" id="email-input" onChange={e => setEmail(e.target.value)} />
+                <br />
 
                 <label htmlFor="password-input">Password:</label>
                 <input type="password" name="password" id="password-input" onChange={e => setPassword(e.target.value)} />
+                <br />
 
                 <input type="button" className="btn-prim" value="Login" onClick={handleSubmit} />
             </fieldset>

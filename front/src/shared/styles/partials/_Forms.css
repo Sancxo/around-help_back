@@ -1,3 +1,8 @@
+input,
+textarea {
+    max-width: 50rem;
+}
+
 /* input[type='file'] was ignored by Milligram in its source code, 
 in fact we don't want a lot of style on it, we just want that the 
 'inline-block' button after to be on a new line */
@@ -5,6 +10,9 @@ input[type='file'] {
     width: 100%;
 }
 
+label small {
+    color: var(--second-color);
+}
 
 /* form fieldset {
     display: flex;
