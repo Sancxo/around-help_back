@@ -1,4 +1,4 @@
-import { lazy, ReactElement, Suspense, useContext, useEffect, useState } from 'react';
+import { ComponentType, lazy, ReactElement, Suspense, useContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 
 import SwitchMenu from "./components/SwitchMenu";
@@ -10,11 +10,12 @@ import { getFlash } from './shared/helpers/flash.helper';
 import { setContext } from './shared/interfaces/misc.interfaces';
 import User from './shared/interfaces/user.interfaces';
 
-const Home = lazy((): Promise<any> => import('./pages/Home'));
-const Register = lazy((): Promise<any> => import('./pages/auth/Register'));
-const Login = lazy((): Promise<any> => import('./pages/auth/Login'));
-const UserProfile = lazy((): Promise<any> => import('./pages/user/UserProfile'));
-const EditProfile = lazy((): Promise<any> => import('./pages/user/EditProfile'));
+const Home = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/Home'));
+const Register = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/auth/Register'));
+const Login = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/auth/Login'));
+const UserProfile = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/user/UserProfile'));
+const EditProfile = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/user/EditProfile'));
+const Needs = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/Needs'));
 
 function App(): ReactElement {
   const localToken = localStorage.getItem("auth_token");
@@ -58,6 +59,10 @@ function App(): ReactElement {
       .then(resp => getFlash(setFlashMessage, resp));
   }
 
+  function ifUserIsLoggedInGoTo(route: ReactElement) {
+    return !localToken ? <Navigate to="/" /> : route;
+  }
+
   return (
     <div className="text-center">
       <Router>
@@ -72,8 +77,9 @@ function App(): ReactElement {
               <Route element={<Home />} path='/' />
               <Route path='/register' element={<Register />} />
               <Route path='/login' element={<Login />} />
-              <Route path="/user/:id" element={!localToken ? <Navigate to="/" /> : <UserProfile defaultUser={defaultUser} />} />
-              <Route path="/profile-edit" element={!localToken ? <Navigate to="/" /> : <EditProfile />} />
+              <Route path="/user/:id" element={ifUserIsLoggedInGoTo(<UserProfile defaultUser={defaultUser} />)} />
+              <Route path="/profile-edit" element={ifUserIsLoggedInGoTo(<EditProfile />)} />
+              <Route path='/needs' element={ifUserIsLoggedInGoTo(<Needs />)} />
             </Routes>
           </Suspense>
         </main>
