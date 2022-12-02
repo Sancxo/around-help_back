@@ -1,6 +1,11 @@
+fieldset,
 input,
 textarea {
     max-width: 50rem;
+}
+
+fieldset {
+    margin: auto;
 }
 
 /* input[type='file'] was ignored by Milligram in its source code, 
@@ -10,6 +15,7 @@ input[type='file'] {
     width: 100%;
 }
 
+textarea:focus,
 input:focus {
     border-color: var(--secondary-color) !important;
 }

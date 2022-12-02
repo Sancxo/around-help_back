@@ -11,6 +11,16 @@
   text-align: center;
 }
 
+/* Lists */
+.unstyled-list {
+  list-style: none;
+}
+
+#address-search-input-results {
+  padding: 1rem;
+  border: solid 1px gray;
+}
+
 /* links */
 .active {
   font-weight: bold;
