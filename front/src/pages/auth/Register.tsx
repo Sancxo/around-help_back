@@ -6,6 +6,7 @@ import { register } from "../../shared/helpers/user.helper";
 import { clearFlash, getFlash } from "../../shared/helpers/flash.helper";
 import { FlashMessageContext, TokenContext, UserContext } from "../../shared/context";
 import { FlashMessage, setContext } from "../../shared/interfaces/misc.interfaces";
+import AddressAutocomplete from "../../components/AddressAutocomplete";
 
 export default function Register(): ReactElement {
     const setUser: setContext<User> = useContext(UserContext).setUser;
@@ -51,6 +52,8 @@ export default function Register(): ReactElement {
         <form name="user" id="user-infos" encType='multipart/form-data' className="container">
             <h3>Register: </h3>
             <fieldset>
+                <legend>About you:</legend>
+
                 <label htmlFor="first-name-input">First name <small>(mandatory)</small>:</label>
                 <input type="text" name="first_name" id="first-name-input" onChange={handleInputs} />
                 <br />
@@ -84,11 +87,27 @@ export default function Register(): ReactElement {
                 <br />
 
                 <label htmlFor="about-input">About:</label>
-                <textarea name="about" id="about" cols={30} rows={10} onChange={handleInputs} ></textarea>
+                <textarea name="about" id="about-input" cols={30} rows={10} onChange={handleInputs} ></textarea>
                 <br />
 
-                <input type="button" className="btn-prim" value="Submit" onClick={handleSubmit} />
             </fieldset>
+
+            <fieldset>
+                <legend>Your address:</legend>
+
+                <AddressAutocomplete />
+
+                <input type="number" name="number" id="address_number" />
+                <br />
+
+                <input type="text" name="string" id="address_street_name" />
+                <br />
+
+                <input type="text" name="city" id="address_city" />
+                <br />
+            </fieldset>
+
+            <input type="button" className="btn-prim" value="Submit" onClick={handleSubmit} />
         </form>
     )
 }
