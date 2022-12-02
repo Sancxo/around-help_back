@@ -35,7 +35,7 @@ async function signIn(
             if (resp.status === 200) {
                 setAvatarToUser(resp.data.user, resp.data.avatar);
 
-                setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
+                setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken);
                 navigate(`/user/${resp.data.user.id}`);
                 return [Ok, resp.data.message];
             } else {
@@ -57,7 +57,7 @@ async function signInWtihToken(
             if (resp.status === 200) {
                 setAvatarToUser(resp.data.user, resp.data.avatar)
 
-                setUserInfosFromToken(resp.data.user, setUser, setToken);
+                setUserInfosFromToken(resp.data.user, setUser, token, setToken);
                 return [Ok, resp.data.message];
             } else {
                 console.error(resp);
@@ -79,7 +79,7 @@ async function register(
             if (resp.status === 200) {
                 setAvatarToUser(resp.data.user, resp.data.avatar)
 
-                setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
+                setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken);
                 navigate(`/user/${resp.data.user.id}`);
 
                 return [Ok, resp.data.message];
@@ -103,7 +103,7 @@ async function update(
             if (resp.status === 200) {
                 setAvatarToUser(resp.data.user, resp.data.avatar);
 
-                setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken, axios.defaults.headers);
+                setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken);
                 navigate(`/user/${resp.data.user.id}`);
 
                 return [Ok, resp.data.message];
@@ -142,13 +142,12 @@ function setUserInfos(
     user: User,
     setUser: setContext<User>,
     token: string,
-    setToken: setContext<string>,
-    axiosHeaders: HeadersDefaults
+    setToken: setContext<string>
 ) {
     setUser(user);
     setToken(token);
     localStorage.setItem(auth_token, token);
-    axiosHeaders.common["Authorization"] = token;
+    axios.defaults.headers.common["Authorization"] = token;
 
     console.info(`User is logged in with id ${user.id}.`);
 }
@@ -156,10 +155,12 @@ function setUserInfos(
 function setUserInfosFromToken(
     user: User,
     setUser: setContext<User>,
+    token: string,
     setToken: setContext<string>
 ) {
     setUser(user);
     setToken(localStorage.getItem(auth_token) as string);
+    axios.defaults.headers.common["Authorization"] = token;
 
     console.info("We checked the authentification token with success.");
 }
