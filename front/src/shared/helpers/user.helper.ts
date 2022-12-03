@@ -2,9 +2,10 @@
 
 import axios, { AxiosResponse, HeadersDefaults } from "axios";
 import { NavigateFunction } from "react-router-dom";
-import { Error, Ok, setContext } from "../interfaces/misc.interfaces";
+import { Error, FlashMessage, Ok, setContext } from "../interfaces/misc.interfaces";
 import User from "../interfaces/user.interfaces";
 import defaultUserAvatar from "../imgs/default-user.png";
+import { getFlash } from "./flash.helper";
 
 const auth_token = "auth_token";
 const infos_user = "infos_user";
@@ -67,54 +68,61 @@ async function signInWtihToken(
         .catch((err): [symbol, string] => { return [Error, err.message] });
 }
 
-async function register(
+async function registerUser(
     registrationValues: FormData,
     setUser: setContext<User>,
     setToken: setContext<string>,
-    navigate: NavigateFunction
-): Promise<[symbol, string]> {
+    setFlashMessage: setContext<FlashMessage>,
+): Promise<any> {
     return await axios
         .post<FormData, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, registrationValues)
-        .then((resp): [symbol, string] => {
+        .then((resp): {} => {
             if (resp.status === 200) {
                 setAvatarToUser(resp.data.user, resp.data.avatar)
 
                 setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken);
-                navigate(`/user/${resp.data.user.id}`);
 
-                return [Ok, resp.data.message];
+                getFlash(setFlashMessage, [Ok, resp.data.message]);
+
+                return resp.data
             } else {
                 console.error(resp);
-                return [Error, resp.data.message];
+                getFlash(setFlashMessage, [Error, resp.data.message]);
+                return resp.data;
             };
         })
-        .catch((err): [symbol, string] => { return [Error, err.message] });
+        .catch((err): void => {
+            getFlash(setFlashMessage, [Error, err.message]);
+        });
 }
 
-async function update(
-    registrationValues: FormData,
+async function updateUser(
+    registrationValues: FormData | {},
     setUser: setContext<User>,
     setToken: setContext<string>,
+    setFlashMessage: setContext<FlashMessage>,
     navigate: NavigateFunction
-): Promise<[symbol, string]> {
+): Promise<any> {
     return await axios
-        .put<FormData, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, registrationValues)
-        .then((resp): [symbol, string] => {
+        .patch<FormData | {}, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, registrationValues)
+        .then((resp): {} => {
             if (resp.status === 200) {
                 setAvatarToUser(resp.data.user, resp.data.avatar);
 
                 setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken);
+
                 navigate(`/user/${resp.data.user.id}`);
 
-                return [Ok, resp.data.message];
+                getFlash(setFlashMessage, [Ok, resp.data.message]);
+
+                return resp.data;
             } else {
                 console.error(resp);
-                return [Error, resp.data.message];
+                return resp.data;
             };
         })
-        .catch((err): [symbol, string] => {
+        .catch((err): void => {
             console.error(err);
-            return [Error, err.message];
         });
 }
 
@@ -202,4 +210,4 @@ function getUserInfos(
         })
 }
 
-export { signIn, signInWtihToken, register, update, signOut, resetUserInfos, getUserInfos }
+export { signIn, signInWtihToken, registerUser, updateUser, signOut, resetUserInfos, getUserInfos }

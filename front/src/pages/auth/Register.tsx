@@ -1,12 +1,13 @@
-import React, { ReactElement, useContext, useState } from "react";
+import { ChangeEvent, ReactElement, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import User, { RegistrationValues } from "../../shared/interfaces/user.interfaces";
-import { register } from "../../shared/helpers/user.helper";
-import { clearFlash, getFlash } from "../../shared/helpers/flash.helper";
+import { registerUser } from "../../shared/helpers/user.helper";
+import { clearFlash } from "../../shared/helpers/flash.helper";
 import { FlashMessageContext, TokenContext, UserContext } from "../../shared/context";
-import { FlashMessage, setContext } from "../../shared/interfaces/misc.interfaces";
+import { Address, FlashMessage, setContext } from "../../shared/interfaces/misc.interfaces";
 import AddressAutocomplete from "../../components/AddressAutocomplete";
+import { registerAddress } from "../../shared/helpers/address.helper";
 
 export default function Register(): ReactElement {
     const setUser: setContext<User> = useContext(UserContext).setUser;
@@ -20,15 +21,20 @@ export default function Register(): ReactElement {
         password_confirmation: "",
         email: ""
     });
+    const [address, setAddress] = useState<Address>({
+        address: "",
+        long_lat: []
+    })
+
     const navigate = useNavigate();
 
-    function handleInputs(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    function handleInputs(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const name = e.target.name;
         const value = e.target.value;
 
         setRegistrationValues(registrationValues => ({ ...registrationValues, [name]: value }));
     }
-    function handleImages(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleImages(e: ChangeEvent<HTMLInputElement>) {
         (e.target.id === "avatar-input") && setRegistrationValues(registrationValues => ({ ...registrationValues, 'avatar': e.target.files![0] }));
         e.target.id === "id-card-input" && setRegistrationValues(registrationValues => ({ ...registrationValues, 'id_card': e.target.files![0] }));
     }
@@ -36,16 +42,20 @@ export default function Register(): ReactElement {
     async function handleSubmit() {
         clearFlash(setFlashMessage);
 
-        const user: any = { registrationValues };
-        const formData = new FormData();
+        const userForm: any = { registrationValues };
+        const userFormData = new FormData(); // we use FormData object because of images (id_card and avatar)
 
-        for (const field in user.registrationValues) {
-            if (Object.prototype.hasOwnProperty.call(user.registrationValues, field)) {
-                formData.append(`user[${field}]`, user.registrationValues[field]);
+        for (const field in userForm.registrationValues) {
+            if (Object.prototype.hasOwnProperty.call(userForm.registrationValues, field)) {
+                userFormData.append(`user[${field}]`, userForm.registrationValues[field]);
             }
         }
-        const resp = await register(formData, setUser, setToken, navigate);
-        getFlash(setFlashMessage, resp);
+        const respUser = await registerUser(userFormData, setUser, setToken, setFlashMessage);
+
+        if (respUser) {
+            const registeredUser: User = respUser.user;
+            await registerAddress(address, registeredUser, setUser, setToken, setFlashMessage, navigate);
+        }
     }
 
     return (
@@ -95,16 +105,7 @@ export default function Register(): ReactElement {
             <fieldset>
                 <legend>Your address:</legend>
 
-                <AddressAutocomplete />
-
-                <input type="number" name="number" id="address_number" />
-                <br />
-
-                <input type="text" name="string" id="address_street_name" />
-                <br />
-
-                <input type="text" name="city" id="address_city" />
-                <br />
+                <AddressAutocomplete setAddress={setAddress} />
             </fieldset>
 
             <input type="button" className="btn-prim" value="Submit" onClick={handleSubmit} />
