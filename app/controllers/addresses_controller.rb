@@ -15,12 +15,18 @@ class AddressesController < ApplicationController
 
   # POST /addresses
   def create
-    @address = Address.new(params.permit(:number, :street, :city, :state, :postal_code, :country, :long_lat))
+    @address = Address.new(params.permit(:address, long_lat: []))
 
     if @address.save
-      render json: @address, status: :created, location: @address
+      render json: {
+        address: @address, 
+        message: "Address succesfully created!"
+      }, status: :created, location: @address
     else
-      render json: @address.errors, status: :unprocessable_entity
+      render json: {
+        message: "An error occured while registrating address!", 
+        error: @address.errors
+      }, status: :unprocessable_entity
     end
   end
 
@@ -46,6 +52,6 @@ class AddressesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def address_params
-      params.require(:address).permit(:number, :street, :city, :state, :postal_code, :country, :long_lat)
+      params.require(:address).permit(:address, long_lat: [])
     end
 end
