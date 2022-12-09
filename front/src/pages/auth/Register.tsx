@@ -53,8 +53,7 @@ export default function Register(): ReactElement {
         const respUser = await registerUser(userFormData, setUser, setToken, setFlashMessage);
 
         if (respUser) {
-            const registeredUser: User = respUser.user;
-            await registerAddress(address, registeredUser, setUser, setToken, setFlashMessage, navigate);
+            await registerAddress(address, setUser, setToken, setFlashMessage, navigate);
         }
     }
 
