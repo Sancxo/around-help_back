@@ -1,7 +1,8 @@
-import { ChangeEvent, ReactElement } from "react";
+import React, { ChangeEvent, Dispatch, ReactElement, SetStateAction } from "react";
 import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
+import { Address } from "../shared/interfaces/misc.interfaces";
 
-export default function AddressAutocomplete(): ReactElement {
+export default function AddressAutocomplete({ setAddress }: { setAddress: Dispatch<SetStateAction<Address>> }): ReactElement {
   const { ready, value, suggestions: { status, data }, setValue, clearSuggestions } = usePlacesAutocomplete({ callbackName: "initMap" });
 
   function handleInput(e: ChangeEvent<HTMLInputElement>) {
@@ -13,11 +14,10 @@ export default function AddressAutocomplete(): ReactElement {
     clearSuggestions();
 
     getGeocode({ address: description }).then(results => {
-      console.log(results[0])
       const { lat, lng } = getLatLng(results[0]);
-      console.info("📍 Coordinates: ", { lat, lng });
-    })
 
+      setAddress({ address: results[0].formatted_address, long_lat: [lng, lat] });
+    })
   }
 
   const renderSuggestions = () => data.map(suggestion => {
