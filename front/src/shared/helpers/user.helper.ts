@@ -104,7 +104,7 @@ async function updateUser(
     navigate: NavigateFunction
 ): Promise<any> {
     return await axios
-        .patch<FormData | {}, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, registrationValues)
+        .patch<FormData | {}, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/user`, registrationValues)
         .then((resp): {} => {
             if (resp.status === 200) {
                 setAvatarToUser(resp.data.user, resp.data.avatar);

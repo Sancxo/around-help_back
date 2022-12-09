@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   authenticate :user do
     get 'user', to: 'users#this'
     get 'user/:id', to: 'users#show'
+    put 'user', to: 'users#update'
+    patch 'user', to: 'users#update'
 
     resources :needs
     resources :addresses
