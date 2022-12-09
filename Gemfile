@@ -43,7 +43,7 @@ gem 'ruby-vips', '~> 2.1', '>= 2.1.4'
 # Active Storage validations [https://github.com/igorkasyanchuk/active_storage_validations]
 gem 'active_storage_validations'
 
-gem 'geocoder', '~> 1.8'
+# gem 'geocoder', '~> 1.8'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
