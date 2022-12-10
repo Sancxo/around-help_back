@@ -8,7 +8,7 @@ class UsersController < ApplicationController
       render json: {
         message: "You're logged in because of the token!",
         user: this_user,
-        avatar: rails_blob_path(user.avatar)
+        avatar: this_user.avatar.attached? ? rails_blob_path(this_user.avatar) : nil
       }
     end
 
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
       render json: {
         message: "User found!",
         user: user,
-        avatar: rails_blob_path(user.avatar)
+        avatar: user.avatar.attached? ? rails_blob_path(user.avatar) : nil
       }
     end
 
@@ -31,7 +31,7 @@ class UsersController < ApplicationController
         render json: {
           message: "User updated!",
           user: this_user,
-          avatar: rails_blob_path(this_user.avatar)
+          avatar: this_user.avatar.attached? ? rails_blob_path(this_user.avatar) : nil
         }
       else
         render json: {

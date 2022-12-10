@@ -12,7 +12,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         render json: {
             message: "Signed up successfully!",
             user: current_user,
-            avatar: rails_blob_path(current_user.avatar)
+            avatar: current_user.avatar.attached? ? rails_blob_path(current_user.avatar) : nil
         }, status: :ok
     end
 
