@@ -64,15 +64,15 @@ export default function Register(): ReactElement {
                 <legend>About you:</legend>
 
                 <label htmlFor="first-name-input">First name <small>(mandatory)</small>:</label>
-                <input type="text" name="first_name" id="first-name-input" onChange={handleInputs} />
+                <input type="text" name="first_name" id="first-name-input" onChange={handleInputs} required />
                 <br />
 
                 <label htmlFor="last-name-input">Last name <small>(mandatory)</small>:</label>
-                <input type="text" name="last_name" id="last-name-input" onChange={handleInputs} />
+                <input type="text" name="last_name" id="last-name-input" onChange={handleInputs} required />
                 <br />
 
                 <label htmlFor="email-input">Email <small>(mandatory)</small>:</label>
-                <input type="email" name="email" id="email-input" onChange={handleInputs} />
+                <input type="email" name="email" id="email-input" onChange={handleInputs} required />
                 <br />
 
                 <label htmlFor="avatar-input">Profile picture:</label>
@@ -80,15 +80,15 @@ export default function Register(): ReactElement {
                 <br />
 
                 <label htmlFor="id-card-input">Id card <small>(mandatory)</small>:</label>
-                <input type="file" name="id_card" id="id-card-input" accept="application/pdf, image/png, image/jpeg, image/gif, image/webp, image/avif" onChange={handleImages} />
+                <input type="file" name="id_card" id="id-card-input" accept="application/pdf, image/png, image/jpeg, image/gif, image/webp, image/avif" onChange={handleImages} required />
                 <br />
 
                 <label htmlFor="password-input">Password <small>(mandatory)</small>:</label>
-                <input type="password" name="password" id="password-input" onChange={handleInputs} />
+                <input type="password" name="password" id="password-input" onChange={handleInputs} required />
                 <br />
 
                 <label htmlFor="password-confirmation-input">Confirm password <small>(mandatory)</small>:</label>
-                <input type="password" name="password_confirmation" id="password-confirmation-input" onChange={handleInputs} />
+                <input type="password" name="password_confirmation" id="password-confirmation-input" onChange={handleInputs} required />
                 <br />
 
                 <label htmlFor="birthdate-input">Birthdate:</label>

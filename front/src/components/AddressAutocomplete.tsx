@@ -9,7 +9,7 @@ export default function AddressAutocomplete({ setAddress }: { setAddress: Dispat
     setValue(e.target.value)
   }
 
-  const handleSelect = ({ description }: any, place_id: any) => () => {
+  const handleSelect = ({ description }: any) => () => {
     setValue(description, false);
     clearSuggestions();
 
@@ -23,7 +23,7 @@ export default function AddressAutocomplete({ setAddress }: { setAddress: Dispat
   const renderSuggestions = () => data.map(suggestion => {
     const { place_id, structured_formatting: { main_text, secondary_text } } = suggestion;
     return (
-      <li key={place_id} onClick={handleSelect(suggestion, place_id)}>
+      <li key={place_id} onClick={handleSelect(suggestion)}>
         <strong>{main_text}</strong> <small>{secondary_text}</small>
       </li>
     )
@@ -31,8 +31,8 @@ export default function AddressAutocomplete({ setAddress }: { setAddress: Dispat
 
   return (
     <div>
-      <label htmlFor="address-search-input">Address search engine:</label>
-      <input type="text" id="address-search-input" value={value} onChange={handleInput} disabled={!ready} placeholder="Where are you living?" />
+      <label htmlFor="address-search-input">Address search engine <small>(mandatory)</small>:</label>
+      <input type="text" id="address-search-input" value={value} onChange={handleInput} disabled={!ready} placeholder="Where are you living?" required />
       {status === "OK" && <ul id="address-search-input-results" className="unstyled-list">{renderSuggestions()}</ul>}
     </div>
   )
