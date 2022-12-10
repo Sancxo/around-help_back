@@ -109,10 +109,6 @@ async function updateUser(
             if (resp.status === 200) {
                 setAvatarToUser(resp.data.user, resp.data.avatar);
 
-                setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken);
-
-                navigate(`/user/${resp.data.user.id}`);
-
                 getFlash(setFlashMessage, [Ok, resp.data.message]);
 
                 return resp.data;
