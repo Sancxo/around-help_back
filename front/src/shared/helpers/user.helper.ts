@@ -99,18 +99,15 @@ async function registerUser(
 async function updateUser(
     registrationValues: FormData | {},
     setUser: setContext<User>,
-    setToken: setContext<string>,
     setFlashMessage: setContext<FlashMessage>,
-    navigate: NavigateFunction
 ): Promise<any> {
     return await axios
         .patch<FormData | {}, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/user`, registrationValues)
         .then((resp): {} => {
             if (resp.status === 200) {
                 setAvatarToUser(resp.data.user, resp.data.avatar);
-
                 getFlash(setFlashMessage, [Ok, resp.data.message]);
-
+                setUser(resp.data.user);
                 return resp.data;
             } else {
                 console.error(resp);

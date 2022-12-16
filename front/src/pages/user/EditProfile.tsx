@@ -2,7 +2,7 @@ import { ReactElement, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FlashMessageContext, TokenContext, UserContext } from "../../shared/context";
 import { clearFlash, getFlash } from "../../shared/helpers/flash.helper";
-import { defaultUser, update } from "../../shared/helpers/user.helper";
+import { defaultUser, updateUser } from "../../shared/helpers/user.helper";
 
 import { RegistrationValues } from "../../shared/interfaces/user.interfaces";
 
@@ -57,7 +57,7 @@ export default function EditProfile(): ReactElement {
         formData.append(`user[${field}]`, user.registrationValues[field]);
       }
     }
-    const resp = await update(formData, setUser, setToken, navigate);
+    const resp = await updateUser(formData, setUser, setFlashMessage);
     getFlash(setFlashMessage, resp);
   }
 

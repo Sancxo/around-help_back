@@ -1,16 +1,6 @@
 import { ReactElement, useEffect, useState } from "react";
 import axios from "axios";
-
-interface Address {
-    id: number,
-    number: string,
-    street: string,
-    city: string,
-    state: string,
-    postal_code: string,
-    country: string,
-    long_lat: number[]
-}
+import { Address } from "../shared/interfaces/misc.interfaces";
 
 const addressesUrl = `${process.env.REACT_APP_BACKEND_URL}/addresses`;
 
@@ -18,7 +8,6 @@ export default function Home(): ReactElement {
     const [addresses, setAddresses] = useState<Address[]>([]);
 
     // useEffect(() => {
-    //     console.log("Are we here ?")
 
     //     axios.get<Address[]>(addressesUrl).then(resp => setAddresses(resp.data))
     // }, []);

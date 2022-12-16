@@ -7,7 +7,6 @@ import { updateUser } from "./user.helper";
 async function registerAddress(
   data: Address,
   setUser: setContext<User>,
-  setToken: setContext<string>,
   setFlashMessage: setContext<FlashMessage>,
   navigate: NavigateFunction
 ): Promise<any> {
@@ -15,17 +14,14 @@ async function registerAddress(
     .post<Address, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/addresses`, data)
     .then((resp): void => {
       if (resp.status === 201) {
-        // Refactor ???
-        updateUser({ address_id: resp.data.address.id }, setUser, setToken, setFlashMessage, navigate)
+        updateUser({ address_id: resp.data.address.id }, setUser, setFlashMessage)
           .then(respUpdate => {
-            console.log(respUpdate.user.id)
             navigate(`/user/${respUpdate.user.id}`)
           })
           .catch(err => {
             setFlashMessage(err.message);
             console.error(err)
           });
-
       } else {
         console.error(resp);
       }
