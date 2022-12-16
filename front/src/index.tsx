@@ -5,20 +5,16 @@ import './index.css';
 import './shared/styles/Main.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { FlashMessageProvider, TokenProvider, UserProvider } from './shared/context';
+import AppProvider from './shared/context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <TokenProvider>
-      <UserProvider>
-        <FlashMessageProvider>
-          <App />
-        </FlashMessageProvider>
-      </UserProvider>
-    </TokenProvider>
+    <AppProvider>
+      <App />
+    </AppProvider>
   </React.StrictMode>
 );
 

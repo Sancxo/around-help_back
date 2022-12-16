@@ -1,5 +1,4 @@
 // Handles all the functions needed to manage User login/out and registration
-
 import axios, { AxiosResponse, HeadersDefaults } from "axios";
 import { NavigateFunction } from "react-router-dom";
 import { Error, FlashMessage, Ok, setContext } from "../interfaces/misc.interfaces";
