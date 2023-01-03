@@ -8,7 +8,10 @@ export type FlashMessage = [symbol, string];
 
 export type setContext<T> = (arg: T) => void;
 
-export interface Address {
+export interface AddressValues {
   address: string,
-  long_lat: number[] | []
+  lat_lng: { lat: number, lng: number }
+}
+export interface Address extends AddressValues {
+  id: number
 }
