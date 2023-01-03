@@ -9,6 +9,7 @@ import { FlashMessageContext, TokenContext, UserContext } from './shared/context
 import { getFlash } from './shared/helpers/flash.helper';
 import { setContext } from './shared/interfaces/misc.interfaces';
 import User from './shared/interfaces/user.interfaces';
+import { useJsApiLoader } from '@react-google-maps/api';
 
 const Home = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/Home'));
 const Register = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/auth/Register'));
@@ -16,6 +17,8 @@ const Login = lazy((): Promise<{ default: ComponentType<any> }> => import('./pag
 const UserProfile = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/user/UserProfile'));
 const EditProfile = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/user/EditProfile'));
 const Needs = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/Needs'));
+
+const libraries: ('places' | 'drawing' | 'geometry' | 'visualization' | 'localContext')[] = ['places'];
 
 function App(): ReactElement {
   const localToken = localStorage.getItem("auth_token");
@@ -32,6 +35,13 @@ function App(): ReactElement {
   // State
   const [isDesktop, setIsDesktop] = useState(mediaQueryDesktop.matches ? true : false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Google Maps API JS Loader
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY!,
+    libraries: libraries
+  })
 
   // Used to automatilcally login or out the user depending on the token presence
   useEffect(() => {
@@ -59,7 +69,7 @@ function App(): ReactElement {
       .then(resp => getFlash(setFlashMessage, resp));
   }
 
-  function ifUserIsLoggedInGoTo(route: ReactElement) {
+  function isUserLoggedIn(route: ReactElement) {
     return !localToken ? <Navigate to="/" /> : route;
   }
 
@@ -77,9 +87,9 @@ function App(): ReactElement {
               <Route element={<Home />} path='/' />
               <Route path='/register' element={<Register />} />
               <Route path='/login' element={<Login />} />
-              <Route path="/user/:id" element={ifUserIsLoggedInGoTo(<UserProfile defaultUser={defaultUser} />)} />
-              <Route path="/profile-edit" element={ifUserIsLoggedInGoTo(<EditProfile />)} />
-              <Route path='/needs' element={ifUserIsLoggedInGoTo(<Needs />)} />
+              <Route path="/user/:id" element={isUserLoggedIn(<UserProfile defaultUser={defaultUser} />)} />
+              <Route path="/profile-edit" element={isUserLoggedIn(<EditProfile />)} />
+              <Route path='/needs' element={isUserLoggedIn(<Needs isLoaded={isLoaded} />)} />
             </Routes>
           </Suspense>
         </main>
