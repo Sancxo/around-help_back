@@ -21,6 +21,7 @@ export default function Login(): ReactElement {
         const resp: [symbol, string] = await signIn(email, password, setUser, setToken, navigate);
         getFlash(setFlashMessage, resp);
     }
+
     return (
         <form name="login" id="login-form" className="container">
             <h3>Login:</h3>
