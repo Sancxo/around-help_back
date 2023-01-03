@@ -1,113 +1,19 @@
-import { ChangeEvent, ReactElement, useContext, useState } from "react";
+import { ReactElement, useContext, useEffect } from "react";
+import UserRegistration from "../../components/UserRegistration";
+import AddressRegistration from "../../components/AddressRegistration";
+import User from "../../shared/interfaces/user.interfaces";
+import { AddressContext, UserContext } from "../../shared/context";
 import { useNavigate } from "react-router-dom";
-
-import User, { RegistrationValues } from "../../shared/interfaces/user.interfaces";
-import { registerUser } from "../../shared/helpers/user.helper";
-import { clearFlash } from "../../shared/helpers/flash.helper";
-import { FlashMessageContext, TokenContext, UserContext } from "../../shared/context";
-import { Address, FlashMessage, setContext } from "../../shared/interfaces/misc.interfaces";
-import AddressAutocomplete from "../../components/AddressAutocomplete";
-import { registerAddress } from "../../shared/helpers/address.helper";
+import { Address } from "../../shared/interfaces/misc.interfaces";
 
 export default function Register(): ReactElement {
-    const setUser: setContext<User> = useContext(UserContext).setUser;
-    const setToken: setContext<string> = useContext(TokenContext).setToken;
-    const setFlashMessage: setContext<FlashMessage> = useContext(FlashMessageContext).setFlashMessage;
-
-    const [registrationValues, setRegistrationValues] = useState<RegistrationValues>({
-        first_name: "",
-        last_name: "",
-        password: "",
-        password_confirmation: "",
-        email: ""
-    });
-    const [address, setAddress] = useState<Address>({
-        address: "",
-        long_lat: []
-    })
+    const user: User = useContext(UserContext).user;
+    const address: Address = useContext(AddressContext).address;
 
     const navigate = useNavigate();
 
-    function handleInputs(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        const name = e.target.name;
-        const value = e.target.value;
+    useEffect(() => { (user.id !== 0 && address.id !== 0) && navigate(`/user/${user.id}`) })
 
-        setRegistrationValues(registrationValues => ({ ...registrationValues, [name]: value }));
-    }
-    function handleImages(e: ChangeEvent<HTMLInputElement>) {
-        (e.target.id === "avatar-input") && setRegistrationValues(registrationValues => ({ ...registrationValues, 'avatar': e.target.files![0] }));
-        e.target.id === "id-card-input" && setRegistrationValues(registrationValues => ({ ...registrationValues, 'id_card': e.target.files![0] }));
-    }
-
-    async function handleSubmit() {
-        clearFlash(setFlashMessage);
-
-        const userForm: any = { registrationValues };
-        const userFormData = new FormData(); // we use FormData object because of images (id_card and avatar)
-
-        for (const field in userForm.registrationValues) {
-            if (Object.prototype.hasOwnProperty.call(userForm.registrationValues, field)) {
-                userFormData.append(`user[${field}]`, userForm.registrationValues[field]);
-            }
-        }
-        const respUser = await registerUser(userFormData, setUser, setToken, setFlashMessage);
-
-        if (respUser) {
-            await registerAddress(address, setUser, setFlashMessage, navigate);
-        }
-    }
-
-    return (
-        <form name="user" id="user-infos" encType='multipart/form-data' className="container">
-            <h3>Register: </h3>
-            <fieldset>
-                <legend>About you:</legend>
-
-                <label htmlFor="first-name-input">First name <small>(mandatory)</small>:</label>
-                <input type="text" name="first_name" id="first-name-input" onChange={handleInputs} required />
-                <br />
-
-                <label htmlFor="last-name-input">Last name <small>(mandatory)</small>:</label>
-                <input type="text" name="last_name" id="last-name-input" onChange={handleInputs} required />
-                <br />
-
-                <label htmlFor="email-input">Email <small>(mandatory)</small>:</label>
-                <input type="email" name="email" id="email-input" onChange={handleInputs} required />
-                <br />
-
-                <label htmlFor="avatar-input">Profile picture:</label>
-                <input type="file" name="avatar" id="avatar-input" accept="image/png, image/jpeg, image/gif, image/webp, image/avif" onChange={handleImages} />
-                <br />
-
-                <label htmlFor="id-card-input">Id card <small>(mandatory)</small>:</label>
-                <input type="file" name="id_card" id="id-card-input" accept="application/pdf, image/png, image/jpeg, image/gif, image/webp, image/avif" onChange={handleImages} required />
-                <br />
-
-                <label htmlFor="password-input">Password <small>(mandatory)</small>:</label>
-                <input type="password" name="password" id="password-input" onChange={handleInputs} required />
-                <br />
-
-                <label htmlFor="password-confirmation-input">Confirm password <small>(mandatory)</small>:</label>
-                <input type="password" name="password_confirmation" id="password-confirmation-input" onChange={handleInputs} required />
-                <br />
-
-                <label htmlFor="birthdate-input">Birthdate:</label>
-                <input type="date" name="birthdate" id="birthdate-input" onChange={handleInputs} />
-                <br />
-
-                <label htmlFor="about-input">About:</label>
-                <textarea name="about" id="about-input" cols={30} rows={10} onChange={handleInputs} ></textarea>
-                <br />
-
-            </fieldset>
-
-            <fieldset>
-                <legend>Your address:</legend>
-
-                <AddressAutocomplete setAddress={setAddress} />
-            </fieldset>
-
-            <input type="button" className="btn-prim" value="Submit" onClick={handleSubmit} />
-        </form>
-    )
+    if (user.id === 0) return <UserRegistration />
+    else return <AddressRegistration />
 }
