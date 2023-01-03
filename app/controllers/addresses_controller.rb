@@ -1,4 +1,6 @@
 class AddressesController < ApplicationController
+  require "json-schema"
+  require "json"
   before_action :set_address, only: %i[ show update destroy ]
 
   # GET /addresses
@@ -15,9 +17,17 @@ class AddressesController < ApplicationController
 
   # POST /addresses
   def create
-    @address = Address.new(params.permit(:address, long_lat: []))
+    @address = Address.new(params.permit(:address, lat_lng: [:lat, :lng]))
 
-    if @address.save
+    json_validation = JSON::Validator.validate("#{Rails.root}/app/models/address_schema.json", @address.lat_lng)
+    
+    if json_validation
+      puts "[AddressesController] -- `lat_lng` JSON argument validated well with #{@address.lat_lng.inspect()}."
+    else 
+      puts "[ERROR in AddressesController] -- `lat_lng` JSON argument has errors : #{@address.lat_lng.inspect()}."
+    end
+
+    if json_validation && @address.save
       render json: {
         address: @address, 
         message: "Address succesfully created!"
@@ -52,6 +62,6 @@ class AddressesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def address_params
-      params.require(:address).permit(:address, long_lat: [])
+      params.require(:address).permit(:address, :lat_lng)
     end
 end
