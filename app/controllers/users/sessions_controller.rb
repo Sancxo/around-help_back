@@ -7,7 +7,7 @@ class Users::SessionsController < Devise::SessionsController
             render json: {
                 message: "You're logged in!",
                 user: current_user,
-                avatar: rails_blob_path(current_user.avatar)
+                avatar: current_user.avatar.attached? ? rails_blob_path(current_user.avatar) : nil
             }, status: :ok
         else
             render json: {
