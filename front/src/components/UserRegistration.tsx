@@ -1,14 +1,14 @@
-import { ChangeEvent, ReactElement, useContext, useState } from "react";
-import { FlashMessageContext, TokenContext, UserContext } from "../shared/context";
+import { ChangeEvent, ReactElement, useState } from "react";
 import { clearFlash } from "../shared/helpers/flash.helper";
 import { registerUser } from "../shared/helpers/user.helper";
 import { FlashMessage, setContext } from "../shared/interfaces/misc.interfaces";
 import User, { RegistrationValues } from "../shared/interfaces/user.interfaces";
 
-export default function UserRegistration(): ReactElement {
-  const setFlashMessage: setContext<FlashMessage> = useContext(FlashMessageContext).setFlashMessage;
-  const setUser: setContext<User> = useContext(UserContext).setUser;
-  const setToken: setContext<string> = useContext(TokenContext).setToken;
+export default function UserRegistration({ setFlashMessage, setUser, setToken }: {
+  setFlashMessage: setContext<FlashMessage>,
+  setUser: setContext<User>,
+  setToken: setContext<string>
+}): ReactElement {
 
   const [registrationValues, setRegistrationValues] = useState<RegistrationValues>({
     first_name: "",

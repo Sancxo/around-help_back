@@ -1,19 +1,17 @@
-import React, { ChangeEvent, ReactElement, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { ChangeEvent, ReactElement, useState } from "react";
+import { NavigateFunction } from "react-router-dom";
 import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
-import { AddressContext, FlashMessageContext, UserContext } from "../shared/context";
 import { registerAddress } from "../shared/helpers/address.helper";
 import { clearFlash } from "../shared/helpers/flash.helper";
 import { Address, AddressValues, FlashMessage, setContext } from "../shared/interfaces/misc.interfaces";
 import User from "../shared/interfaces/user.interfaces";
 
-export default function AddressRegistration(): ReactElement {
-  const setFlashMessage: setContext<FlashMessage> = useContext(FlashMessageContext).setFlashMessage;
-  const setUser: setContext<User> = useContext(UserContext).setUser;
-  const setAddress: setContext<Address> = useContext(AddressContext).setAddress;
-
-  const navigate = useNavigate();
-
+export default function AddressRegistration({ setFlashMessage, setUser, setAddress, navigate }: {
+  setFlashMessage: setContext<FlashMessage>,
+  setUser: setContext<User>,
+  setAddress: setContext<Address>,
+  navigate: NavigateFunction
+}): ReactElement {
   const [addressValues, setAddressValues] = useState<AddressValues>({
     address: "",
     lat_lng: { lat: 0, lng: 0 }
@@ -62,7 +60,6 @@ export default function AddressRegistration(): ReactElement {
       </fieldset>
 
       <input type="button" className="btn-prim" value="Submit" onClick={handleSubmit} />
-
     </form>
   )
 }
