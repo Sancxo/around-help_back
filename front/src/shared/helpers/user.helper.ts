@@ -1,10 +1,11 @@
 // Handles all the functions needed to manage User login/out and registration
 import axios, { AxiosResponse, HeadersDefaults } from "axios";
 import { NavigateFunction } from "react-router-dom";
-import { Error, FlashMessage, Ok, setContext } from "../interfaces/misc.interfaces";
+import { Address, Error, FlashMessage, Ok, setContext } from "../interfaces/misc.interfaces";
 import User from "../interfaces/user.interfaces";
 import defaultUserAvatar from "../imgs/default-user.png";
 import { getFlash } from "./flash.helper";
+import { defaultAddress } from "./address.helper";
 
 const auth_token = "auth_token";
 const infos_user = "infos_user";
@@ -120,15 +121,15 @@ async function updateUser(
 
 async function signOut(
     token: string,
-    defaultUser: User,
     setUser: setContext<User>,
-    setToken: setContext<string>
+    setToken: setContext<string>,
+    setAddress: setContext<Address>
 ): Promise<[symbol, string]> {
     return await axios
         .delete(`${process.env.REACT_APP_BACKEND_URL}/users/sign_out`, { headers: { authorization: token } })
         .then((resp): [symbol, string] => {
             if (resp.status === 200) {
-                resetUserInfos(defaultUser, setUser, setToken, axios.defaults.headers);
+                resetUserInfos(setUser, setToken, setAddress, axios.defaults.headers);
                 return [Ok, resp.data.message];
             } else {
                 console.error(resp);
@@ -166,13 +167,14 @@ function setUserInfosFromToken(
 }
 
 function resetUserInfos(
-    emptyUser: User,
     setUser: setContext<User>,
     setToken: setContext<string>,
+    setAddress: setContext<Address>,
     axiosHeaders: HeadersDefaults
 ) {
-    setUser(emptyUser);
+    setUser(defaultUser);
     setToken("");
+    setAddress(defaultAddress);
     localStorage.removeItem(infos_user);
     localStorage.removeItem(auth_token);
     axiosHeaders.common["Authorization"] = "";

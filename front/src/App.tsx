@@ -5,9 +5,9 @@ import SwitchMenu from "./components/SwitchMenu";
 import Flash from './components/Flash';
 import axios from 'axios';
 import { defaultUser, resetUserInfos, signInWtihToken, signOut } from './shared/helpers/user.helper';
-import { FlashMessageContext, TokenContext, UserContext } from './shared/context';
+import { AddressContext, FlashMessageContext, TokenContext, UserContext } from './shared/context';
 import { getFlash } from './shared/helpers/flash.helper';
-import { setContext } from './shared/interfaces/misc.interfaces';
+import { Address, FlashMessage, setContext } from './shared/interfaces/misc.interfaces';
 import User from './shared/interfaces/user.interfaces';
 import { useJsApiLoader } from '@react-google-maps/api';
 
@@ -29,8 +29,9 @@ function App(): ReactElement {
 
   // Context
   const setUser: setContext<User> = useContext(UserContext).setUser;
-  const { token, setToken } = useContext(TokenContext);
-  const setFlashMessage = useContext(FlashMessageContext).setFlashMessage;
+  const { token, setToken }: { token: string, setToken: setContext<string> } = useContext(TokenContext);
+  const setFlashMessage: setContext<FlashMessage> = useContext(FlashMessageContext).setFlashMessage;
+  const setAddress: setContext<Address> = useContext(AddressContext).setAddress;
 
   // State
   const [isDesktop, setIsDesktop] = useState(mediaQueryDesktop.matches ? true : false)
@@ -45,12 +46,15 @@ function App(): ReactElement {
 
   // Used to automatilcally login or out the user depending on the token presence
   useEffect(() => {
-    (!localToken || localToken === "undefined") &&
-      resetUserInfos(defaultUser, setUser, setToken, axios.defaults.headers);
+    if (!localToken || localToken === "undefined")
+      resetUserInfos(setUser, setToken, setAddress, axios.defaults.headers);
+    // We need to reset Address if not local token or when log out
 
     localToken &&
       signInWtihToken(localToken, setUser, setToken);
-  }, [localToken, setToken, setUser])
+    // We need to get back Address after refresh
+
+  }, [localToken, setToken, setUser, setAddress])
 
   // Handle the switch between desktop or mobile menu dependeing on the mediaquery
   useEffect(() => {
@@ -65,7 +69,7 @@ function App(): ReactElement {
   })
 
   async function logOut() {
-    signOut(token, defaultUser, setUser, setToken)
+    signOut(token, setUser, setToken, setAddress)
       .then(resp => getFlash(setFlashMessage, resp));
   }
 
