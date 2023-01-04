@@ -4,6 +4,12 @@ import { Address, AddressValues, FlashMessage, setContext } from "../interfaces/
 import User from "../interfaces/user.interfaces";
 import { updateUser } from "./user.helper";
 
+export const defaultAddress: Address = {
+  id: 0,
+  address: "",
+  lat_lng: { lat: 0, lng: 0 }
+}
+
 async function registerAddress(
   data: AddressValues,
   setUser: setContext<User>,
