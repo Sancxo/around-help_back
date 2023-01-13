@@ -48,11 +48,9 @@ function App(): ReactElement {
   useEffect(() => {
     if (!localToken || localToken === "undefined")
       resetUserInfos(setUser, setToken, setAddress, axios.defaults.headers);
-    // We need to reset Address if not local token or when log out
 
     localToken &&
-      signInWtihToken(localToken, setUser, setToken);
-    // We need to get back Address after refresh
+      signInWtihToken(localToken, setUser, setToken, setAddress);
 
   }, [localToken, setToken, setUser, setAddress])
 

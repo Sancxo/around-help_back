@@ -54,15 +54,19 @@ async function signIn(
 async function signInWtihToken(
     token: string,
     setUser: setContext<User>,
-    setToken: setContext<string>
+    setToken: setContext<string>,
+    setAddress: setContext<Address>
 ): Promise<[symbol, string]> {
     return await axios
         .get(`${process.env.REACT_APP_BACKEND_URL}/user`, { headers: { authorization: token } })
         .then((resp): [symbol, string] => {
             if (resp.status === 200) {
-                setAvatarToUser(resp.data.user, resp.data.avatar)
-
                 setUserInfosFromToken(resp.data.user, setUser, token, setToken);
+
+                setAvatarToUser(resp.data.user, resp.data.avatar);
+
+                getAddress(resp.data.user.address_id, setAddress);
+
                 return [Ok, resp.data.message];
             } else {
                 console.error(resp);
