@@ -5,7 +5,7 @@ import { Address, Error, FlashMessage, Ok, setContext } from "../interfaces/misc
 import User from "../interfaces/user.interfaces";
 import defaultUserAvatar from "../imgs/default-user.png";
 import { getFlash } from "./flash.helper";
-import { defaultAddress } from "./address.helper";
+import { defaultAddress, getAddress } from "./address.helper";
 
 const auth_token = "auth_token";
 const infos_user = "infos_user";
@@ -28,15 +28,19 @@ async function signIn(
     password: String | undefined,
     setUser: setContext<User>,
     setToken: setContext<string>,
+    setAddress: setContext<Address>,
     navigate: NavigateFunction
 ): Promise<[symbol, string]> {
     return await axios
         .post(`${process.env.REACT_APP_BACKEND_URL}/users/sign_in`, { "user": { "email": email, "password": password } })
         .then((resp): [symbol, string] => {
             if (resp.status === 200) {
+                setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken);
+
                 setAvatarToUser(resp.data.user, resp.data.avatar);
 
-                setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken);
+                getAddress(resp.data.user.address_id, setAddress);
+
                 navigate(`/user/${resp.data.user.id}`);
                 return [Ok, resp.data.message];
             } else {
