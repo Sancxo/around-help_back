@@ -18,7 +18,7 @@ class NeedsController < ApplicationController
     @need = Need.new(need_params)
 
     if @need.save
-      render json: @need, status: :created, location: @need
+      render json: {need: @need, message: "Need successfully created!"}, status: :created, location: @need
     else
       render json: @need.errors, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class NeedsController < ApplicationController
   # PATCH/PUT /needs/1
   def update
     if @need.update(need_params)
-      render json: @need
+      render json: {need: @need, message: "Need successfully updated!"}
     else
       render json: @need.errors, status: :unprocessable_entity
     end

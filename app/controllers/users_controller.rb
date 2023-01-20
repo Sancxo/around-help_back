@@ -29,7 +29,7 @@ class UsersController < ApplicationController
 
       if this_user.update(user_params)
         render json: {
-          message: "User updated!",
+          message: "User successfully updated!",
           user: this_user,
           avatar: this_user.avatar.attached? ? rails_blob_path(this_user.avatar) : nil
         }
