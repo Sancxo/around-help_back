@@ -16,7 +16,8 @@ const Register = lazy((): Promise<{ default: ComponentType<any> }> => import('./
 const Login = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/auth/Login'));
 const UserProfile = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/user/UserProfile'));
 const EditProfile = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/user/EditProfile'));
-const Needs = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/Needs'));
+const Needs = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/needs/Needs'));
+const CreateNeed = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/needs/CreateNeed'));
 
 const libraries: ('places' | 'drawing' | 'geometry' | 'visualization' | 'localContext')[] = ['places'];
 
@@ -30,7 +31,7 @@ function App(): ReactElement {
   // Context
   const setUser: setContext<User> = useContext(UserContext).setUser;
   const { token, setToken }: { token: string, setToken: setContext<string> } = useContext(TokenContext);
-  const setFlashMessage: setContext<FlashMessage> = useContext(FlashMessageContext).setFlashMessage;
+  const { flashMessage, setFlashMessage }: { flashMessage: FlashMessage, setFlashMessage: setContext<FlashMessage> } = useContext(FlashMessageContext);
   const setAddress: setContext<Address> = useContext(AddressContext).setAddress;
 
   // State
@@ -92,11 +93,12 @@ function App(): ReactElement {
               <Route path="/user/:id" element={isUserLoggedIn(<UserProfile defaultUser={defaultUser} />)} />
               <Route path="/profile-edit" element={isUserLoggedIn(<EditProfile />)} />
               <Route path='/needs' element={isUserLoggedIn(<Needs isLoaded={isLoaded} />)} />
+              <Route path='/new-need' element={isUserLoggedIn(<CreateNeed />)} />
             </Routes>
           </Suspense>
         </main>
 
-        <Flash />
+        <Flash flashMessage={flashMessage} setFlashMessage={setFlashMessage} />
 
         <footer></footer>
       </Router>
