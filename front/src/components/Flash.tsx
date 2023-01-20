@@ -1,10 +1,8 @@
-import { ReactElement, useContext } from "react";
-import { FlashMessageContext } from "../shared/context";
+import { ReactElement } from "react";
 import { clearFlash } from "../shared/helpers/flash.helper";
-import { Error, FlashMessage, Ok } from "../shared/interfaces/misc.interfaces";
+import { Error, FlashMessage, Ok, setContext } from "../shared/interfaces/misc.interfaces";
 
-export default function Flash(): ReactElement {
-  const { flashMessage, setFlashMessage } = useContext(FlashMessageContext);
+export default function Flash({ flashMessage, setFlashMessage }: { flashMessage: FlashMessage, setFlashMessage: setContext<FlashMessage> }): ReactElement {
   const [code, message]: FlashMessage = flashMessage;
 
   function closeFlash() {
