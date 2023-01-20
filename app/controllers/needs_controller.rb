@@ -46,6 +46,6 @@ class NeedsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def need_params
-      params.require(:need).permit(:title, :description, :is_one_time?, :is_fulfilled?, :address_id)
+      params.require(:need).permit(:title, :description, :is_one_time, :is_fulfilled, :address_id)
     end
 end

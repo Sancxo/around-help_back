@@ -3,13 +3,13 @@
 one:
   title: MyString
   description: MyText
-  is_one_time?: false
-  is_fulfilled?: false
+  is_one_time: false
+  is_fulfilled: false
   address: one
 
 two:
   title: MyString
   description: MyText
-  is_one_time?: false
-  is_fulfilled?: false
+  is_one_time: false
+  is_fulfilled: false
   address: two
