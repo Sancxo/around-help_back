@@ -15,3 +15,15 @@ export interface AddressValues {
 export interface Address extends AddressValues {
   id: number
 }
+
+export interface NeedFormValues {
+  [index: string]: string | number | boolean | undefined,
+  title: string,
+  description: string,
+  is_one_time: true,
+  address_id?: number
+}
+export interface Need extends NeedFormValues {
+  id: number,
+  is_fulfilled: false
+}
