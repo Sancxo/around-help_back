@@ -84,7 +84,7 @@ async function registerUser(
 ): Promise<any> {
     return await axios
         .post<FormData, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/users`, registrationValues)
-        .then((resp): {} => {
+        .then((resp): boolean => {
             if (resp.status === 200) {
                 setAvatarToUser(resp.data.user, resp.data.avatar)
 
@@ -92,11 +92,11 @@ async function registerUser(
 
                 getFlash(setFlashMessage, [Ok, resp.data.message]);
 
-                return resp.data
+                return true
             } else {
                 console.error(resp);
                 getFlash(setFlashMessage, [Error, resp.data.message]);
-                return resp.data;
+                return false;
             };
         })
         .catch((err): void => {
