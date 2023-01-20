@@ -1,21 +1,20 @@
-import React, { ChangeEvent, ReactElement, useState } from "react";
-import { NavigateFunction } from "react-router-dom";
+import React, { ChangeEvent, Dispatch, ReactElement, SetStateAction, useContext, useState } from "react";
 import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
+import { FlashMessageContext } from "../shared/context";
 import { registerAddress } from "../shared/helpers/address.helper";
-import { clearFlash } from "../shared/helpers/flash.helper";
-import { Address, AddressValues, FlashMessage, setContext } from "../shared/interfaces/misc.interfaces";
-import User from "../shared/interfaces/user.interfaces";
+import { clearFlash, getFlash } from "../shared/helpers/flash.helper";
+import { Address, AddressValues, Error, FlashMessage, Ok, setContext } from "../shared/interfaces/misc.interfaces";
 
-export default function AddressRegistration({ setFlashMessage, setUser, setAddress, navigate }: {
-  setFlashMessage: setContext<FlashMessage>,
-  setUser: setContext<User>,
-  setAddress: setContext<Address>,
-  navigate: NavigateFunction
+export default function AddressRegistration({ setIsAddressSet, setnewlyCreatedAddress }: {
+  setIsAddressSet: Dispatch<SetStateAction<boolean>>,
+  setnewlyCreatedAddress: Dispatch<SetStateAction<Address>>
 }): ReactElement {
   const [addressValues, setAddressValues] = useState<AddressValues>({
     address: "",
     lat_lng: { lat: 0, lng: 0 }
   });
+
+  const setFlashMessage: setContext<FlashMessage> = useContext(FlashMessageContext).setFlashMessage
 
   const { ready, value, suggestions: { status, data }, setValue, clearSuggestions } = usePlacesAutocomplete({ callbackName: "initMap" });
 
@@ -46,7 +45,15 @@ export default function AddressRegistration({ setFlashMessage, setUser, setAddre
   async function handleSubmit() {
     clearFlash(setFlashMessage);
 
-    await registerAddress(addressValues, setUser, setAddress, setFlashMessage, navigate);
+    const resp = await registerAddress(addressValues);
+    if (resp.status === 201) {
+      setnewlyCreatedAddress(resp.data.address);
+      setIsAddressSet(true);
+      getFlash(setFlashMessage, [Ok, resp.data.message]);
+    } else {
+      console.error(resp);
+      getFlash(setFlashMessage, [Error, resp.data.message])
+    }
   }
 
   return (
