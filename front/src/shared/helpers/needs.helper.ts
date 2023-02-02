@@ -6,7 +6,8 @@ export const defaultNeed: Need = {
   title: "",
   description: "",
   is_one_time: true,
-  is_fulfilled: false
+  is_fulfilled: false,
+  address: { id: 0, address: "", lat_lng: { lat: 0, lng: 0 } }
 }
 
 async function createNeed(need: NeedFormValues): Promise<any> {
