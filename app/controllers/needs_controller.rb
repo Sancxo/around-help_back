@@ -3,9 +3,12 @@ class NeedsController < ApplicationController
 
   # GET /needs
   def index
-    @needs = Need.all
+    @needs = Need.all.includes(:address)
+    @needs_with_associated_data = @needs.map do |need|
+      need.attributes.merge('address' => need.address)
+    end
 
-    render json: @needs
+    render json: @needs_with_associated_data
   end
 
   # GET /needs/1
