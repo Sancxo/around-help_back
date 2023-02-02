@@ -1,11 +1,14 @@
-import { GoogleMap } from "@react-google-maps/api";
+import { GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
 import { ReactElement, useCallback, useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import { AddressContext } from "../shared/context";
+import { Need } from "../shared/interfaces/misc.interfaces";
 
-export default function NeedsMap({ isLoaded }: { isLoaded: boolean }): ReactElement {
+export default function NeedsMap({ isLoaded, needs }: { isLoaded: boolean, needs: Need[] }): ReactElement {
   const latLng = useContext(AddressContext).address.lat_lng;
 
-  const [map, setMap] = useState<google.maps.Map>()
+  const setMap = useState<google.maps.Map>()[1];
+  const [infoWindow, setInfoWindow] = useState<boolean>(false)
 
   const onLoad = useCallback((map: google.maps.Map) => {
     const bounds = new window.google.maps.LatLngBounds(latLng);
@@ -13,11 +16,11 @@ export default function NeedsMap({ isLoaded }: { isLoaded: boolean }): ReactElem
     map.setZoom(16);
 
     setMap(map);
-  }, [latLng])
+  }, [latLng, setMap])
 
   const onUnmount = useCallback(() => {
     setMap(undefined);
-  }, [])
+  }, [setMap])
 
   const containerStyle = {
     width: '750px',
@@ -32,7 +35,27 @@ export default function NeedsMap({ isLoaded }: { isLoaded: boolean }): ReactElem
       onLoad={onLoad}
       onUnmount={onUnmount}>
       {/* Markers */}
-      <></>
-    </GoogleMap>
+      {needs.map((need): any => {
+        return (
+          <Marker
+            key={`marker-${need.id}`}
+            title={need.title}
+            position={need.address.lat_lng}
+            clickable={true} onClick={(_) => setInfoWindow(true)} >
+            {infoWindow ?
+              <InfoWindow position={need.address.lat_lng} onCloseClick={() => setInfoWindow(false)} >
+                <div>
+                  <h3>{need.title}</h3>
+                  <p>{need.description}</p>
+                  <p>Is one time ? {need.is_one_time ? "Yes" : "No"}</p>
+                  <p>Located at: {need.address.address}</p>
+                  <Link to={`/needs/${need.id}`}><button type="button" className="btn-prim mt-2">See this need</button></Link>
+                </div>
+              </InfoWindow>
+              : null}
+          </Marker>
+        )
+      })}
+    </GoogleMap >
   ) : <></>
 }
