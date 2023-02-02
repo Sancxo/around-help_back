@@ -7,20 +7,13 @@ import { Need } from "../shared/interfaces/misc.interfaces";
 export default function NeedsMap({ isLoaded, needs }: { isLoaded: boolean, needs: Need[] }): ReactElement {
   const latLng = useContext(AddressContext).address.lat_lng;
 
-  const setMap = useState<google.maps.Map>()[1];
   const [infoWindow, setInfoWindow] = useState<boolean>(false)
 
   const onLoad = useCallback((map: google.maps.Map) => {
     const bounds = new window.google.maps.LatLngBounds(latLng);
     map.fitBounds(bounds);
     map.setZoom(16);
-
-    setMap(map);
-  }, [latLng, setMap])
-
-  const onUnmount = useCallback(() => {
-    setMap(undefined);
-  }, [setMap])
+  }, [latLng])
 
   const containerStyle = {
     width: '750px',
@@ -30,10 +23,8 @@ export default function NeedsMap({ isLoaded, needs }: { isLoaded: boolean, needs
   return isLoaded ? (
     <GoogleMap
       center={latLng}
-      zoom={16}
       mapContainerStyle={containerStyle}
-      onLoad={onLoad}
-      onUnmount={onUnmount}>
+      onLoad={onLoad} >
       {/* Markers */}
       {needs.map((need): any => {
         return (
