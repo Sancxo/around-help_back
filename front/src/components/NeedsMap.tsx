@@ -25,7 +25,6 @@ export default function NeedsMap({ isLoaded, needs }: { isLoaded: boolean, needs
       center={latLng}
       mapContainerStyle={containerStyle}
       onLoad={onLoad} >
-      {/* Markers */}
       {needs.map((need): any => {
         return (
           <Marker
@@ -39,6 +38,7 @@ export default function NeedsMap({ isLoaded, needs }: { isLoaded: boolean, needs
                   <h3>{need.title}</h3>
                   <p>{need.description}</p>
                   <p>Is one time ? {need.is_one_time ? "Yes" : "No"}</p>
+                  <p>Created by: {need.creator.first_name} {need.creator.last_name}</p>
                   <p>Located at: {need.address.address}</p>
                   <Link to={`/needs/${need.id}`}><button type="button" className="btn-prim mt-2">See this need</button></Link>
                 </div>
