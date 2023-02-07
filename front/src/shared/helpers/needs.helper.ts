@@ -3,10 +3,12 @@ import { Need, NeedFormValues } from "../interfaces/misc.interfaces";
 
 export const defaultNeed: Need = {
   id: 0,
+  creator_id: 0,
   title: "",
   description: "",
   is_one_time: true,
   is_fulfilled: false,
+  creator: { id: 0, first_name: "", last_name: "", email: "" },
   address: { id: 0, address: "", lat_lng: { lat: 0, lng: 0 } }
 }
 
