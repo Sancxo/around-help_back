@@ -1,14 +1,17 @@
 import { ChangeEvent, Dispatch, ReactElement, SetStateAction, useContext, useState } from "react";
-import { FlashMessageContext } from "../shared/context";
+import { FlashMessageContext, UserContext } from "../shared/context";
 import { clearFlash, getFlash } from "../shared/helpers/flash.helper";
 import { createNeed } from "../shared/helpers/needs.helper";
 import { Error, FlashMessage, Need, NeedFormValues, Ok, setContext } from "../shared/interfaces/misc.interfaces";
+import User from "../shared/interfaces/user.interfaces";
 
 export default function NeedRegistration({ setIsNeedCreated, setnewlyCreatedNeed }: {
   setIsNeedCreated: Dispatch<SetStateAction<boolean>>,
   setnewlyCreatedNeed: Dispatch<SetStateAction<Need>>
 }): ReactElement {
+  const user: User = useContext(UserContext).user;
   const [need, setNeed]: [NeedFormValues, Dispatch<SetStateAction<NeedFormValues>>] = useState({
+    creator_id: user.id,
     title: "",
     description: "",
     is_one_time: true
