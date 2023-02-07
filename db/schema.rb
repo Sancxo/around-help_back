@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_20_095940) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_07_223200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -65,16 +65,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_20_095940) do
     t.bigint "address_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
     t.index ["address_id"], name: "index_needs_on_address_id"
+    t.index ["creator_id"], name: "index_needs_on_creator_id"
   end
 
-  create_table "user_needs", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "need_id", null: false
+  create_table "needs_users", id: false, force: :cascade do |t|
+    t.bigint "need_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["need_id"], name: "index_user_needs_on_need_id"
-    t.index ["user_id"], name: "index_user_needs_on_user_id"
+    t.index ["need_id"], name: "index_needs_users_on_need_id"
+    t.index ["user_id"], name: "index_needs_users_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -98,6 +100,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_20_095940) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "needs", "addresses"
-  add_foreign_key "user_needs", "needs"
-  add_foreign_key "user_needs", "users"
+  add_foreign_key "needs", "users", column: "creator_id"
 end

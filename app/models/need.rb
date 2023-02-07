@@ -1,4 +1,6 @@
 class Need < ApplicationRecord
   belongs_to :address, optional: true
-  has_many :user_need
+
+  belongs_to :creator, :class_name => "User"
+  has_and_belongs_to_many :fulfillers, :class_name => "User"
 end
