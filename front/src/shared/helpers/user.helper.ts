@@ -65,7 +65,7 @@ async function signInWtihToken(
 
                 setAvatarToUser(resp.data.user, resp.data.avatar);
 
-                getAddress(resp.data.user.address_id, setAddress);
+                resp.data.user.address_id !== null && getAddress(resp.data.user.address_id, setAddress);
 
                 return [Ok, resp.data.message];
             } else {
