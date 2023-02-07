@@ -3,9 +3,13 @@ class NeedsController < ApplicationController
 
   # GET /needs
   def index
-    @needs = Need.all.includes(:address)
+    @needs = Need.all.includes(:address, :creator)
+    # @users = Needs.all.includes(:user, :need)
     @needs_with_associated_data = @needs.map do |need|
-      need.attributes.merge('address' => need.address)
+      need.attributes.merge(
+        'address' => need.address, 
+        'creator' => need.creator
+      )
     end
 
     render json: @needs_with_associated_data
@@ -49,6 +53,6 @@ class NeedsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def need_params
-      params.require(:need).permit(:title, :description, :is_one_time, :is_fulfilled, :address_id)
+      params.require(:need).permit(:title, :description, :is_one_time, :is_fulfilled, :address_id, :creator_id)
     end
 end
