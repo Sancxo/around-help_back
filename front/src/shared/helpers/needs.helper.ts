@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { Dispatch, SetStateAction } from "react";
 import { Need, NeedFormValues } from "../interfaces/misc.interfaces";
 
 export const defaultNeed: Need = {
@@ -9,7 +10,9 @@ export const defaultNeed: Need = {
   is_one_time: true,
   is_fulfilled: false,
   creator: { id: 0, first_name: "", last_name: "", email: "" },
-  address: { id: 0, address: "", lat_lng: { lat: 0, lng: 0 } }
+  address: { id: 0, address: "", lat_lng: { lat: 0, lng: 0 } },
+  created_at: new Date("0000-00-00"),
+  updated_at: new Date("0000-00-00")
 }
 
 async function createNeed(need: NeedFormValues): Promise<any> {
@@ -17,6 +20,26 @@ async function createNeed(need: NeedFormValues): Promise<any> {
     .post<NeedFormValues, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/needs/`, { need })
     .then((resp): {} => { return resp; })
     .catch(err => console.error(err));
+}
+
+async function getNeed(
+  needId: string,
+  token: string,
+  setNeed: Dispatch<SetStateAction<Need>>,
+  setIsLoaded: Dispatch<SetStateAction<boolean>>,
+  setError: Dispatch<SetStateAction<boolean>>) {
+  axios
+    .get(`${process.env.REACT_APP_BACKEND_URL}/needs/${needId}`, { headers: { authorization: token } })
+    .then(resp => {
+      console.debug(resp)
+      setNeed(resp.data);
+      setIsLoaded(true);
+    })
+    .catch(err => {
+      console.error("An error occured ::::: ", err);
+      setIsLoaded(true);
+      setError(true);
+    })
 }
 
 async function updateNeed(
@@ -29,4 +52,4 @@ async function updateNeed(
     .catch(err => console.error(err))
 }
 
-export { createNeed, updateNeed };
+export { createNeed, getNeed, updateNeed };
