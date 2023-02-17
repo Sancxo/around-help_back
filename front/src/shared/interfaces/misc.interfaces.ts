@@ -19,7 +19,7 @@ export interface Address extends AddressValues {
 }
 
 export interface NeedFormValues {
-  [index: string]: string | number | boolean | undefined | Address | User,
+  [index: string]: string | number | boolean | undefined | Address | User | Date,
   creator_id: number,
   title: string,
   description: string,
@@ -30,5 +30,7 @@ export interface Need extends NeedFormValues {
   id: number,
   is_fulfilled: false,
   address: { id: number, address: string, lat_lng: { lat: number, lng: number } },
-  creator: { id: number, first_name: string, last_name: string, email: string }
+  creator: { id: number, first_name: string, last_name: string, email: string },
+  created_at: Date,
+  updated_at: Date
 }
