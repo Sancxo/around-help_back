@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_07_223200) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_17_114246) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,6 +47,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_07_223200) do
     t.datetime "updated_at", null: false
     t.string "address", default: "", null: false
     t.jsonb "lat_lng", default: "{lat: 0, lng: 0}", null: false
+  end
+
+  create_table "chat_messages", force: :cascade do |t|
+    t.text "body"
+    t.bigint "user_id", null: false
+    t.bigint "chat_room_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_room_id"], name: "index_chat_messages_on_chat_room_id"
+    t.index ["user_id"], name: "index_chat_messages_on_user_id"
+  end
+
+  create_table "chat_rooms", force: :cascade do |t|
+    t.bigint "need_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["need_id"], name: "index_chat_rooms_on_need_id"
   end
 
   create_table "jwt_denylist", force: :cascade do |t|
@@ -99,6 +116,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_07_223200) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "chat_messages", "chat_rooms"
+  add_foreign_key "chat_messages", "users"
+  add_foreign_key "chat_rooms", "needs"
   add_foreign_key "needs", "addresses"
   add_foreign_key "needs", "users", column: "creator_id"
 end

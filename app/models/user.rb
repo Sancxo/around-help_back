@@ -7,6 +7,8 @@ class User < ApplicationRecord
 
   belongs_to :address, optional: true
 
+  has_many :chat_messages
+
   has_many :needs
   has_and_belongs_to_many :needs
 
