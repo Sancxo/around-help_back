@@ -1,3 +1,10 @@
+# Todo
+
+[] Refactor Markers inside distinct component
+[] Optimizes query by getting only needs inside Map boundaries
+[] Set data inside ShowNeed page
+[] Action Cable
+
 # README
 
 This README would normally document whatever steps are necessary to get the
