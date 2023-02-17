@@ -17,7 +17,14 @@ class NeedsController < ApplicationController
 
   # GET /needs/1
   def show
-    render json: @need
+    @need = Need.includes(:address, :creator).find(params[:id])
+
+    @need_with_associatied_data = @need.attributes.merge(
+      'address' => @need.address,
+      'creator' => @need.creator
+    )
+
+    render json: @need_with_associatied_data
   end
 
   # POST /needs
