@@ -206,7 +206,7 @@ function getUserInfos(
             setIsLoaded(true);
         })
         .catch(err => {
-            console.error(err);
+            console.error("An error occured ::::: ", err);
             setIsLoaded(true);
             setError(true);
         })

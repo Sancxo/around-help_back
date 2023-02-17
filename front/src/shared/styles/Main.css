@@ -7,11 +7,6 @@
 @import './partials/_Text.css';
 @import './partials/_Variables.css';
 
-/* Text */
-.text-center {
-  text-align: center;
-}
-
 /* Lists */
 .unstyled-list {
   list-style: none;
@@ -20,11 +15,6 @@
 #address-search-input-results {
   padding: 1rem;
   border: solid 1px gray;
-}
-
-/* links */
-.active {
-  font-weight: bold;
 }
 
 /* images */
