@@ -25,7 +25,7 @@ export default function UserProfile({ defaultUser }: { defaultUser: User }): Rea
 
     if (!isLoaded) return <div><p>Please, wait ...</p></div>
 
-    if (error || !userProfile) {
+    if (error || userProfile === defaultUser) {
         return (
             <div>
                 <p>Oops ... This user doesn't seem to exists !</p>
