@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     }
 
   authenticate :user do
+    mount ActionCable.server => "/cable"
     get 'user', to: 'users#this'
     get 'user/:id', to: 'users#show'
     put 'user', to: 'users#update'
@@ -13,6 +14,8 @@ Rails.application.routes.draw do
 
     resources :needs
     resources :addresses
+    resources :chat_rooms
+    resources :chat_messages
   end
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
