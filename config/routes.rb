@@ -13,9 +13,14 @@ Rails.application.routes.draw do
     patch 'user', to: 'users#update'
 
     resources :needs
+    resources :need_users
+
     resources :addresses
+
     resources :chat_rooms
     get 'chat_room/:need_id', to: 'chat_rooms#get_from_need_id'
+    resources :chat_room_users
+    
     resources :chat_messages
   end
   
