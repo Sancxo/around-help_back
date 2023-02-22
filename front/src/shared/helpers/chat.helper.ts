@@ -6,7 +6,18 @@ async function createChatRoom(needId: number): Promise<any> {
     .then(resp => { return resp; })
     .catch(err => console.error(err))
 }
-async function getChatRoomFromNeedId(needId: number) {
+
+async function createChatRoomUser(chatRoomId: number, userId: number) {
+  return await axios
+    .post(`${process.env.REACT_APP_BACKEND_URL}/chat_room_users`, { chat_room_id: chatRoomId, user_id: userId })
+    .then(_ => { return true })
+    .catch(err => {
+      console.error(err);
+      return false
+    })
+}
+
+async function getChatRoomFromNeedId(needId: number): Promise<number> {
   return await axios
     .get<{ need_id: number }, AxiosResponse>(`${process.env.REACT_APP_BACKEND_URL}/chat_room/${needId}`)
     .then(resp => {
@@ -15,4 +26,4 @@ async function getChatRoomFromNeedId(needId: number) {
     .catch(err => console.error(err))
 }
 
-export { createChatRoom, getChatRoomFromNeedId }
+export { createChatRoom, createChatRoomUser, getChatRoomFromNeedId }
