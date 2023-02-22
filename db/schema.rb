@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_17_114246) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_22_110336) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -64,6 +64,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_114246) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["need_id"], name: "index_chat_rooms_on_need_id"
+  end
+
+  create_table "chat_rooms_users", id: false, force: :cascade do |t|
+    t.bigint "chat_room_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["chat_room_id", "user_id"], name: "index_chat_rooms_users_on_chat_room_id_and_user_id"
+    t.index ["user_id", "chat_room_id"], name: "index_chat_rooms_users_on_user_id_and_chat_room_id"
   end
 
   create_table "jwt_denylist", force: :cascade do |t|
