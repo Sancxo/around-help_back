@@ -8,6 +8,15 @@ class ChatRoomsController < ApplicationController
     render json: @chat_rooms
   end
 
+  # GET /chat_rooms/:need_id
+  def get_from_need_id
+    chat_room = ChatRoom.find_by(need_id: params[:need_id])
+
+    puts chat_room.inspect
+
+    render json: chat_room
+  end
+
   # GET /chat_rooms/1
   def show
     render json: @chat_room
@@ -46,6 +55,6 @@ class ChatRoomsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def chat_room_params
-      params.fetch(:chat_room, {})
+      params.fetch(:chat_room).permit(:need_id)
     end
 end

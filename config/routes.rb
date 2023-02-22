@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     resources :needs
     resources :addresses
     resources :chat_rooms
+    get 'chat_room/:need_id', to: 'chat_rooms#get_from_need_id'
     resources :chat_messages
   end
   
