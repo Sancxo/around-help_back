@@ -1,5 +1,6 @@
 import { ChangeEvent, Dispatch, ReactElement, SetStateAction, useContext, useState } from "react";
 import { FlashMessageContext, UserContext } from "../shared/context";
+import { createChatRoom } from "../shared/helpers/chat.helper";
 import { clearFlash, getFlash } from "../shared/helpers/flash.helper";
 import { createNeed } from "../shared/helpers/needs.helper";
 import { Error, FlashMessage, Need, NeedFormValues, Ok, setContext } from "../shared/interfaces/misc.interfaces";
@@ -24,9 +25,13 @@ export default function NeedRegistration({ setIsNeedCreated, setnewlyCreatedNeed
 
     const resp = await createNeed(need);
     if (resp.status === 201) {
-      getFlash(setFlashMessage, [Ok, resp.data.message]);
       setnewlyCreatedNeed(resp.data.need)
       setIsNeedCreated(true);
+      createChatRoom(resp.data.need.id);
+      getFlash(setFlashMessage, [Ok, resp.data.message]);
+    } else if (!resp) {
+      console.error("Api response is undefined.")
+      getFlash(setFlashMessage, [Error, "A technical error occured ..."]);
     } else {
       console.error(resp)
       getFlash(setFlashMessage, [Error, resp.data.message]);
