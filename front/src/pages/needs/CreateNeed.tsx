@@ -12,7 +12,6 @@ export default function CreateNeed(): ReactElement {
   const [newlyCreatedAddress, setnewlyCreatedAddress]: [Address, Dispatch<SetStateAction<Address>>] = useState(defaultAddress);
   const [newlyCreatedNeed, setnewlyCreatedNeed]: [Need, Dispatch<SetStateAction<Need>>] = useState(defaultNeed);
 
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,12 +24,6 @@ export default function CreateNeed(): ReactElement {
         }
       }).catch((err) => console.error(err));
   }, [isAddressSet, newlyCreatedAddress.id, newlyCreatedNeed.id, navigate])
-
-  /* 
-  Même schéma que pour la registration :
-  - D'abord on créé le besoin
-  - Ensuite, on renseigne l'adresse du besoin (composant déjà créé)
-  */
 
   return !isNeedCreated ?
     <NeedRegistration setIsNeedCreated={setIsNeedCreated} setnewlyCreatedNeed={setnewlyCreatedNeed} /> :
