@@ -48,5 +48,5 @@ export default function NeedsMap({ isLoaded, needs }: { isLoaded: boolean, needs
         )
       })}
     </GoogleMap >
-  ) : <></>
+  ) : <p>Error while loading the Needs map !</p>
 }
