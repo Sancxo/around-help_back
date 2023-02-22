@@ -22,6 +22,16 @@ async function createNeed(need: NeedFormValues): Promise<any> {
     .catch(err => console.error(err));
 }
 
+async function createNeedUser(needId: number, userId: number) {
+  return await axios
+    .post(`${process.env.REACT_APP_BACKEND_URL}/need_users`, { need_id: needId, user_id: userId })
+    .then(_ => { return true })
+    .catch(err => {
+      console.error(err);
+      return false;
+    })
+}
+
 async function getNeed(
   needId: string,
   token: string,
@@ -51,4 +61,4 @@ async function updateNeed(
     .catch(err => console.error(err))
 }
 
-export { createNeed, getNeed, updateNeed };
+export { createNeed, createNeedUser, getNeed, updateNeed };
