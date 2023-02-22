@@ -17,8 +17,8 @@ export const defaultNeed: Need = {
 
 async function createNeed(need: NeedFormValues): Promise<any> {
   return await axios
-    .post<NeedFormValues, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/needs/`, { need })
-    .then((resp): {} => { return resp; })
+    .post<NeedFormValues, AxiosResponse>(`${process.env.REACT_APP_BACKEND_URL}/needs/`, { need })
+    .then(resp => { return resp; })
     .catch(err => console.error(err));
 }
 
@@ -29,9 +29,8 @@ async function getNeed(
   setIsLoaded: Dispatch<SetStateAction<boolean>>,
   setError: Dispatch<SetStateAction<boolean>>) {
   axios
-    .get(`${process.env.REACT_APP_BACKEND_URL}/needs/${needId}`, { headers: { authorization: token } })
+    .get<Need, AxiosResponse>(`${process.env.REACT_APP_BACKEND_URL}/needs/${needId}`, { headers: { authorization: token } })
     .then(resp => {
-      console.debug(resp)
       setNeed(resp.data);
       setIsLoaded(true);
     })
