@@ -10,6 +10,7 @@ export const defaultNeed: Need = {
   is_one_time: true,
   is_fulfilled: false,
   creator: { id: 0, first_name: "", last_name: "", email: "" },
+  fulfillers: [],
   address: { id: 0, address: "", lat_lng: { lat: 0, lng: 0 } },
   created_at: new Date("0000-00-00"),
   updated_at: new Date("0000-00-00")
