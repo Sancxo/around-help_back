@@ -15,7 +15,8 @@ class NeedUsersController < ApplicationController
 
   # POST /need_users
   def create
-    @need_user = NeedUser.new(need_user_params)
+    @need_user = Need.includes(:fulfillers).find(params[:need_id])
+    @need_user.fulfillers.build(:id => params[:user_id])
 
     if @need_user.save
       render json: @need_user, status: :created, location: @need_user
