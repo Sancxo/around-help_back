@@ -33,7 +33,6 @@ export default function ShowNeed(): ReactElement {
     if (isUserAddedToNeed && isUserAddedToChatRoom) {
       setFlashMessage([Ok, "You answered to this Need, now you can contact the creator."]);
       navigate(`/conversation/${chatRoomId}`);
-      // navigate to Conversation !
     } else {
       setFlashMessage([Error, "An error occured ..."]);
     }
@@ -42,6 +41,10 @@ export default function ShowNeed(): ReactElement {
   function markAsFulfilled() {
 
   }
+
+  // We can't directly check if user is in need.fulfillers list because user has an 'avatar' key set after we fetched it (cf. setAvatarToUser function in user.helper.ts) 
+  // and the users in need.fulfillers don't have this key so we make a list of fulfillers id to compare with user.id
+  const fullfilersIdList = need.fulfillers.map(fulfiller => fulfiller.id);
 
   if (!isLoaded) return <div><p>Please, wait ...</p></div>
 
@@ -63,7 +66,7 @@ export default function ShowNeed(): ReactElement {
       <p>Created : {need.created_at.toString()}. Updated: {need.updated_at.toString()}</p>
 
       {need.creator_id !== user.id ?
-        <button type="button" className="btn-prim mt-2" onClick={addUserAndActiveConversation}>Answer this Need</button> :
+        !fullfilersIdList.includes(user.id) && <button type="button" className="btn-prim mt-2" onClick={addUserAndActiveConversation}>Answer this Need</button> :
         <button type="button" className="btn-prim mt-2" onClick={markAsFulfilled}>Mark as fulfilled</button>
       }
     </div>
