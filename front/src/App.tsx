@@ -19,6 +19,7 @@ const EditProfile = lazy((): Promise<{ default: ComponentType<any> }> => import(
 const Needs = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/needs/Needs'));
 const CreateNeed = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/needs/CreateNeed'));
 const ShowNeed = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/needs/ShowNeed'));
+const Conversation = lazy((): Promise<{ default: ComponentType<any> }> => import('./pages/chat/Conversation'))
 
 const libraries: ('places' | 'drawing' | 'geometry' | 'visualization' | 'localContext')[] = ['places'];
 
@@ -96,6 +97,7 @@ function App(): ReactElement {
               <Route path='/needs' element={isUserLoggedIn(<Needs isLoaded={isLoaded} />)} />
               <Route path='/new-need' element={isUserLoggedIn(<CreateNeed />)} />
               <Route path='/needs/:id' element={isUserLoggedIn(<ShowNeed />)} />
+              <Route path='/conversation/:id' element={isUserLoggedIn(<Conversation />)} />
             </Routes>
           </Suspense>
         </main>
