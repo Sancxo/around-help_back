@@ -17,11 +17,12 @@ class NeedsController < ApplicationController
 
   # GET /needs/1
   def show
-    @need = Need.includes(:address, :creator).find(params[:id])
+    @need = Need.includes(:address, :creator, :fulfillers).find(params[:id])
 
     @need_with_associatied_data = @need.attributes.merge(
       'address' => @need.address,
-      'creator' => @need.creator
+      'creator' => @need.creator,
+      'fulfillers' => @need.fulfillers
     )
 
     render json: @need_with_associatied_data
