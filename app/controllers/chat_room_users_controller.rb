@@ -15,7 +15,8 @@ class ChatRoomUsersController < ApplicationController
 
   # POST /chat_room_users
   def create
-    @chat_room_user = ChatRoomUser.new(chat_room_user_params)
+    @chat_room_user = ChatRoom.includes(:users).find(params[:chat_room_id])
+    @chat_room_user.users.build(:id => params[:user_id])
 
     if @chat_room_user.save
       render json: @chat_room_user, status: :created, location: @chat_room_user
