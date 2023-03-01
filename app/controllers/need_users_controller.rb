@@ -15,11 +15,13 @@ class NeedUsersController < ApplicationController
 
   # POST /need_users
   def create
-    @need_user = Need.includes(:fulfillers).find(params[:need_id])
-    @need_user.fulfillers.build(:id => params[:user_id])
+    @need = Need.find(params[:need_id])
+    @user = User.find(params[:user_id])
+    
+    @need_user = @need.fulfillers << @user
 
-    if @need_user.save
-      render json: @need_user, status: :created, location: @need_user
+    if @need_user
+      render json: @need_user, status: :created
     else
       render json: @need_user.errors, status: :unprocessable_entity
     end
