@@ -1,5 +1,5 @@
 // Handles all the functions needed to manage User login/out and registration
-import axios, { AxiosResponse, HeadersDefaults } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { NavigateFunction } from "react-router-dom";
 import { Address, Error, FlashMessage, Ok, setContext } from "../interfaces/misc.interfaces";
 import User from "../interfaces/user.interfaces";
@@ -7,7 +7,6 @@ import defaultUserAvatar from "../imgs/default-user.png";
 import { getFlash } from "./flash.helper";
 import { defaultAddress, getAddress } from "./address.helper";
 
-const auth_token = "auth_token";
 const infos_user = "infos_user";
 
 export const defaultUser: User = {
@@ -27,15 +26,14 @@ async function signIn(
     email: String | undefined,
     password: String | undefined,
     setUser: setContext<User>,
-    setToken: setContext<string>,
     setAddress: setContext<Address>,
     navigate: NavigateFunction
 ): Promise<[symbol, string]> {
     return await axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}/users/sign_in`, { "user": { "email": email, "password": password } })
+        .post(`${process.env.REACT_APP_BACKEND_URL}/users/sign_in`, { "user": { "email": email, "password": password } }, { withCredentials: true })
         .then((resp): [symbol, string] => {
             if (resp.status === 200) {
-                setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken);
+                setUserInfos(resp.data.user, setUser);
 
                 setAvatarToUser(resp.data.user, resp.data.avatar);
 
@@ -52,16 +50,14 @@ async function signIn(
 }
 
 async function signInWtihToken(
-    token: string,
     setUser: setContext<User>,
-    setToken: setContext<string>,
     setAddress: setContext<Address>
 ): Promise<[symbol, string]> {
     return await axios
-        .get(`${process.env.REACT_APP_BACKEND_URL}/user`, { headers: { authorization: token } })
+        .get(`${process.env.REACT_APP_BACKEND_URL}/user`, { withCredentials: true })
         .then((resp): [symbol, string] => {
             if (resp.status === 200) {
-                setUserInfosFromToken(resp.data.user, setUser, token, setToken);
+                setUserInfosFromToken(resp.data.user, setUser);
 
                 setAvatarToUser(resp.data.user, resp.data.avatar);
 
@@ -79,7 +75,6 @@ async function signInWtihToken(
 async function registerUser(
     registrationValues: FormData,
     setUser: setContext<User>,
-    setToken: setContext<string>,
     setFlashMessage: setContext<FlashMessage>,
 ): Promise<any> {
     return await axios
@@ -88,7 +83,7 @@ async function registerUser(
             if (resp.status === 200) {
                 setAvatarToUser(resp.data.user, resp.data.avatar)
 
-                setUserInfos(resp.data.user, setUser, resp.headers.authorization, setToken);
+                setUserInfos(resp.data.user, setUser);
 
                 getFlash(setFlashMessage, [Ok, resp.data.message]);
 
@@ -110,7 +105,7 @@ async function updateUser(
     setFlashMessage: setContext<FlashMessage>,
 ): Promise<any> {
     return await axios
-        .patch<FormData | {}, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/user`, registrationValues)
+        .patch<FormData | {}, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/user`, registrationValues, { withCredentials: true })
         .then((resp): {} => {
             if (resp.status === 200) {
                 setAvatarToUser(resp.data.user, resp.data.avatar);
@@ -128,16 +123,14 @@ async function updateUser(
 }
 
 async function signOut(
-    token: string,
     setUser: setContext<User>,
-    setToken: setContext<string>,
     setAddress: setContext<Address>
 ): Promise<[symbol, string]> {
     return await axios
-        .delete(`${process.env.REACT_APP_BACKEND_URL}/users/sign_out`, { headers: { authorization: token } })
+        .delete(`${process.env.REACT_APP_BACKEND_URL}/users/sign_out`, { withCredentials: true })
         .then((resp): [symbol, string] => {
             if (resp.status === 200) {
-                resetUserInfos(setUser, setToken, setAddress, axios.defaults.headers);
+                resetUserInfos(setUser, setAddress);
                 return [Ok, resp.data.message];
             } else {
                 console.error(resp);
@@ -149,56 +142,41 @@ async function signOut(
 
 function setUserInfos(
     user: User,
-    setUser: setContext<User>,
-    token: string,
-    setToken: setContext<string>
+    setUser: setContext<User>
 ) {
     setUser(user);
-    setToken(token);
-    localStorage.setItem(auth_token, token);
-    axios.defaults.headers.common["Authorization"] = token;
 
     console.info(`User is logged in with id ${user.id}.`);
 }
 
 function setUserInfosFromToken(
     user: User,
-    setUser: setContext<User>,
-    token: string,
-    setToken: setContext<string>
+    setUser: setContext<User>
 ) {
     setUser(user);
-    setToken(localStorage.getItem(auth_token) as string);
-    axios.defaults.headers.common["Authorization"] = token;
 
     console.info("We checked the authentification token with success.");
 }
 
 function resetUserInfos(
     setUser: setContext<User>,
-    setToken: setContext<string>,
-    setAddress: setContext<Address>,
-    axiosHeaders: HeadersDefaults
+    setAddress: setContext<Address>
 ) {
     setUser(defaultUser);
-    setToken("");
     setAddress(defaultAddress);
     localStorage.removeItem(infos_user);
-    localStorage.removeItem(auth_token);
-    axiosHeaders.common["Authorization"] = "";
 
     console.info("We reset the user informations on client side.")
 }
 
 function getUserInfos(
     id: string,
-    token: string,
     setUserProfile: React.Dispatch<React.SetStateAction<User>>,
     setIsLoaded: React.Dispatch<React.SetStateAction<boolean>>,
     setError: React.Dispatch<React.SetStateAction<boolean>>
 ) {
     axios
-        .get(`${process.env.REACT_APP_BACKEND_URL}/user/${id}`, { headers: { authorization: token } })
+        .get(`${process.env.REACT_APP_BACKEND_URL}/user/${id}`, { withCredentials: true })
         .then(resp => {
             setAvatarToUser(resp.data.user, resp.data.avatar);
 

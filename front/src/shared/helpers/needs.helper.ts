@@ -25,7 +25,7 @@ async function createNeed(need: NeedFormValues): Promise<any> {
 
 async function createNeedUser(needId: number, userId: number) {
   return await axios
-    .post(`${process.env.REACT_APP_BACKEND_URL}/need_users`, { need_id: needId, user_id: userId })
+    .post(`${process.env.REACT_APP_BACKEND_URL}/need_users`, { need_id: needId, user_id: userId }, { withCredentials: true })
     .then(_ => { return true })
     .catch(err => {
       console.error(err);
@@ -40,7 +40,7 @@ async function getNeed(
   setIsLoaded: Dispatch<SetStateAction<boolean>>,
   setError: Dispatch<SetStateAction<boolean>>) {
   axios
-    .get<Need, AxiosResponse>(`${process.env.REACT_APP_BACKEND_URL}/needs/${needId}`, { headers: { authorization: token } })
+    .get<Need, AxiosResponse>(`${process.env.REACT_APP_BACKEND_URL}/needs/${needId}`, { withCredentials: true })
     .then(resp => {
       setNeed(resp.data);
       setIsLoaded(true);
@@ -57,7 +57,7 @@ async function updateNeed(
   need: {},
 ) {
   return await axios
-    .patch<NeedFormValues, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/needs/${need_id}`, need)
+    .patch<NeedFormValues, AxiosResponse<any, any>>(`${process.env.REACT_APP_BACKEND_URL}/needs/${need_id}`, need, { withCredentials: true })
     .then((resp): any => { return resp; })
     .catch(err => console.error(err))
 }
