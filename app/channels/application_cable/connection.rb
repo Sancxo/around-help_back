@@ -9,7 +9,12 @@ module ApplicationCable
     private
     
     def find_verified_user
-      if verified_user = env['warden'].user
+      jwt_payload = JWT.decode(
+        cookies.signed[:jwt], 
+        Rails.application.credentials.devise[:jwt_secret_key]
+      ).first
+
+      if verified_user = User.find_by(id: jwt_payload['id']) 
         verified_user
       else 
         reject_unauthorized_connection
