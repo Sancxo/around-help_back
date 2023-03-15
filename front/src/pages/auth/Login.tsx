@@ -1,6 +1,6 @@
 import { ReactElement, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AddressContext, FlashMessageContext, TokenContext, UserContext } from "../../shared/context";
+import { AddressContext, FlashMessageContext, UserContext } from "../../shared/context";
 import { clearFlash, getFlash } from "../../shared/helpers/flash.helper";
 import { signIn } from "../../shared/helpers/user.helper";
 import { Address, FlashMessage, setContext } from "../../shared/interfaces/misc.interfaces";
@@ -9,7 +9,6 @@ import User from "../../shared/interfaces/user.interfaces";
 export default function Login(): ReactElement {
     const setFlashMessage: setContext<FlashMessage> = useContext(FlashMessageContext).setFlashMessage;
     const setUser: setContext<User> = useContext(UserContext).setUser;
-    const setToken: setContext<string> = useContext(TokenContext).setToken;
     const setAddress: setContext<Address> = useContext(AddressContext).setAddress;
 
     const [email, setEmail] = useState<String>();
@@ -19,7 +18,7 @@ export default function Login(): ReactElement {
 
     async function handleSubmit() {
         clearFlash(setFlashMessage);
-        const resp: [symbol, string] = await signIn(email, password, setUser, setToken, setAddress, navigate);
+        const resp: [symbol, string] = await signIn(email, password, setUser, setAddress, navigate);
         getFlash(setFlashMessage, resp);
     }
 

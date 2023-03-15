@@ -1,6 +1,6 @@
 import React, { MouseEventHandler, ReactComponentElement, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { TokenContext, UserContext } from "../shared/context";
+import { UserContext } from "../shared/context";
 
 export default function MobileMenu({ logOut, setIsMobileMenuOpen }: {
   logOut: MouseEventHandler<HTMLAnchorElement>,
@@ -8,7 +8,6 @@ export default function MobileMenu({ logOut, setIsMobileMenuOpen }: {
 }): ReactComponentElement<React.JSXElementConstructor<HTMLDivElement>, Pick<React.ComponentProps<React.JSXElementConstructor<HTMLDivElement>>, keyof HTMLDivElement>> {
   const { pathname } = useLocation();
 
-  const token: string = useContext(TokenContext).token;
   const user_id: number = useContext(UserContext).user.id;
 
   // Pathnames
@@ -21,7 +20,7 @@ export default function MobileMenu({ logOut, setIsMobileMenuOpen }: {
   return (
     <div className="column flex align-center justify-end ">
       {
-        (token || token === "undefined") ?
+        user_id ?
           <div className="flex gap-3 menu">
             <Link to={profile} title="Your profile" onClick={() => setIsMobileMenuOpen(false)} className={`${pathname === profile && "active"}`}>My profile</Link >
             <Link to={needs} onClick={() => setIsMobileMenuOpen(false)} className={`${pathname === needs && "active"}`}>Needs</Link>

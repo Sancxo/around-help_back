@@ -1,5 +1,5 @@
 import { ChangeEvent, Dispatch, ReactElement, SetStateAction, useContext, useState } from "react";
-import { FlashMessageContext, TokenContext, UserContext } from "../shared/context";
+import { FlashMessageContext, UserContext } from "../shared/context";
 import { clearFlash } from "../shared/helpers/flash.helper";
 import { registerUser } from "../shared/helpers/user.helper";
 import { FlashMessage, setContext } from "../shared/interfaces/misc.interfaces";
@@ -17,8 +17,6 @@ export default function UserRegistration({ setIsUserCreated }: { setIsUserCreate
 
   const setFlashMessage: setContext<FlashMessage> = useContext(FlashMessageContext).setFlashMessage;
   const setUser: setContext<User> = useContext(UserContext).setUser;
-  const setToken: setContext<string> = useContext(TokenContext).setToken;
-
 
   function handleInputs(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const name = e.target.name;
@@ -44,7 +42,7 @@ export default function UserRegistration({ setIsUserCreated }: { setIsUserCreate
       }
     }
 
-    await registerUser(userFormData, setUser, setToken, setFlashMessage) && setIsUserCreated(true);
+    await registerUser(userFormData, setUser, setFlashMessage) && setIsUserCreated(true);
   }
 
   return (

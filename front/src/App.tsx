@@ -1,11 +1,10 @@
 import { ComponentType, lazy, ReactElement, Suspense, useContext, useEffect, useState } from 'react';
-import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import SwitchMenu from "./components/SwitchMenu";
 import Flash from './components/Flash';
-import axios from 'axios';
-import { defaultUser, resetUserInfos, signInWtihToken, signOut } from './shared/helpers/user.helper';
-import { AddressContext, FlashMessageContext, TokenContext, UserContext } from './shared/context';
+import { defaultUser, signOut } from './shared/helpers/user.helper';
+import { AddressContext, FlashMessageContext, UserContext } from './shared/context';
 import { getFlash } from './shared/helpers/flash.helper';
 import { Address, FlashMessage, setContext } from './shared/interfaces/misc.interfaces';
 import User from './shared/interfaces/user.interfaces';
@@ -24,7 +23,6 @@ const Conversation = lazy((): Promise<{ default: ComponentType<any> }> => import
 const libraries: ('places' | 'drawing' | 'geometry' | 'visualization' | 'localContext')[] = ['places'];
 
 function App(): ReactElement {
-  const localToken = localStorage.getItem("auth_token");
 
   // Media queries sizes based on Milligram library 
   const mediaQueryTablet: MediaQueryList = window.matchMedia("(min-width: 400px)");
@@ -32,7 +30,6 @@ function App(): ReactElement {
 
   // Context
   const setUser: setContext<User> = useContext(UserContext).setUser;
-  const { token, setToken }: { token: string, setToken: setContext<string> } = useContext(TokenContext);
   const { flashMessage, setFlashMessage }: { flashMessage: FlashMessage, setFlashMessage: setContext<FlashMessage> } = useContext(FlashMessageContext);
   const setAddress: setContext<Address> = useContext(AddressContext).setAddress;
 
@@ -48,14 +45,10 @@ function App(): ReactElement {
   })
 
   // Used to automatilcally login or out the user depending on the token presence
-  useEffect(() => {
-    if (!localToken || localToken === "undefined")
-      resetUserInfos(setUser, setToken, setAddress, axios.defaults.headers);
+  // useEffect(() => {
+  //   signInWtihToken(setUser, setAddress);
 
-    localToken &&
-      signInWtihToken(localToken, setUser, setToken, setAddress);
-
-  }, [localToken, setToken, setUser, setAddress])
+  // }, [setUser, setAddress])
 
   // Handle the switch between desktop or mobile menu dependeing on the mediaquery
   useEffect(() => {
@@ -70,12 +63,13 @@ function App(): ReactElement {
   })
 
   async function logOut() {
-    signOut(token, setUser, setToken, setAddress)
+    signOut(setUser, setAddress)
       .then(resp => getFlash(setFlashMessage, resp));
   }
 
   function isUserLoggedIn(route: ReactElement) {
-    return !localToken ? <Navigate to="/" /> : route;
+    // return !localToken ? <Navigate to="/" /> : 
+    return route;
   }
 
   return (

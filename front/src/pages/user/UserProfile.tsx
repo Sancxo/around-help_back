@@ -1,7 +1,7 @@
 import { ReactElement, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { TokenContext, UserContext } from "../../shared/context";
+import { UserContext } from "../../shared/context";
 import { getUserInfos } from "../../shared/helpers/user.helper";
 
 
@@ -10,7 +10,6 @@ import User from "../../shared/interfaces/user.interfaces";
 export default function UserProfile({ defaultUser }: { defaultUser: User }): ReactElement {
     const urlParams = useParams();
 
-    const token: string = useContext(TokenContext).token;
     const currentUser: User = useContext(UserContext).user;
 
     const [userProfile, setUserProfile] = useState<User>(defaultUser);
@@ -18,10 +17,8 @@ export default function UserProfile({ defaultUser }: { defaultUser: User }): Rea
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        if (token) {
-            getUserInfos(urlParams.id!, token, setUserProfile, setIsLoaded, setError);
-        }
-    }, [urlParams.id, token])
+        getUserInfos(urlParams.id!, setUserProfile, setIsLoaded, setError);
+    }, [urlParams.id])
 
     if (!isLoaded) return <div><p>Please, wait ...</p></div>
 
