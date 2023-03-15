@@ -1,19 +1,34 @@
 class Users::SessionsController < Devise::SessionsController
-    respond_to :json
+    def create
+        user = User.find_by_email(sign_in_params[:email]) 
+
+        respond_with(user, sign_in_params)
+    end
 
     private
-    def respond_with(_resource, _opts = {})
-        if current_user
-            render json: {
-                message: "You're logged in!",
-                user: current_user,
-                avatar: current_user.avatar.attached? ? rails_blob_path(current_user.avatar) : nil
-            }, status: :ok
+    def respond_with(user, opts = {})
+        if  user && user.valid_password?(opts[:password])
+            log_in_success user
         else
-            render json: {
-                message: "Oops ... Either email or password is invalid!"
-            }, status: :unauthorized
+           log_in_failure
         end 
+    end
+
+    def log_in_success(user)
+        token = user.generate_token
+        set_jwt_cookie(token)
+
+        render json: {
+            message: "You're logged in!",
+            user: user,
+            avatar: user.avatar.attached? ? rails_blob_path(user.avatar) : nil
+        }, status: :ok
+    end
+
+    def log_in_failure
+        render json: {
+            message: "Oops ... Either email or password is invalid!"
+        }, status: :unauthorized
     end
 
     def respond_to_on_destroy
@@ -23,6 +38,7 @@ class Users::SessionsController < Devise::SessionsController
     end
 
     def log_out_succes 
+        cookie.delete(:jwt)
         render json: {message: "You're logged out"}, status: :ok
     end
 

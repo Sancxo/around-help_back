@@ -18,4 +18,8 @@ class User < ApplicationRecord
 
   validates :id_card, attached: true, content_type: {in: ['application/pdf', 'image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/avif'], message: "Not a supported image format. Should be either .pdf, .png, .jpeg, .gif, .webp or .avif"}
   validates :avatar, content_type: {in: ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/avif'], message: "Not a supported image format. Should be either .png, .jpeg, .gif, .webp or .avif"}
+
+  def generate_token
+    JWT.encode({id: id, exp: 60.days.from_now.to_i}, Rails.application.credentials.devise[:jwt_secret_key])
+  end
 end

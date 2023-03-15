@@ -1,6 +1,12 @@
 class Users::RegistrationsController < Devise::RegistrationsController
     respond_to :json
 
+    def create
+        user = User.new(sign_up_params)
+        user.save
+        respond_with user
+    end
+
     private
     def respond_with(resource, _opts = {})
         register_success && return if resource.persisted?
@@ -9,10 +15,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
 
     def register_success
+        token = user.generate_token
+        set_jwt_cookie(token)
+
         render json: {
             message: "Signed up successfully!",
-            user: current_user,
-            avatar: current_user.avatar.attached? ? rails_blob_path(current_user.avatar) : nil
+            user: user,
+            avatar: user.avatar.attached? ? rails_blob_path(user.avatar) : nil
         }, status: :ok
     end
 
