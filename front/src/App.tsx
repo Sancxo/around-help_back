@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import SwitchMenu from "./components/SwitchMenu";
 import Flash from './components/Flash';
-import { defaultUser, signOut } from './shared/helpers/user.helper';
+import { defaultUser, signInWithToken, signOut } from './shared/helpers/user.helper';
 import { AddressContext, FlashMessageContext, UserContext } from './shared/context';
 import { getFlash } from './shared/helpers/flash.helper';
 import { Address, FlashMessage, setContext } from './shared/interfaces/misc.interfaces';
@@ -45,10 +45,9 @@ function App(): ReactElement {
   })
 
   // Used to automatilcally login or out the user depending on the token presence
-  // useEffect(() => {
-  //   signInWtihToken(setUser, setAddress);
-
-  // }, [setUser, setAddress])
+  useEffect(() => {
+    localStorage.getItem("connection_state") && signInWithToken(setUser, setAddress);
+  }, [setUser, setAddress]);
 
   // Handle the switch between desktop or mobile menu dependeing on the mediaquery
   useEffect(() => {

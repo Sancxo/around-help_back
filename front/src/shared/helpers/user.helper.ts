@@ -7,7 +7,7 @@ import defaultUserAvatar from "../imgs/default-user.png";
 import { getFlash } from "./flash.helper";
 import { defaultAddress, getAddress } from "./address.helper";
 
-const infos_user = "infos_user";
+const infos_user = "connection_state";
 
 export const defaultUser: User = {
     id: 0,
@@ -49,7 +49,7 @@ async function signIn(
         .catch((err): [symbol, string] => { return [Error, err.message] });
 }
 
-async function signInWtihToken(
+async function signInWithToken(
     setUser: setContext<User>,
     setAddress: setContext<Address>
 ): Promise<[symbol, string]> {
@@ -57,7 +57,7 @@ async function signInWtihToken(
         .get(`${process.env.REACT_APP_BACKEND_URL}/user`, { withCredentials: true })
         .then((resp): [symbol, string] => {
             if (resp.status === 200) {
-                setUserInfosFromToken(resp.data.user, setUser);
+                setUserInfos(resp.data.user, setUser);
 
                 setAvatarToUser(resp.data.user, resp.data.avatar);
 
@@ -145,17 +145,8 @@ function setUserInfos(
     setUser: setContext<User>
 ) {
     setUser(user);
-
+    localStorage.setItem(infos_user, "connected");
     console.info(`User is logged in with id ${user.id}.`);
-}
-
-function setUserInfosFromToken(
-    user: User,
-    setUser: setContext<User>
-) {
-    setUser(user);
-
-    console.info("We checked the authentification token with success.");
 }
 
 function resetUserInfos(
@@ -190,4 +181,4 @@ function getUserInfos(
         })
 }
 
-export { signIn, signInWtihToken, registerUser, updateUser, signOut, resetUserInfos, getUserInfos }
+export { signIn, signInWithToken, registerUser, updateUser, signOut, getUserInfos }
