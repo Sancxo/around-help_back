@@ -15,15 +15,15 @@ export default function Home(): ReactElement {
     return (
         <div>
             <h1>Hello, World!</h1>
-            {/* {addresses.map(address => {
-                return <div key={address.id}>
+            {/* {addresses.map(address => (
+                <div key={address.id}>
                     <p>
                         {address.number} {address.street} <br />
                         {address.postal_code} {address.city} <br />
                         {address.state} - {address.country} <br />
                     </p>
                 </div>
-            })} */}
+            ))} */}
         </div>
     );
 }

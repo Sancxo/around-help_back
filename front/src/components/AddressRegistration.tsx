@@ -19,7 +19,7 @@ export default function AddressRegistration({ setIsAddressSet, setnewlyCreatedAd
   const { ready, value, suggestions: { status, data }, setValue, clearSuggestions } = usePlacesAutocomplete({ callbackName: "initMap" });
 
   function handleInput(e: ChangeEvent<HTMLInputElement>) {
-    setValue(e.target.value)
+    setValue(e.target.value);
   }
 
   const handleSelect = ({ description }: any) => () => {
