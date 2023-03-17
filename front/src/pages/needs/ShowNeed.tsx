@@ -1,7 +1,7 @@
 import { ReactElement, useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { FlashMessageContext, TokenContext, UserContext } from "../../shared/context";
+import { FlashMessageContext, UserContext } from "../../shared/context";
 import { createChatRoomUser, getChatRoomFromNeedId } from "../../shared/helpers/chat.helper";
 import { createNeedUser, defaultNeed, getNeed, updateNeed } from "../../shared/helpers/needs.helper";
 import { Error, FlashMessage, Need, Ok, setContext } from "../../shared/interfaces/misc.interfaces";
@@ -10,7 +10,6 @@ import User from "../../shared/interfaces/user.interfaces";
 export default function ShowNeed(): ReactElement {
   const urlParams = useParams();
 
-  const token: string = useContext(TokenContext).token;
   const user: User = useContext(UserContext).user;
   const setFlashMessage: setContext<FlashMessage> = useContext(FlashMessageContext).setFlashMessage;
 
@@ -27,8 +26,8 @@ export default function ShowNeed(): ReactElement {
   const navigate = useNavigate();
 
   useEffect(() => {
-    token && getNeed(urlParams.id!, token, setNeed, setIsLoaded, setError)
-  }, [urlParams.id, token])
+    getNeed(urlParams.id!, setNeed, setIsLoaded, setError)
+  }, [urlParams.id])
 
   async function addUserAndActiveConversation() {
     const isUserAddedToNeed: boolean = await createNeedUser(need.id, user.id);

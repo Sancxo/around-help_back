@@ -35,7 +35,6 @@ async function createNeedUser(needId: number, userId: number) {
 
 async function getNeed(
   needId: string,
-  token: string,
   setNeed: Dispatch<SetStateAction<Need>>,
   setIsLoaded: Dispatch<SetStateAction<boolean>>,
   setError: Dispatch<SetStateAction<boolean>>) {
