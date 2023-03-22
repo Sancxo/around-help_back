@@ -33,7 +33,9 @@ class ApplicationController < ActionController::API
     end
 
     def current_user
-        @current_user ||= super || User.find(@current_user_id)
+      get_user_from_token
+
+      @current_user ||= super || User.find(@current_user_id)
     end
 
     def set_jwt_cookie(token)

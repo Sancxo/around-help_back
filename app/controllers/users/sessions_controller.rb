@@ -38,7 +38,7 @@ class Users::SessionsController < Devise::SessionsController
     end
 
     def log_out_succes 
-        cookie.delete(:jwt)
+        cookies.delete(:jwt)
         render json: {message: "You're logged out"}, status: :ok
     end
 
