@@ -2,7 +2,7 @@ import React, { MouseEventHandler, ReactComponentElement, useContext } from "rea
 import { Link, useLocation } from "react-router-dom";
 import { UserContext } from "../shared/context";
 
-export default function MobileMenu({ logOut, setIsMobileMenuOpen }: {
+export default function Menu({ logOut, setIsMobileMenuOpen }: {
   logOut: MouseEventHandler<HTMLAnchorElement>,
   setIsMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
 }): ReactComponentElement<React.JSXElementConstructor<HTMLDivElement>, Pick<React.ComponentProps<React.JSXElementConstructor<HTMLDivElement>>, keyof HTMLDivElement>> {
