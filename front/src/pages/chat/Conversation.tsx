@@ -25,7 +25,6 @@ export default function Conversation(): ReactElement {
         JSON.stringify({
           command: "subscribe",
           identifier: JSON.stringify({
-            id: user.id,
             room_id: urlParams.id,
             channel: "RoomChannel"
           })
