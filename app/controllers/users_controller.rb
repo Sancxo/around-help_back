@@ -3,12 +3,10 @@ class UsersController < ApplicationController
   
   # GET /user
   def this
-    this_user = current_user
-    
     render json: {
       message: "You're logged in because of the token!",
-      user: this_user,
-      avatar: this_user.avatar.attached? ? rails_blob_path(this_user.avatar) : nil
+      user: current_user,
+      avatar: current_user.avatar.attached? ? rails_blob_path(current_user.avatar) : nil
     }
   end
 
@@ -25,18 +23,16 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /user
   def update
-    this_user = current_user
-
-    if this_user.update(user_params)
+    if current_user.update(user_params)
       render json: {
         message: "User successfully updated!",
-        user: this_user,
-        avatar: this_user.avatar.attached? ? rails_blob_path(this_user.avatar) : nil
+        user: current_user,
+        avatar: current_user.avatar.attached? ? rails_blob_path(current_user.avatar) : nil
       }
     else
       render json: {
         message: "A problem occured while updating user. Aborted!",
-        error: this_user.errors
+        error: current_user.errors
       }, status: :unprocessable_entity
     end
   end
