@@ -17,6 +17,19 @@ class ChatRoomsController < ApplicationController
     render json: chat_room
   end
 
+  # GET /chat_rooms_list/:user_id
+  def get_chat_rooms_with_needs_preload
+    @chat_rooms = ChatRoom.includes(:need).joins(:users).where('users.id' => params['user_id'])
+
+    @chat_room_with_preload = @chat_rooms.map do |chat_room|
+      chat_room.attributes.merge(
+        "need" => chat_room.need
+      )
+    end
+
+  render json: @chat_room_with_preload
+  end
+
   # GET /chat_rooms/1
   def show
     render json: @chat_room

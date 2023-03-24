@@ -1,12 +1,13 @@
 Rails.application.routes.draw do
   devise_for :users,
-    controllers: {
-      sessions: 'users/sessions',
-      registrations: 'users/registrations'
-    }
+  controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
+  }
 
-  authenticate :user do
-    mount ActionCable.server => "/cable"
+  mount ActionCable.server, at: "/cable"
+
+  # authenticate :user do
     get 'user', to: 'users#this'
     get 'user/:id', to: 'users#show'
     put 'user', to: 'users#update'
@@ -19,10 +20,11 @@ Rails.application.routes.draw do
 
     resources :chat_rooms
     get 'chat_room/:need_id', to: 'chat_rooms#get_from_need_id'
+    get 'chat_rooms_list/:user_id', to: 'chat_rooms#get_chat_rooms_with_needs_preload'
     resources :chat_room_users
     
     resources :chat_messages
-  end
+  # end
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
