@@ -4,7 +4,7 @@ class NeedsController < ApplicationController
   # GET /needs
   def index
     @needs = Need.all.includes(:address, :creator)
-    # @users = Needs.all.includes(:user, :need)
+
     @needs_with_associated_data = @needs.map do |need|
       need.attributes.merge(
         'address' => need.address, 
