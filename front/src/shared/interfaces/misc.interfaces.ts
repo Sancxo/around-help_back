@@ -36,6 +36,12 @@ export interface Need extends NeedFormValues {
   updated_at: Date
 }
 
+export interface Conversation {
+  id: number,
+  need_id: number,
+  need: Need
+}
+
 export interface ChatMessage {
   id: number | string,
   body: string
