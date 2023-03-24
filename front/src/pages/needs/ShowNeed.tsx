@@ -4,13 +4,13 @@ import { useParams } from "react-router-dom";
 import { FlashMessageContext, UserContext } from "../../shared/context";
 import { createChatRoomUser, getChatRoomFromNeedId } from "../../shared/helpers/chat.helper";
 import { createNeedUser, defaultNeed, getNeed, updateNeed } from "../../shared/helpers/needs.helper";
+import { setUserInfos } from "../../shared/helpers/user.helper";
 import { Error, FlashMessage, Need, Ok, setContext } from "../../shared/interfaces/misc.interfaces";
-import User from "../../shared/interfaces/user.interfaces";
 
 export default function ShowNeed(): ReactElement {
   const urlParams = useParams();
 
-  const user: User = useContext(UserContext).user;
+  const { user, setUser } = useContext(UserContext);
   const setFlashMessage: setContext<FlashMessage> = useContext(FlashMessageContext).setFlashMessage;
 
   const [need, setNeed] = useState<Need>(defaultNeed);
@@ -33,10 +33,11 @@ export default function ShowNeed(): ReactElement {
     const isUserAddedToNeed: boolean = await createNeedUser(need.id, user.id);
 
     const chatRoomId: number = await getChatRoomFromNeedId(need.id);
-    const isUserAddedToChatRoom: boolean = chatRoomId ? await createChatRoomUser(chatRoomId, user.id) : false;
+    const updatedUser = chatRoomId && await createChatRoomUser(chatRoomId, user.id);
     setChatRoomId(chatRoomId);
+    setUserInfos(updatedUser, setUser);
 
-    if (isUserAddedToNeed && isUserAddedToChatRoom) {
+    if (isUserAddedToNeed && updatedUser) {
       setFlashMessage([Ok, "You answered to this Need, now you can contact the creator."]);
       navigate(`/conversation/${chatRoomId}`);
     } else {
