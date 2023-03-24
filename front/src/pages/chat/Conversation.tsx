@@ -44,7 +44,6 @@ export default function Conversation(): ReactElement {
       if (data.type === "ping") return;
       if (data.type === "welcome") return;
       if (data.type === "confirm_subscription") return;
-      console.debug("Message received !!!!!!!!")
       setMessages(messages => [...messages, data.message]);
     }
 
