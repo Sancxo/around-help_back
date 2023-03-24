@@ -1,5 +1,5 @@
 export default interface User {
-    [index: string]: string | number | Date | undefined,
+    [index: string]: string | number | number[] | Date | undefined,
     id: number,
     first_name: string,
     last_name: string,
@@ -7,13 +7,14 @@ export default interface User {
     birthdate?: Date,
     about?: string,
     address_id?: number,
+    chat_rooms?: number[],
     id_card?: string | undefined,
     avatar?: string | undefined,
     created_at?: Date
 }
 
 export interface RegistrationValues {
-    [index: string]: string | number | Date | File | undefined,
+    [index: string]: string | number | number[] | Date | File | undefined,
     first_name: string,
     last_name: string,
     email: string,
