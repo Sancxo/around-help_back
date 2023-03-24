@@ -18,8 +18,7 @@ export const defaultUser: User = {
 }
 
 function setAvatarToUser(user: User, avatar: string) {
-    const imgSrc = process.env.REACT_APP_BACKEND_URL + avatar;
-    Object.assign(user, { avatar: imgSrc });
+    Object.assign(user, { avatar: process.env.REACT_APP_BACKEND_URL + avatar });
 }
 
 async function signIn(
@@ -33,9 +32,9 @@ async function signIn(
         .post(`${process.env.REACT_APP_BACKEND_URL}/users/sign_in`, { "user": { "email": email, "password": password } }, { withCredentials: true })
         .then((resp): [symbol, string] => {
             if (resp.status === 200) {
-                setUserInfos(resp.data.user, setUser);
-
                 setAvatarToUser(resp.data.user, resp.data.avatar);
+
+                setUserInfos(resp.data.user, setUser);
 
                 getAddress(resp.data.user.address_id, setAddress);
 
@@ -181,4 +180,4 @@ function getUserInfos(
         })
 }
 
-export { signIn, signInWithToken, registerUser, updateUser, signOut, getUserInfos }
+export { signIn, signInWithToken, registerUser, updateUser, signOut, getUserInfos, setUserInfos }
