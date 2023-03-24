@@ -16,14 +16,17 @@ class ChatRoomUsersController < ApplicationController
   # POST /chat_room_users
   def create
     @chat_room = ChatRoom.find(params[:chat_room_id])
-    @user = User.find(params[:user_id])
+    @user = User.includes(:chat_rooms).find(params[:user_id])
 
-    @chat_room_user = @chat_room.users << @user
+    @updated_user = @user.chat_rooms << @chat_room
 
-    if @chat_room_user
-      render json: @chat_room_user, status: :created
+    if @updated_user
+      render json: 
+        @user.attributes.merge('chat_rooms' => current_user.chat_rooms.map do |chat_room| 
+          chat_room.id 
+        end), status: :created
     else
-      render json: @chat_room_user.errors, status: :unprocessable_entity
+      render json: @updated_user.errors, status: :unprocessable_entity
     end
   end
 
