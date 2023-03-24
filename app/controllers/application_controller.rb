@@ -35,7 +35,7 @@ class ApplicationController < ActionController::API
     def current_user
       get_user_from_token
 
-      @current_user ||= super || User.find(@current_user_id)
+      @current_user ||= super || User.includes(:chat_rooms).find(@current_user_id)
     end
 
     def set_jwt_cookie(token)

@@ -1,6 +1,6 @@
 class Users::SessionsController < Devise::SessionsController
     def create
-        user = User.find_by_email(sign_in_params[:email]) 
+        user = User.includes(:chat_rooms).find_by_email(sign_in_params[:email]) 
 
         respond_with(user, sign_in_params)
     end
@@ -20,7 +20,7 @@ class Users::SessionsController < Devise::SessionsController
 
         render json: {
             message: "You're logged in!",
-            user: user,
+            user: user.attributes.merge('chat_rooms' => user.chat_rooms.map do |chat_room| chat_room.id end),
             avatar: user.avatar.attached? ? rails_blob_path(user.avatar) : nil
         }, status: :ok
     end

@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   def this
     render json: {
       message: "You're logged in because of the token!",
-      user: current_user,
+      user: current_user.attributes.merge('chat_rooms' => current_user.chat_rooms.map do |chat_room| chat_room.id end),
       avatar: current_user.avatar.attached? ? rails_blob_path(current_user.avatar) : nil
     }
   end

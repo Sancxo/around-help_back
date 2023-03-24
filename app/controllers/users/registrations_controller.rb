@@ -2,7 +2,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     respond_to :json
 
     def create
-        user = User.new(sign_up_params)
+        user = User.includes(:chat_rooms).new(sign_up_params)
         user.save
         respond_with user
     end
@@ -20,7 +20,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
         render json: {
             message: "Signed up successfully!",
-            user: user,
+            user: user.attributes.merge('chat_rooms' => user.chat_rooms.map do |chat_room| chat_room.id end),
             avatar: user.avatar.attached? ? rails_blob_path(user.avatar) : nil
         }, status: :ok
     end
