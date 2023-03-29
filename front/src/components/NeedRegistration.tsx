@@ -1,8 +1,8 @@
-import { ChangeEvent, Dispatch, ReactElement, SetStateAction, useContext, useState } from "react";
+import { ChangeEvent, Dispatch, ReactElement, SetStateAction, useContext, useEffect, useState } from "react";
 import { FlashMessageContext, UserContext } from "../shared/context";
 import { createChatRoom } from "../shared/helpers/chat.helper";
 import { clearFlash, getFlash } from "../shared/helpers/flash.helper";
-import { createNeed } from "../shared/helpers/needs.helper";
+import { createNeed, defaultNeedFormValue } from "../shared/helpers/needs.helper";
 import { Error, FlashMessage, Need, NeedFormValues, Ok, setContext } from "../shared/interfaces/misc.interfaces";
 import User from "../shared/interfaces/user.interfaces";
 
@@ -11,14 +11,13 @@ export default function NeedRegistration({ setIsNeedCreated, setnewlyCreatedNeed
   setnewlyCreatedNeed: Dispatch<SetStateAction<Need>>
 }): ReactElement {
   const user: User = useContext(UserContext).user;
-  const [need, setNeed]: [NeedFormValues, Dispatch<SetStateAction<NeedFormValues>>] = useState({
-    creator_id: user.id,
-    title: "",
-    description: "",
-    is_one_time: true
-  });
+  const [need, setNeed]: [NeedFormValues, Dispatch<SetStateAction<NeedFormValues>>] = useState(defaultNeedFormValue);
 
   const setFlashMessage: setContext<FlashMessage> = useContext(FlashMessageContext).setFlashMessage;
+
+  useEffect(() => {
+    setNeed(needFormValues => ({ ...needFormValues, creator_id: user.id }))
+  }, [user.id])
 
   async function handleSubmit() {
     clearFlash(setFlashMessage);
@@ -45,6 +44,12 @@ export default function NeedRegistration({ setIsNeedCreated, setnewlyCreatedNeed
     setNeed(needFormValues => ({ ...needFormValues, [name]: value }));
   }
 
+  function handleRadioInputs(e: ChangeEvent<HTMLInputElement>) {
+    e.target.value === "Yes" ?
+      setNeed(needFormValues => ({ ...needFormValues, is_one_time: true })) :
+      setNeed(needFormValues => ({ ...needFormValues, is_one_time: false }))
+  }
+
   return (
     <form name="need-registration-form" id="need-registration" className="container">
       <h2 className="bold">Create your Need</h2>
@@ -57,8 +62,15 @@ export default function NeedRegistration({ setIsNeedCreated, setnewlyCreatedNeed
       <textarea name="description" id="description-input" cols={30} rows={10} onChange={handleInputs} required ></textarea>
       <br />
 
-      <input type="checkbox" name="is_one_time" id="need-frequency-input" onChange={handleInputs} checked required />
-      <label htmlFor="need-frequency-input">Is it a single time need? <small>(mandatory)</small>:</label>
+      <div>
+        <p>Is it a single time need? <small>(mandatory)</small>:</p>
+        <input type="radio" name="is_one_time" id="single-time" value="true" onChange={handleRadioInputs} defaultChecked />
+        <label htmlFor="single-time" style={{ display: "inline" }} className='mr-1'>Yes</label>
+
+        <input type="radio" name="is_one_time" id="not-single-time" value="false" onChange={handleRadioInputs} />
+        <label htmlFor="not-single-time" style={{ display: "inline" }}>No</label>
+      </div>
+
       <br />
 
       <input type="button" className="btn-prim" value="Submit" onClick={handleSubmit} />
