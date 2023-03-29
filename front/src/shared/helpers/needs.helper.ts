@@ -2,6 +2,13 @@ import axios, { AxiosResponse } from "axios";
 import { Dispatch, SetStateAction } from "react";
 import { Need, NeedFormValues } from "../interfaces/misc.interfaces";
 
+export const defaultNeedFormValue: NeedFormValues = {
+  creator_id: 0,
+  title: "",
+  description: "",
+  is_one_time: true
+}
+
 export const defaultNeed: Need = {
   id: 0,
   creator_id: 0,
