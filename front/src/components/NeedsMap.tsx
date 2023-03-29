@@ -1,3 +1,4 @@
+import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
 import { ReactElement, useCallback, useContext, useState } from "react";
 import { Link } from "react-router-dom";
@@ -7,7 +8,7 @@ import { Need } from "../shared/interfaces/misc.interfaces";
 export default function NeedsMap({ isLoaded, needs }: { isLoaded: boolean, needs: Need[] }): ReactElement {
   const latLng = useContext(AddressContext).address.lat_lng;
 
-  const [infoWindow, setInfoWindow] = useState<boolean>(false)
+  const [infoWindow, setInfoWindow] = useState<Need>();
 
   const onLoad = useCallback((map: google.maps.Map) => {
     const bounds = new window.google.maps.LatLngBounds(latLng);
@@ -31,22 +32,33 @@ export default function NeedsMap({ isLoaded, needs }: { isLoaded: boolean, needs
             key={`marker-${need.id}`}
             title={need.title}
             position={need.address.lat_lng}
-            clickable={true} onClick={(_) => setInfoWindow(true)} >
-            {infoWindow ?
-              <InfoWindow position={need.address.lat_lng} onCloseClick={() => setInfoWindow(false)} >
-                <div>
-                  <h3>{need.title}</h3>
-                  <p>{need.description}</p>
-                  <p>Is one time ? {need.is_one_time ? "Yes" : "No"}</p>
-                  <p>Created by: <Link to={`/user/${need.creator_id}`}>{need.creator.first_name} {need.creator.last_name}</Link></p>
-                  <p>Located at: {need.address.address}</p>
-                  <Link to={`/needs/${need.id}`}><button type="button" className="btn-prim mt-2">See this need</button></Link>
-                </div>
-              </InfoWindow>
-              : null}
+            icon={{
+              path: faMapMarkerAlt.icon[4] as string,
+              fillColor: need.is_one_time ? "red" : "blue",
+              fillOpacity: 1,
+              anchor: new google.maps.Point(faMapMarkerAlt.icon[0] / 2, faMapMarkerAlt.icon[1]),
+              strokeWeight: 1,
+              strokeColor: "#ffffff",
+              scale: 0.075,
+            }}
+            clickable={true} onClick={(_) => { setInfoWindow(need) }}
+          >
           </Marker>
         )
       })}
+      {
+        infoWindow?.address.lat_lng &&
+        <InfoWindow position={infoWindow.address.lat_lng} onCloseClick={() => setInfoWindow(undefined)} >
+          <div>
+            <h3>{infoWindow.title}</h3>
+            <p>{infoWindow.description}</p>
+            <p>Is one time ? {infoWindow.is_one_time ? "Yes" : "No"}</p>
+            <p>Created by: <Link to={`/user/${infoWindow.creator_id}`}>{infoWindow.creator.first_name} {infoWindow.creator.last_name}</Link></p>
+            <p>Located at: {infoWindow.address.address}</p>
+            <Link to={`/needs/${infoWindow.id}`}><button type="button" className="btn-prim mt-2">See this need</button></Link>
+          </div>
+        </InfoWindow>
+      }
     </GoogleMap >
   ) : <p>Error while loading the Needs map !</p>
 }
