@@ -23,7 +23,7 @@ export interface NeedFormValues {
   creator_id: number,
   title: string,
   description: string,
-  is_one_time: true,
+  is_one_time: boolean,
   address_id?: number
 }
 export interface Need extends NeedFormValues {
