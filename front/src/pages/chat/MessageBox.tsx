@@ -22,15 +22,16 @@ export default function MessageBox(): ReactElement {
 
   return (
     <div>
+      <h2 className="bold">Your conversations</h2>
       <ul className="unstyled">
         {conversations.map((conversation: Conversation) => (
-          <li key={conversation.id} className="grid message-list">
-            <div>
-              <h3><Link to={`../conversation/${conversation.id}`} className={conversation.need.is_fulfilled ? "greyed italic line-through" : ""}>{conversation.need.title}</Link></h3>
+          <li key={conversation.id} className="row">
+            <div className="column flex align-center">
+              <h3 className="mb-0 mr-1 fs-2"><Link to={`../conversation/${conversation.id}`} className={conversation.need.is_fulfilled ? "greyed italic line-through" : ""}>{conversation.need.title}</Link></h3>
               {conversation.need.is_fulfilled && <small>(fulfilled)</small>}
             </div>
-            <p>Need created by: <>{conversation.need_creator.id === user.id ? "You" : <Link to={`../user/${user.id}`}>{conversation.need_creator.first_name} {conversation.need_creator.last_name}`</Link>}</></p>
-            <p><small>Conversation joined on: {readDate(conversation.created_at)}</small></p>
+            <p className="column">Created by: <>{conversation.need_creator.id === user.id ? "You" : <Link to={`../user/${user.id}`}>{conversation.need_creator.first_name} {conversation.need_creator.last_name}`</Link>}</></p>
+            <p className="column greyed">Joined on {readDate(conversation.created_at)}</p>
           </li>
         ))}
       </ul>
