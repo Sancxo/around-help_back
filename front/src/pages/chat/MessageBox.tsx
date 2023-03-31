@@ -17,7 +17,7 @@ export default function MessageBox(): ReactElement {
     <div>
       <ul>
         {conversations.map((conversation: Conversation) => (
-          <li key={conversation.id}><h3><Link to={`conversation/${conversation.id}`}>{conversation.need.title}</Link></h3></li>
+          <li key={conversation.id}><h3><Link to={`../conversation/${conversation.id}`}>{conversation.need.title}</Link></h3></li>
         ))}
       </ul>
     </div>
