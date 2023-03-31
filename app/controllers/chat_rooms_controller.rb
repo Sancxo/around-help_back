@@ -27,7 +27,7 @@ class ChatRoomsController < ApplicationController
       )
     end
 
-  render json: @chat_room_with_preload
+    render json: @chat_room_with_preload
   end
 
   # GET /chat_rooms/1

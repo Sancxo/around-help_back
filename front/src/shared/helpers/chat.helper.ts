@@ -3,9 +3,9 @@ import { Dispatch, SetStateAction } from "react";
 import { ChatMessage, Conversation } from "../interfaces/misc.interfaces";
 
 async function createChatRoom(needId: number): Promise<any> {
-  axios
+  return await axios
     .post<number, AxiosResponse>(`${process.env.REACT_APP_BACKEND_URL}/chat_rooms`, { need_id: needId }, { withCredentials: true })
-    .then(resp => { return resp; })
+    .then(resp => { return resp.data; })
     .catch(err => console.error(err))
 }
 
