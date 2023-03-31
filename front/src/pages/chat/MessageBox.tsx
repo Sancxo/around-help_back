@@ -10,14 +10,24 @@ export default function MessageBox(): ReactElement {
   const [conversations, setConversations] = useState<Conversation[]>([]);
 
   useEffect(() => {
-    user.id !== 0 && getConversations(user.id, setConversations)
+    user.id !== 0 && getConversations(user.id, setConversations);
   }, [user, setConversations])
+
+  console.debug("Conversations ::::: ", conversations)
+
+  function readDate(stringifiedDate: any) {
+    const date = new Date(stringifiedDate);
+    return `${date.getFullYear()} ${date.getMonth()} ${date.getDate()}`
+  }
 
   return (
     <div>
-      <ul>
+      <ul className="unstyled">
         {conversations.map((conversation: Conversation) => (
-          <li key={conversation.id}><h3><Link to={`../conversation/${conversation.id}`}>{conversation.need.title}</Link></h3></li>
+          <li key={conversation.id} className="grid message-list">
+            <h3><Link to={`../conversation/${conversation.id}`}>{conversation.need.title}</Link></h3>
+            <p><small>Conversation joined on: {readDate(conversation.created_at)}</small></p>
+          </li>
         ))}
       </ul>
     </div>
