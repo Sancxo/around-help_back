@@ -1,5 +1,5 @@
 import { ComponentType, lazy, ReactElement, Suspense, useContext, useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 
 import SwitchMenu from "./components/SwitchMenu";
 import Flash from './components/Flash';
@@ -45,9 +45,9 @@ function App(): ReactElement {
     libraries: libraries
   })
 
-  // Used to automatilcally login or out the user depending on the token presence
+  // Used to automatically login or out the user depending on the token presence
   useEffect(() => {
-    localStorage.getItem("connection_state") ? signInWithToken(setUser, setAddress) : window.location.reload();
+    localStorage.getItem("connection_state") && signInWithToken(setUser, setAddress);
   }, [setUser, setAddress]);
 
   // Handle the switch between desktop or mobile menu dependeing on the mediaquery
@@ -68,8 +68,7 @@ function App(): ReactElement {
   }
 
   function isUserLoggedIn(route: ReactElement) {
-    // return !localToken ? <Navigate to="/" /> : 
-    return route;
+    return localStorage.getItem("connection_state") ? route : <Navigate to="/" />;
   }
 
   return (
