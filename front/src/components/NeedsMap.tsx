@@ -27,7 +27,7 @@ export default function NeedsMap({ isLoaded, needs }: { isLoaded: boolean, needs
       mapContainerStyle={containerStyle}
       onLoad={onLoad} >
       {needs.map((need): any => {
-        if (need.address) {
+        if (need.address && !need.is_fulfilled) {
           return (
             <Marker
               key={`marker-${need.id}`}
