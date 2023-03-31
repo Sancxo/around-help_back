@@ -25,7 +25,11 @@ export default function MessageBox(): ReactElement {
       <ul className="unstyled">
         {conversations.map((conversation: Conversation) => (
           <li key={conversation.id} className="grid message-list">
-            <h3><Link to={`../conversation/${conversation.id}`}>{conversation.need.title}</Link></h3>
+            <div>
+              <h3><Link to={`../conversation/${conversation.id}`} className={conversation.need.is_fulfilled ? "greyed italic line-through" : ""}>{conversation.need.title}</Link></h3>
+              {conversation.need.is_fulfilled && <small>(fulfilled)</small>}
+            </div>
+            <p>Need created by: <>{conversation.need_creator.id === user.id ? "You" : <Link to={`../user/${user.id}`}>{conversation.need_creator.first_name} {conversation.need_creator.last_name}`</Link>}</></p>
             <p><small>Conversation joined on: {readDate(conversation.created_at)}</small></p>
           </li>
         ))}

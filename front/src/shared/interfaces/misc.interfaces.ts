@@ -40,6 +40,7 @@ export interface Conversation {
   id: number,
   need_id: number,
   need: Need,
+  need_creator: User,
   created_at: Date
 }
 
