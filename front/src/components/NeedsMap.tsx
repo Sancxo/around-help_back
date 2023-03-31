@@ -27,24 +27,26 @@ export default function NeedsMap({ isLoaded, needs }: { isLoaded: boolean, needs
       mapContainerStyle={containerStyle}
       onLoad={onLoad} >
       {needs.map((need): any => {
-        return (
-          <Marker
-            key={`marker-${need.id}`}
-            title={need.title}
-            position={need.address.lat_lng}
-            icon={{
-              path: faMapMarkerAlt.icon[4] as string,
-              fillColor: need.is_one_time ? "red" : "blue",
-              fillOpacity: 1,
-              anchor: new google.maps.Point(faMapMarkerAlt.icon[0] / 2, faMapMarkerAlt.icon[1]),
-              strokeWeight: 1,
-              strokeColor: "#ffffff",
-              scale: 0.075,
-            }}
-            clickable={true} onClick={(_) => { setInfoWindow(need) }}
-          >
-          </Marker>
-        )
+        if (need.address) {
+          return (
+            <Marker
+              key={`marker-${need.id}`}
+              title={need.title}
+              position={need.address.lat_lng}
+              icon={{
+                path: faMapMarkerAlt.icon[4] as string,
+                fillColor: need.is_one_time ? "red" : "blue",
+                fillOpacity: 1,
+                anchor: new google.maps.Point(faMapMarkerAlt.icon[0] / 2, faMapMarkerAlt.icon[1]),
+                strokeWeight: 1,
+                strokeColor: "#ffffff",
+                scale: 0.075,
+              }}
+              clickable={true} onClick={(_) => { setInfoWindow(need) }}
+            >
+            </Marker>
+          )
+        } else { return null }
       })}
       {
         infoWindow?.address.lat_lng &&
