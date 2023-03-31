@@ -1,0 +1,7 @@
+.grid {
+  display: grid;
+}
+
+.message-list {
+  grid-template-columns: auto auto
+}
