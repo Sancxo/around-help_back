@@ -79,7 +79,7 @@ function App(): ReactElement {
         </header>
 
 
-        <main className={`${isMobileMenuOpen && mediaQueryTablet.matches && "pt-4"}`} >
+        <main className={`${(isMobileMenuOpen && mediaQueryTablet.matches) ? "pt-4" : ""}`} >
           <Suspense fallback="Loading app ...">
             <Routes>
               <Route element={<Home />} path='/' />
