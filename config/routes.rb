@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :chat_room_users
     
     resources :chat_messages
+    get 'chat_messages_list/:chat_room_id', to: 'chat_messages#get_chat_messages_by_chat_room_id'
   # end
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

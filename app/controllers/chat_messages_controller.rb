@@ -8,6 +8,18 @@ class ChatMessagesController < ApplicationController
     render json: @chat_messages
   end
 
+  # GET /chat_messages/:chat_room_id
+  def get_chat_messages_by_chat_room_id
+    @chat_messages = ChatMessage.includes(:user).joins(:chat_room).where('chat_room.id' => params['chat_room_id'])
+
+    @chat_messages_with_preload = @chat_messages.map do |message|
+      message.attributes.merge(
+        "user" => message.user
+      )
+    end
+    render json: @chat_messages_with_preload
+  end
+
   # GET /chat_messages/1
   def show
     render json: @chat_message
