@@ -67,7 +67,7 @@ export default function Conversation(): ReactElement {
     resetScroll();
   }, [messages, resetScroll])
 
-  function handleInput(e: ChangeEvent<HTMLInputElement>) {
+  function handleInput(e: ChangeEvent<HTMLTextAreaElement>) {
     setMessageToSend(e.target.value);
   }
 
@@ -76,19 +76,22 @@ export default function Conversation(): ReactElement {
     setMessageToSend("");
   }
 
+  console.debug("Messages :::::::: ", messages)
+
   return (
-    <div>
+    <div id="chat-interface">
       <div id="messages">
         {messages.map(message => (
-          <div key={message.id} className="chat-message">
-            <p>{message.body}</p>
+          <div key={message.id} className={`chat-message ${message.user.id === user.id ? "your-message" : "not-your-message"}`}>
+            <p className="message-header"><small>{message.user.first_name} {message.user.last_name} said:</small></p>
+            <p className="message-body">{message.body}</p>
           </div>
         ))}
       </div>
-      <div className="messageForm">
-        <form>
-          <input className="messageInput" type="text" name="message" value={messageToSend} onChange={handleInput} />
-          <input className="messageButton btn-prim" type="button" value="Send" onClick={handleSubmit} />
+      <div id="message-form-container">
+        <form id="message-form">
+          <textarea name="message" id="chat-text-area" className="messageInput" cols={30} rows={10} value={messageToSend} onChange={handleInput} placeholder="Write your message here ..."></textarea>
+          <input id="chat-send-btn" className="messageButton btn-prim" type="button" value="Send" onClick={handleSubmit} />
         </form>
       </div>
     </div>
