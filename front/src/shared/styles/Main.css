@@ -62,6 +62,58 @@ main {
   margin: auto;
 }
 
+/* Chat */
+#chat-interface {
+  padding: 1rem;
+}
+
+#messages {
+  display: flex;
+  flex-direction: column;
+}
+
+#message-form-container {
+  position: absolute;
+  bottom: 0;
+  width: -moz-available;
+}
+
+#message-form {
+  margin-bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.chat-message {
+  min-width: 200px;
+}
+
+div.chat-message.your-message {
+  align-self: flex-end;
+}
+
+div.chat-message.not-your-message {
+  align-self: flex-start;
+}
+
+div.chat-message p.message-header {
+  margin-bottom: 0;
+}
+
+div.chat-message p.message-body {
+  border-radius: 5px;
+  margin-bottom: 1.5rem;
+}
+
+div.chat-message.your-message p.message-body {
+  background-color: #47d84746;
+}
+
+div.chat-message.not-your-message p.message-body {
+  background-color: #50535046;
+}
+
 @media(min-width: 40.0rem) {
   .menu {
     width: initial;
