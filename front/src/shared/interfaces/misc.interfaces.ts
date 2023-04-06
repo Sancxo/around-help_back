@@ -46,5 +46,6 @@ export interface Conversation {
 
 export interface ChatMessage {
   id: number | string,
-  body: string
+  body: string,
+  user: User
 }
