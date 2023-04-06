@@ -38,7 +38,7 @@ async function getConversations(userId: number | undefined, setConversations: Di
 
 async function getChatMessages(chat_room_id: string, setMessages: Dispatch<SetStateAction<ChatMessage[]>>) {
   return await axios
-    .get<ChatMessage[]>(`${process.env.REACT_APP_BACKEND_URL}/chat_messages`, { withCredentials: true })
+    .get<ChatMessage[]>(`${process.env.REACT_APP_BACKEND_URL}/chat_messages_list/${chat_room_id}`, { withCredentials: true })
     .then(resp => setMessages(resp.data))
     .catch(err => console.error(err))
 }
