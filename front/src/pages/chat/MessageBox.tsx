@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../../shared/context";
 import { getConversations } from "../../shared/helpers/chat.helper";
 import { Conversation } from "../../shared/interfaces/misc.interfaces";
+import { readDate } from "../../shared/helpers/misc.helper";
 
 export default function MessageBox(): ReactElement {
   const user = useContext(UserContext).user;
@@ -14,11 +15,6 @@ export default function MessageBox(): ReactElement {
   }, [user, setConversations])
 
   console.debug("Conversations ::::: ", conversations)
-
-  function readDate(stringifiedDate: any) {
-    const date = new Date(stringifiedDate);
-    return `${date.getFullYear()} ${date.getMonth()} ${date.getDate()}`
-  }
 
   return (
     <div>
