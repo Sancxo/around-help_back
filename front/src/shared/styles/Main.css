@@ -65,13 +65,14 @@ main {
 /* Chat */
 #chat-interface {
   padding: 1rem;
+  height: 75vh;
 }
 
 #messages {
   display: flex;
   flex-direction: column;
-  height: 75vh;
-  overflow: scroll;
+  overflow-y: scroll;
+  height: 100%;
 }
 
 #message-form-container {
@@ -79,7 +80,7 @@ main {
   bottom: 0;
   left: 0;
   height: 10%;
-  width: -moz-available;
+  width: 100%;
 }
 
 #message-form {
