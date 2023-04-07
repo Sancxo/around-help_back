@@ -70,11 +70,15 @@ main {
 #messages {
   display: flex;
   flex-direction: column;
+  height: 75vh;
+  overflow: scroll;
 }
 
 #message-form-container {
   position: absolute;
   bottom: 0;
+  left: 0;
+  height: 10%;
   width: -moz-available;
 }
 
@@ -83,6 +87,13 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
+}
+
+textarea#chat-text-area,
+input#chat-send-btn {
+  height: 100%;
+  margin-bottom: 0;
 }
 
 div.chat-message {
