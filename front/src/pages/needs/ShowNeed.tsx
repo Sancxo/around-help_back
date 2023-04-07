@@ -6,6 +6,7 @@ import { createChatRoomUser, getChatRoomFromNeedId } from "../../shared/helpers/
 import { createNeedUser, defaultNeed, getNeed, updateNeed } from "../../shared/helpers/needs.helper";
 import { setUserInfos } from "../../shared/helpers/user.helper";
 import { Error, FlashMessage, Need, Ok, setContext } from "../../shared/interfaces/misc.interfaces";
+import { getFlash } from "../../shared/helpers/flash.helper";
 
 export default function ShowNeed(): ReactElement {
   const urlParams = useParams();
@@ -38,10 +39,10 @@ export default function ShowNeed(): ReactElement {
     setUserInfos(updatedUser, setUser);
 
     if (isUserAddedToNeed && updatedUser) {
-      setFlashMessage([Ok, "You answered to this Need, now you can contact the creator."]);
+      getFlash(setFlashMessage, [Ok, "You answered to this Need, now you can contact the creator."]);
       navigate(`/conversation/${chatRoomId}`);
     } else {
-      setFlashMessage([Error, "An error occured ..."]);
+      getFlash(setFlashMessage, [Error, "An error occured ..."]);
     }
   }
 
@@ -55,11 +56,11 @@ export default function ShowNeed(): ReactElement {
     const isNeedUpdated = await updateNeed(need.id, need);
 
     if (isNeedUpdated && !need.is_fulfilled) {
-      setFlashMessage([Ok, "You have marked your Need as not fulfilled !"])
+      getFlash(setFlashMessage, [Ok, "You have marked your Need as not fulfilled !"])
     } else if (isNeedUpdated && need.is_fulfilled) {
-      setFlashMessage([Ok, "You have marked your Need as fulfilled !"])
+      getFlash(setFlashMessage, [Ok, "You have marked your Need as fulfilled !"])
     } else {
-      setFlashMessage([Error, "Something went wrong while changing the status of your Need ..."])
+      getFlash(setFlashMessage, [Error, "Something went wrong while changing the status of your Need ..."])
     }
   }
 

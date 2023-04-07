@@ -5,6 +5,7 @@ import { getChatMessages, sendChatMessage } from "../../shared/helpers/chat.help
 import { ChatMessage, Error, Ok } from "../../shared/interfaces/misc.interfaces";
 import User from "../../shared/interfaces/user.interfaces";
 import { readDateTime } from "../../shared/helpers/misc.helper";
+import { getFlash } from "../../shared/helpers/flash.helper";
 
 export default function Conversation(): ReactElement {
   // check if current user belongs to this conversation
@@ -31,12 +32,12 @@ export default function Conversation(): ReactElement {
           })
         })
       );
-      setFlashMessage([Ok, "You're connected to the chat room!"])
+      getFlash(setFlashMessage, [Ok, "You're connected to the chat room!"])
       console.info(`Websocket connected for chat_room with id ${urlParams.id}.`);
     }
 
     ws.onerror = () => {
-      setFlashMessage([Error, "The connection with the chat room was lost; please wait or try reloading."]);
+      getFlash(setFlashMessage, [Error, "The connection with the chat room was lost; please wait or try reloading."]);
       console.error(`Websocket lost connection for chat_room with id ${urlParams.id}.`);
     }
 
@@ -49,7 +50,7 @@ export default function Conversation(): ReactElement {
     }
 
     ws.onclose = _ => {
-      setFlashMessage([Ok, "You were successfully disconnected from the chat room."]);
+      getFlash(setFlashMessage, [Ok, "You were successfully disconnected from the chat room."]);
       console.info(`Websocket disconnected for chat_room with id ${urlParams.id}.`);
     }
 

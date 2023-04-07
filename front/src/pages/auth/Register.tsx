@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Address, FlashMessage, setContext } from "../../shared/interfaces/misc.interfaces";
 import { updateUser } from "../../shared/helpers/user.helper";
 import { defaultAddress } from "../../shared/helpers/address.helper";
+import { getFlash } from "../../shared/helpers/flash.helper";
 
 export default function Register(): ReactElement {
     const setFlashMessage: setContext<FlashMessage> = useContext(FlashMessageContext).setFlashMessage;
@@ -27,7 +28,7 @@ export default function Register(): ReactElement {
                     navigate(`/user/${respUpdate.user.id}`)
                 })
                 .catch(err => {
-                    setFlashMessage(err.message);
+                    getFlash(setFlashMessage, err.message);
                     console.error(err);
                 });
         }
