@@ -7,6 +7,6 @@ class ChatMessage < ApplicationRecord
   private
 
   def broadcast_message
-    ActionCable.server.broadcast("room_#{chat_room_id}_channel", {id:, body:, user:})
+    ActionCable.server.broadcast("room_#{chat_room_id}_channel", {id:, body:, user:, created_at:, updated_at:})
   end
 end
