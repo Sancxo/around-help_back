@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { clearFlash } from "../shared/helpers/flash.helper";
+import { clearFlash } from "../shared/helpers/misc.helper";
 import { Error, FlashMessage, Ok, setContext } from "../shared/interfaces/misc.interfaces";
 
 export default function Flash({ flashMessage, setFlashMessage }: { flashMessage: FlashMessage, setFlashMessage: setContext<FlashMessage> }): ReactElement {

@@ -1,7 +1,7 @@
 import { ReactElement, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FlashMessageContext, TokenContext, UserContext } from "../../shared/context";
-import { clearFlash, getFlash } from "../../shared/helpers/flash.helper";
+import { clearFlash, getFlash } from "../../shared/helpers/misc.helper";
 import { defaultUser, updateUser } from "../../shared/helpers/user.helper";
 
 import { RegistrationValues } from "../../shared/interfaces/user.interfaces";

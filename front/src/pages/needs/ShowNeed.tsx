@@ -6,7 +6,7 @@ import { createChatRoomUser, getChatRoomFromNeedId } from "../../shared/helpers/
 import { createNeedUser, defaultNeed, getNeed, updateNeed } from "../../shared/helpers/needs.helper";
 import { setUserInfos } from "../../shared/helpers/user.helper";
 import { Error, FlashMessage, Need, Ok, setContext } from "../../shared/interfaces/misc.interfaces";
-import { getFlash } from "../../shared/helpers/flash.helper";
+import { getFlash } from "../../shared/helpers/misc.helper";
 
 export default function ShowNeed(): ReactElement {
   const urlParams = useParams();

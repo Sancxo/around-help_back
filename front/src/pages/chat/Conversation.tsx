@@ -4,8 +4,7 @@ import { FlashMessageContext, UserContext } from "../../shared/context";
 import { getChatMessages, sendChatMessage } from "../../shared/helpers/chat.helper";
 import { ChatMessage, Error, Ok } from "../../shared/interfaces/misc.interfaces";
 import User from "../../shared/interfaces/user.interfaces";
-import { readDateTime } from "../../shared/helpers/misc.helper";
-import { getFlash } from "../../shared/helpers/flash.helper";
+import { getFlash, readDateTime } from "../../shared/helpers/misc.helper";
 
 export default function Conversation(): ReactElement {
   // check if current user belongs to this conversation

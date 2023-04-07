@@ -4,7 +4,7 @@ import { NavigateFunction } from "react-router-dom";
 import { Address, Error, FlashMessage, Ok, setContext } from "../interfaces/misc.interfaces";
 import User from "../interfaces/user.interfaces";
 import defaultUserAvatar from "../imgs/default-user.png";
-import { getFlash } from "./flash.helper";
+import { getFlash } from "./misc.helper";
 import { defaultAddress, getAddress } from "./address.helper";
 
 const infos_user = "connection_state";

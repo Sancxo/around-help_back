@@ -5,7 +5,7 @@ import SwitchMenu from "./components/SwitchMenu";
 import Flash from './components/Flash';
 import { defaultUser, signInWithToken, signOut } from './shared/helpers/user.helper';
 import { AddressContext, FlashMessageContext, UserContext } from './shared/context';
-import { getFlash } from './shared/helpers/flash.helper';
+import { getFlash } from './shared/helpers/misc.helper';
 import { Address, FlashMessage, setContext } from './shared/interfaces/misc.interfaces';
 import User from './shared/interfaces/user.interfaces';
 import { useJsApiLoader } from '@react-google-maps/api';

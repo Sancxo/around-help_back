@@ -1,3 +1,17 @@
+import { FlashMessage, Nil, setContext } from "../interfaces/misc.interfaces";
+
+function getFlash(setFlashMessage: setContext<FlashMessage>, [code, message]: [symbol, string]) {
+  setFlashMessage([code, message]);
+
+  setTimeout(() => {
+    clearFlash(setFlashMessage);
+  }, 3000);
+}
+
+function clearFlash(setFlashMessage: setContext<FlashMessage>) {
+  setFlashMessage([Nil, ""]);
+}
+
 function readDate(date: Date | string) {
   date = typeof date === "string" ? new Date(date) : date;
   return `${date.getFullYear()} ${date.getMonth()} ${date.getDate()}`
@@ -8,4 +22,4 @@ function readDateTime(datetime: Date | string) {
   return `${datetime.getFullYear()} ${datetime.getMonth()} ${datetime.getDate()}, at: ${datetime.getHours()}:${datetime.getMinutes()}:${datetime.getSeconds()}`
 }
 
-export { readDate, readDateTime }
+export { clearFlash, getFlash, readDate, readDateTime }

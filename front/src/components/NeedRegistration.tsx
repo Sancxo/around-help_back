@@ -1,7 +1,7 @@
 import { ChangeEvent, Dispatch, ReactElement, SetStateAction, useContext, useEffect, useState } from "react";
 import { FlashMessageContext, UserContext } from "../shared/context";
 import { createChatRoom, createChatRoomUser } from "../shared/helpers/chat.helper";
-import { clearFlash, getFlash } from "../shared/helpers/flash.helper";
+import { clearFlash, getFlash } from "../shared/helpers/misc.helper";
 import { createNeed, defaultNeedFormValue } from "../shared/helpers/needs.helper";
 import { Error, FlashMessage, Need, NeedFormValues, Ok, setContext } from "../shared/interfaces/misc.interfaces";
 import User from "../shared/interfaces/user.interfaces";

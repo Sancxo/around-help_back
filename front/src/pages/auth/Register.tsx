@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Address, FlashMessage, setContext } from "../../shared/interfaces/misc.interfaces";
 import { updateUser } from "../../shared/helpers/user.helper";
 import { defaultAddress } from "../../shared/helpers/address.helper";
-import { getFlash } from "../../shared/helpers/flash.helper";
+import { getFlash } from "../../shared/helpers/misc.helper";
 
 export default function Register(): ReactElement {
     const setFlashMessage: setContext<FlashMessage> = useContext(FlashMessageContext).setFlashMessage;

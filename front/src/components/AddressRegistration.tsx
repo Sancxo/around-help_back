@@ -2,7 +2,7 @@ import React, { ChangeEvent, Dispatch, ReactElement, SetStateAction, useContext,
 import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
 import { FlashMessageContext } from "../shared/context";
 import { registerAddress } from "../shared/helpers/address.helper";
-import { clearFlash, getFlash } from "../shared/helpers/flash.helper";
+import { clearFlash, getFlash } from "../shared/helpers/misc.helper";
 import { Address, AddressValues, Error, FlashMessage, Ok, setContext } from "../shared/interfaces/misc.interfaces";
 
 export default function AddressRegistration({ setIsAddressSet, setnewlyCreatedAddress }: {

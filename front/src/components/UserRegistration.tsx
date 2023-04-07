@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch, ReactElement, SetStateAction, useContext, useState } from "react";
 import { FlashMessageContext, UserContext } from "../shared/context";
-import { clearFlash } from "../shared/helpers/flash.helper";
+import { clearFlash } from "../shared/helpers/misc.helper";
 import { registerUser } from "../shared/helpers/user.helper";
 import { FlashMessage, setContext } from "../shared/interfaces/misc.interfaces";
 import User, { RegistrationValues } from "../shared/interfaces/user.interfaces";
