@@ -4,6 +4,7 @@ import { FlashMessageContext, UserContext } from "../../shared/context";
 import { getChatMessages, sendChatMessage } from "../../shared/helpers/chat.helper";
 import { ChatMessage, Error, Ok } from "../../shared/interfaces/misc.interfaces";
 import User from "../../shared/interfaces/user.interfaces";
+import { readDateTime } from "../../shared/helpers/misc.helper";
 
 export default function Conversation(): ReactElement {
   // check if current user belongs to this conversation
@@ -85,6 +86,7 @@ export default function Conversation(): ReactElement {
           <div key={message.id} className={`chat-message ${message.user.id === user.id ? "your-message" : "not-your-message"}`}>
             <p className="message-header"><small>{message.user.first_name} {message.user.last_name} said:</small></p>
             <p className="message-body">{message.body}</p>
+            <p className="message-footer">{readDateTime(message.created_at)}</p>
           </div>
         ))}
       </div>
