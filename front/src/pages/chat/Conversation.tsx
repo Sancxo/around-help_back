@@ -84,9 +84,9 @@ export default function Conversation(): ReactElement {
       <div id="messages">
         {messages.map(message => (
           <div key={message.id} className={`chat-message ${message.user.id === user.id ? "your-message" : "not-your-message"}`}>
-            <p className="message-header"><small>{message.user.first_name} {message.user.last_name} said:</small></p>
+            <p className="message-header"><small><span className="bold">{message.user.first_name} {message.user.last_name}</span> said:</small></p>
             <p className="message-body">{message.body}</p>
-            <p className="message-footer">{readDateTime(message.created_at)}</p>
+            <p className="message-footer greyed"><small>{readDateTime(message.created_at)}</small></p>
           </div>
         ))}
       </div>

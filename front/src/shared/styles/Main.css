@@ -108,13 +108,17 @@ div.chat-message.not-your-message {
   align-self: flex-start;
 }
 
-div.chat-message p.message-header {
+p.message-header,
+p.message-body {
   margin-bottom: 0;
 }
 
 div.chat-message p.message-body {
   border-radius: 5px;
-  margin-bottom: 1.5rem;
+}
+
+p.message-footer {
+  margin-bottom: 1rem;
 }
 
 div.chat-message.your-message p.message-body {
