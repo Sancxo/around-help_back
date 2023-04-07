@@ -5,7 +5,7 @@ function getFlash(setFlashMessage: setContext<FlashMessage>, [code, message]: [s
 
   setTimeout(() => {
     clearFlash(setFlashMessage);
-  }, 3000);
+  }, 1500);
 }
 
 function clearFlash(setFlashMessage: setContext<FlashMessage>) {
