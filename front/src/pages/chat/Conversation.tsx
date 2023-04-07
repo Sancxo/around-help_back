@@ -77,8 +77,6 @@ export default function Conversation(): ReactElement {
     setMessageToSend("");
   }
 
-  console.debug("Messages :::::::: ", messages)
-
   return (
     <div id="chat-interface">
       <div id="messages">
