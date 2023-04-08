@@ -1,29 +1,22 @@
 import { ReactElement, useEffect, useState } from "react";
-import axios from "axios";
-import { Address } from "../shared/interfaces/misc.interfaces";
+import { countUnfulfilledNeeds } from "../shared/helpers/needs.helper";
 
-const addressesUrl = `${process.env.REACT_APP_BACKEND_URL}/addresses`;
 
 export default function Home(): ReactElement {
-    const [addresses, setAddresses] = useState<Address[]>([]);
+    const [unfulfilledNeedsCount, setUnfulfilledNeedsCount] = useState(0);
 
-    // useEffect(() => {
+    useEffect(() => {
+        countUnfulfilledNeeds(setUnfulfilledNeedsCount);
 
-    //     axios.get<Address[]>(addressesUrl).then(resp => setAddresses(resp.data))
-    // }, []);
+        const counter = setInterval(() => countUnfulfilledNeeds(setUnfulfilledNeedsCount), 5000)
+        return () => clearInterval(counter);
+    }, [setUnfulfilledNeedsCount]);
 
     return (
         <div>
-            <h1>Hello, World!</h1>
-            {/* {addresses.map(address => (
-                <div key={address.id}>
-                    <p>
-                        {address.number} {address.street} <br />
-                        {address.postal_code} {address.city} <br />
-                        {address.state} - {address.country} <br />
-                    </p>
-                </div>
-            ))} */}
+            <h2>We Need You!</h2>
+
+            <h3>Number of unfulfilled requests: {unfulfilledNeedsCount}</h3>
         </div>
     );
 }
