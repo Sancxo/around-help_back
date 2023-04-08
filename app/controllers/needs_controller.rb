@@ -15,6 +15,13 @@ class NeedsController < ApplicationController
     render json: @needs_with_associated_data
   end
 
+  # GET /unfulfilled_needs
+  def count_unfulfilled
+    @unfulfilled_needs = Need.where(is_fulfilled: false).count
+
+    render json: @unfulfilled_needs
+  end
+
   # GET /needs/1
   def show
     @need = Need.includes(:address, :creator, :fulfillers).find(params[:id])

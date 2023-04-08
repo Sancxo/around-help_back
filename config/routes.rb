@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     patch 'user', to: 'users#update'
 
     resources :needs
+    get 'unfulfilled_needs', to: 'needs#count_unfulfilled'
     resources :need_users
 
     resources :addresses
