@@ -1,22 +1,13 @@
-import axios from "axios";
-import { Dispatch, ReactElement, SetStateAction, useContext, useEffect, useState } from "react";
+import { Dispatch, ReactElement, SetStateAction, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import NeedsMap from "../../components/NeedsMap";
-import { UserContext } from "../../shared/context";
-import { defaultNeed } from "../../shared/helpers/needs.helper";
+import { defaultNeed, listNeeds } from "../../shared/helpers/needs.helper";
 import { Need } from "../../shared/interfaces/misc.interfaces";
 
 export default function Needs({ isLoaded }: { isLoaded: boolean }): ReactElement {
-  const user = useContext(UserContext).user;
-
   const [needs, setNeeds]: [Need[], Dispatch<SetStateAction<Need[]>>] = useState([defaultNeed]);
 
-  useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}/needs`)
-      .then(resp => {
-        setNeeds(resp.data)
-      })
-  }, [user]);
+  useEffect(() => { listNeeds(setNeeds) }, []);
 
   return (
     <div>
