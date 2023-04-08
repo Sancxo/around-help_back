@@ -23,6 +23,16 @@ export const defaultNeed: Need = {
   updated_at: new Date("0000-00-00")
 }
 
+async function listNeeds(setNeeds: Dispatch<SetStateAction<Need[]>>) {
+  return await axios.get(`${process.env.REACT_APP_BACKEND_URL}/needs`)
+    .then(resp => setNeeds(resp.data))
+}
+
+async function countUnfulfilledNeeds(setUnfulfilledNeedsCount: Dispatch<SetStateAction<number>>) {
+  return await axios.get(`${process.env.REACT_APP_BACKEND_URL}/unfulfilled_needs`)
+    .then(resp => setUnfulfilledNeedsCount(resp.data))
+}
+
 async function createNeed(need: NeedFormValues): Promise<any> {
   return await axios
     .post<NeedFormValues, AxiosResponse>(`${process.env.REACT_APP_BACKEND_URL}/needs/`, { need })
@@ -68,4 +78,4 @@ async function updateNeed(
     .catch(err => console.error(err))
 }
 
-export { createNeed, createNeedUser, getNeed, updateNeed };
+export { listNeeds, countUnfulfilledNeeds, createNeed, createNeedUser, getNeed, updateNeed };
