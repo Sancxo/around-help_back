@@ -14,9 +14,12 @@ export default function Home(): ReactElement {
 
     return (
         <div>
-            <h2>We Need You!</h2>
+            <div id="hero-text">
+                <h2>We Need You!</h2>
+                <h3>Number of unfulfilled requests: {unfulfilledNeedsCount}</h3>
+            </div>
 
-            <h3>Number of unfulfilled requests: {unfulfilledNeedsCount}</h3>
+            <img id="hero-img" src={require("../shared/imgs/home-image.jpg")} alt="Woman helping another one" />
         </div>
     );
 }
