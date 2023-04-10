@@ -80,9 +80,12 @@ export default function Conversation(): ReactElement {
   return (
     <div id="chat-interface">
       <div id="messages">
-        {messages.map(message => (
+        {messages.map((message, index) => (
           <div key={message.id} className={`chat-message ${message.user.id === user.id ? "your-message" : "not-your-message"}`}>
-            <p className="message-header"><small><span className="bold">{message.user.first_name} {message.user.last_name}</span> said:</small></p>
+            {(index === 0 || message.user.id !== messages[index - 1].user.id) &&
+              <p className="message-header"><small><span className="bold">{message.user.first_name} {message.user.last_name}</span> said:</small></p>
+            }
+
             <p className="message-body">{message.body}</p>
             <p className="message-footer greyed"><small>{readDateTime(message.created_at)}</small></p>
           </div>
