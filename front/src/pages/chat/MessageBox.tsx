@@ -14,10 +14,8 @@ export default function MessageBox(): ReactElement {
     user.id !== 0 && getConversations(user.id, setConversations);
   }, [user, setConversations])
 
-  console.debug("Conversations ::::: ", conversations)
-
   return (
-    <div>
+    <div className="p-1">
       <h2 className="bold">Your conversations</h2>
       <ul className="unstyled">
         {conversations.map((conversation: Conversation) => (
