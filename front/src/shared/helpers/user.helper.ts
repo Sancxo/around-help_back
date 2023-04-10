@@ -18,7 +18,7 @@ export const defaultUser: User = {
 }
 
 function setAvatarToUser(user: User, avatar: string) {
-    Object.assign(user, { avatar: process.env.REACT_APP_BACKEND_URL + avatar });
+    Object.assign(user, { avatar: avatar ? process.env.REACT_APP_BACKEND_URL + avatar : null });
 }
 
 async function signIn(
