@@ -74,7 +74,7 @@ function App(): ReactElement {
   return (
     <div className="text-center">
       <Router>
-        <header className="App-header mb-1">
+        <header className="App-header">
           <SwitchMenu logOut={logOut} isDesktop={isDesktop} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
         </header>
 

@@ -65,12 +65,15 @@ main {
 /* HomePage */
 #hero-img {
   height: calc(100vh - var(--header-height));
+  background: 50% 50% / cover no-repeat url("../imgs/home-image.jpg");
 }
 
 #hero-text {
   background-color: var(--translucid-color);
   position: absolute;
-  top: 75%;
+  width: 65vw;
+  max-width: 233px;
+  top: 85%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 1rem;
@@ -162,6 +165,10 @@ div.chat-message.not-your-message p.message-body {
     flex-wrap: initial;
     flex-shrink: initial;
     position: initial;
+  }
+
+  #hero-text {
+    max-width: 454px;
   }
 
   #hero-text h3 {
