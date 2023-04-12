@@ -10,12 +10,6 @@ export default function NeedsMap({ isLoaded, needs }: { isLoaded: boolean, needs
 
   const [infoWindow, setInfoWindow] = useState<Need>();
 
-  const onLoad = useCallback((map: google.maps.Map) => {
-    const bounds = new window.google.maps.LatLngBounds(latLng);
-    map.fitBounds(bounds);
-    map.setZoom(16);
-  }, [latLng])
-
   const containerStyle = {
     width: '750px',
     height: '500px'
@@ -25,7 +19,8 @@ export default function NeedsMap({ isLoaded, needs }: { isLoaded: boolean, needs
     <GoogleMap
       center={latLng}
       mapContainerStyle={containerStyle}
-      onLoad={onLoad} >
+      zoom={16}
+    >
       {needs.map((need): any => {
         if (need.address && !need.is_fulfilled) {
           return (
