@@ -30,6 +30,11 @@ nav {
 
 nav a {
   color: #fff;
+  transition: color linear 200ms;
+}
+
+nav a:hover {
+  color: var(--tertiary-color);
 }
 
 .logo {

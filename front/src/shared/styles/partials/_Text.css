@@ -1,4 +1,8 @@
 /* Text */
+.text-black {
+  color: var(--black-color);
+}
+
 .text-center {
   text-align: center;
 }
