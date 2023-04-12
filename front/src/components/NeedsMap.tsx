@@ -1,6 +1,6 @@
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
-import { ReactElement, useCallback, useContext, useState } from "react";
+import { ReactElement, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AddressContext } from "../shared/context";
 import { Need } from "../shared/interfaces/misc.interfaces";
