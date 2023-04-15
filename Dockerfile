@@ -9,6 +9,19 @@
 #  * Add deployment packages needed by your application
 #  * Add (often fake) secrets needed to compile your assets
 
+### REACT ###
+
+FROM node:latest AS front
+
+COPY front front
+RUN node --version > front/.node-version
+
+COPY front/package.json front/package.json
+COPY front/package-lock.json front/package-lock.json
+# RUN npm install
+
+RUN cd front; npm run build
+
 #######################################################################
 
 # Learn more about the chosen Ruby stack, Fullstaq Ruby, here:
@@ -17,9 +30,7 @@
 # We recommend using the highest patch level for better security and
 # performance.
 
-ARG RUBY_VERSION=3.1.2
-ARG VARIANT=jemalloc-slim
-FROM quay.io/evl.ms/fullstaq-ruby:${RUBY_VERSION}-${VARIANT} as base
+FROM quay.io/evl.ms/fullstaq-ruby:3.1.2-jemalloc-slim as base
 
 LABEL fly_launch_runtime="rails"
 
@@ -87,6 +98,9 @@ RUN --mount=type=cache,id=prod-apt-cache,sharing=locked,target=/var/cache/apt \
 COPY --from=gems /app /app
 COPY --from=gems /usr/lib/fullstaq-ruby/versions /usr/lib/fullstaq-ruby/versions
 COPY --from=gems /usr/local/bundle /usr/local/bundle
+
+COPY --from=front /front/build /app/public
+COPY --from=front /front/.node-version /app
 
 #######################################################################
 
