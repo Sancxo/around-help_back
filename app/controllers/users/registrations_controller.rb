@@ -1,6 +1,4 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-    respond_to :json
-
     def create
         user = User.includes(:chat_rooms).new(sign_up_params)
         user.save
@@ -8,13 +6,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
 
     private
-    def respond_with(resource, _opts = {})
-        register_success && return if resource.persisted?
+    def respond_with(user, _opts = {})
+        register_success(user) && return if user.persisted?
 
         register_failed
     end
 
-    def register_success
+    def register_success(user)
         token = user.generate_token
         set_jwt_cookie(token)
 
