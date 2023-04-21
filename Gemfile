@@ -33,6 +33,9 @@ gem 'ruby-vips', '~> 2.1', '>= 2.1.4'
 # Active Storage validations [https://github.com/igorkasyanchuk/active_storage_validations]
 gem 'active_storage_validations'
 
+# In this Rails version (7.0.3.1), we need a version of Redis strictly inferior to 5 in order to work with Action Cable
+gem 'redis', '~> 4.8', '>= 4.8.1'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
