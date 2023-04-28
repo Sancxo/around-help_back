@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!
-  
   # GET /user
   def this
     render json: {

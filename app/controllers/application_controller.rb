@@ -2,6 +2,7 @@ class ApplicationController < ActionController::API
     #protect_from_forgery with: :exception, prepend: true
     respond_to :json
     before_action :get_user_from_token
+    before_action :authenticate_user!
     before_action :config_permitted_params, if: :devise_controller?
 
     include ::ActionController::Cookies

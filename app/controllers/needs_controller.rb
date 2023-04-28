@@ -1,4 +1,6 @@
 class NeedsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:count_unfulfilled]
+
   before_action :set_need, only: %i[ show update destroy ]
 
   # GET /needs

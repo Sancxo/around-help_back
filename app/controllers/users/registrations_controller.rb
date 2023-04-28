@@ -1,4 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
+    skip_before_action :authenticate_user!
+
     def create
         user = User.includes(:chat_rooms).new(sign_up_params)
         user.save

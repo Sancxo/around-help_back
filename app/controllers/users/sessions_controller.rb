@@ -1,4 +1,6 @@
 class Users::SessionsController < Devise::SessionsController
+    skip_before_action :authenticate_user!
+
     def create
         user = User.includes(:chat_rooms).find_by_email(sign_in_params[:email]) 
 
@@ -10,7 +12,7 @@ class Users::SessionsController < Devise::SessionsController
         if  user && user.valid_password?(opts[:password])
             log_in_success user
         else
-           log_in_failure
+            log_in_failure
         end 
     end
 
