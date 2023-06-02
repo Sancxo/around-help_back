@@ -40,7 +40,7 @@ class ApplicationController < ActionController::API
     end
 
     def set_jwt_cookie(token)
-        cookies.signed[:jwt] = {value: token, httponly: true, same_site: :none, secure: true, expires: 1.hour.from_now}
+      cookies.signed[:jwt] = {value: token, httponly: true, same_site: :none, secure: true, expires: 1.hour.from_now}
     end
 
     protected
