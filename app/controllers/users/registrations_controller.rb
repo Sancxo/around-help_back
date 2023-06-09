@@ -1,5 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-    skip_before_action :authenticate_user!
+    skip_before_action :authenticate_user!, only: [:create]
 
     def create
         user = User.includes(:chat_rooms).new(sign_up_params)

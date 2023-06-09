@@ -1,5 +1,5 @@
 class Users::SessionsController < Devise::SessionsController
-    skip_before_action :authenticate_user!
+    skip_before_action :authenticate_user!, only: [:create]
 
     def create
         user = User.includes(:chat_rooms).find_by_email(sign_in_params[:email]) 
@@ -31,6 +31,16 @@ class Users::SessionsController < Devise::SessionsController
         render json: {
             message: "Oops ... Either email or password is invalid!"
         }, status: :unauthorized
+    end
+
+    def verify_signed_out_user
+        get_user_from_token
+
+        if all_signed_out?
+          set_flash_message! :notice, :already_signed_out
+    
+          respond_to_on_destroy
+        end
     end
 
     def respond_to_on_destroy
