@@ -1,19 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  number: MyString
-  street: MyString
-  city: MyString
-  state: MyString
-  postal_code: MyString
-  country: MyString
-  long_lat: 9.99
+  address: 130 Testing street
+  lat_lng: 
+    lat: 12
+    lng: 46
 
 two:
-  number: MyString
-  street: MyString
-  city: MyString
-  state: MyString
-  postal_code: MyString
-  country: MyString
-  long_lat: 9.99
+  address: 132 Testing street
+  lat_lng: 
+    lat: 54
+    lng: 45
