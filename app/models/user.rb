@@ -16,7 +16,14 @@ class User < ApplicationRecord
   has_one_attached :id_card
   has_one_attached :avatar
 
-  validates :id_card, attached: true, content_type: {in: ['application/pdf', 'image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/avif'], message: "Not a supported image format. Should be either .pdf, .png, .jpeg, .gif, .webp or .avif"}
+
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :email, presence: true, uniqueness: true
+  validates :password, presence: true, confirmation: true
+  validates :password_confirmation, presence: true
+
+  validates :id_card, attached: true, content_type: {in: ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/avif'], message: "Not a supported image format. Should be either .png, .jpeg, .gif, .webp or .avif"}
   validates :avatar, content_type: {in: ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/avif'], message: "Not a supported image format. Should be either .png, .jpeg, .gif, .webp or .avif"}
 
   def generate_token
