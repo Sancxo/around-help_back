@@ -7,7 +7,9 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins ENV['FRONT_URL']
+    unless ENV["RAILS_ENV"] == "test"
+      origins ENV["FRONT_URL"]
+    end
 
     resource "*",
     headers: 'x-domain-token',
