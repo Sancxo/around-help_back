@@ -20,8 +20,8 @@ class User < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, presence: true, uniqueness: true
-  validates :password, presence: true, confirmation: true
-  validates :password_confirmation, presence: true
+  validates :password, presence: true, confirmation: true, on: :create
+  validates :password_confirmation, presence: true, on: :create
 
   validates :id_card, attached: true, content_type: {in: ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/avif'], message: "Not a supported image format. Should be either .png, .jpeg, .gif, .webp or .avif"}
   validates :avatar, content_type: {in: ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/avif'], message: "Not a supported image format. Should be either .png, .jpeg, .gif, .webp or .avif"}
