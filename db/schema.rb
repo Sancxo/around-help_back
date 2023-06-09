@@ -46,7 +46,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_22_110336) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "address", default: "", null: false
-    t.jsonb "lat_lng", default: "{lat: 0, lng: 0}", null: false
+    t.jsonb "lat_lng", null: false
   end
 
   create_table "chat_messages", force: :cascade do |t|
