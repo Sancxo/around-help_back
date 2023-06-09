@@ -10,19 +10,19 @@ class ApplicationController < ActionController::API
     private 
 
     def get_user_from_token
-        if cookies.signed[:jwt] 
-          begin
-            jwt_payload = JWT.decode(
-              cookies.signed[:jwt], 
-              Rails.application.credentials.devise[:jwt_secret_key]
-            ).first
+      if cookies.signed[:jwt] 
+        begin
+          jwt_payload = JWT.decode(
+            cookies.signed[:jwt], 
+            Rails.application.credentials.devise[:jwt_secret_key]
+          ).first
 
-            @current_user_id = jwt_payload['id']
+          @current_user_id = jwt_payload['id']
 
-          rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
-            head :unauthorized
-          end
+        rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
+          head :unauthorized
         end
+      end
     end
 
     def authenticate_user!(opts = {})
@@ -34,7 +34,6 @@ class ApplicationController < ActionController::API
     end
 
     def current_user
-      get_user_from_token
 
       @current_user ||= super || User.includes(:chat_rooms).find(@current_user_id)
     end
