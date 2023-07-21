@@ -20,7 +20,7 @@ class NeedUsersController < ApplicationController
     
     @need_user = @need.fulfillers << @user
 
-    @need.update({"is_fulfilled" => true}) if @need.fulfillers.count == 5
+    @need.update({"is_fulfilled" => true, "fulfillment_timestamp" => Time.now.to_i}) if @need.fulfillers.count == 5
 
     if @need_user
       render json: @need_user, status: :created
