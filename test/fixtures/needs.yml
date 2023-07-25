@@ -1,15 +1,19 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyString
-  description: MyText
-  is_one_time: false
+  title: First test Need
+  description: MyText1
+  is_one_time: true
   is_fulfilled: false
   address: one
+  creator: one
+  fulfillers: two
 
 two:
-  title: MyString
-  description: MyText
+  title: Second test Need
+  description: MyText2
   is_one_time: false
   is_fulfilled: false
   address: two
+  creator: two
+  fulfillers: one
